@@ -1,3 +1,5 @@
+import chroma from 'chroma-js'
+
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
     width = canvas.width = window.innerWidth,
@@ -14,18 +16,28 @@ var d = Math.random() * 4 - 2;
 // create points. each aligned to left edge of screen,
 // spread out top to bottom.
 var points = [];
-for(var y = 0; y < height; y += 5) {
+
+const sections = Math.ceil( height/5 )
+const colorScale = chroma.scale(['#5D7190','#F78481'])
+  .mode('rgb').colors(sections)
+
+for(var y = 0; y < sections; y++) {
   points.push({
     x: 0,
     y: y,
     vx: 0,
-    vy: 0
+    vy: 0,
+    color: colorScale[y]
+    // color: chroma(`hsla(${ 360 * y / sections }, 100%, 50%, 1)`).css()
   })
 };
+
+let iterations = 0;
 
 render();
 
 function render() {
+  if(iterations > 2000) return;
   for(var i = 0; i < points.length; i++) {
     // get each point and do what we did before with a single point
     var p = points[i];
@@ -41,6 +53,8 @@ function render() {
     p.x += p.vx;
     p.y += p.vy;
     context.lineTo(p.x, p.y);
+    context.strokeStyle = p.color;
+    // console.log(p.color)
     context.stroke();
 
     // apply some friction so point doesn't speed up too much
@@ -55,6 +69,7 @@ function render() {
   }
 
   // call this function again in one frame tick
+  iterations++;
   requestAnimationFrame(render);
 }
 
