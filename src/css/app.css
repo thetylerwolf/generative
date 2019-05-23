@@ -1,0 +1,18 @@
+body {
+  margin:0;
+  background-color:#fafafa;
+  color:#101010;
+  font-family: "libre Franklin", sans-serif;
+}
+
+#main {
+  margin: 0;
+  width:100%;
+  /*max-width: 900px;*/
+  position: relative;
+}
+
+#canvas {
+  width:100%;
+  height:100%;
+}
