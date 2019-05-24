@@ -53,8 +53,10 @@ function render() {
     p.x += p.vx;
     p.y += p.vy;
     context.lineTo(p.x, p.y);
-    context.strokeStyle = p.color;
-    // console.log(p.color)
+    // context.strokeStyle = p.color;
+    const lineAngle = Math.atan(p.vy / p.vx) * (360/(Math.PI))
+
+    context.strokeStyle = chroma(`hsla(${150+ lineAngle/4 }, 100%, 30%, 1)`).css()
     context.stroke();
 
     // apply some friction so point doesn't speed up too much
