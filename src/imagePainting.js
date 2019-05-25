@@ -12,6 +12,9 @@ let dpr = window.devicePixelRatio || 1
 
 function scaleCanvases() {
 
+  canvas.style.width = imgCanvas.width * dpr + 'px'
+  canvas.style.height = imgCanvas.height * dpr + 'px'
+
   let rect = canvas.getBoundingClientRect()
 
   canvas.width = imgCanvas.width * dpr
@@ -31,8 +34,6 @@ img.addEventListener('load', () => {
 
   imgCanvas.width = img.width
   imgCanvas.height = img.height
-
-  // canvas.height = imgCanvas.height
 
   scaleCanvases()
 
