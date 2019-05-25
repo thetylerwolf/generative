@@ -11,7 +11,8 @@
   "author": "Tyler Wolf",
   "license": "UNLICENSED",
   "dependencies": {
-    "chroma-js": "^2.0.3"
+    "chroma-js": "^2.0.3",
+    "toxiclibsjs": "^0.3.3"
   },
   "devDependencies": {
     "ajv": "^6.5.3",
