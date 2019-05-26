@@ -1,6 +1,10 @@
 import chroma from 'chroma-js'
 
-import { slicedStroke } from './brushes'
+import {
+  slicedStroke,
+  pointBrush,
+  ribbonBrush
+} from './brushes'
 
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
@@ -86,14 +90,13 @@ function redrawImage() {
     const color = chroma(pxValue).css()
 
     const strokeDir = Math.random() * Math.PI * 2,
-        strokeLength = Math.random() * 15
+        strokeLength = Math.random() * 15,
+        radius = Math.random() * 30,
+        ribbonLength = Math.random() * 100
 
-    slicedStroke(context, strokeLength, strokeDir, pos.x, pos.y, color)
-
-    // context.beginPath()
-    // context.fillStyle = color
-    // context.arc( pos.x, pos.y, 6, 0, 2*Math.PI, true )
-    // context.fill()
+    // slicedStroke(context, strokeLength, strokeDir, pos.x, pos.y, color)
+    ribbonBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color)
+    // pointBrush(context, radius, pos.x, pos.y, color)
 
     i++
   }, 0)

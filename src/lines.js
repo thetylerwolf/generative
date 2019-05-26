@@ -24,7 +24,7 @@ const colorScale = chroma.scale(['#5D7190','#F78481'])
 for(var y = 0; y < sections; y++) {
   points.push({
     x: 0,
-    y: y,
+    y: y*5,
     vx: 0,
     vy: 0,
     color: colorScale[y]
