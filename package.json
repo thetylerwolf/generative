@@ -12,6 +12,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "chroma-js": "^2.0.3",
+    "pixi.js": "^5.0.3",
     "toxiclibsjs": "^0.3.3"
   },
   "devDependencies": {

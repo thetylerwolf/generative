@@ -1,4 +1,6 @@
 import chroma from 'chroma-js'
+import * as PIXI from 'pixi.js'
+
 import './lib/noise'
 
 var canvas = document.getElementById("canvas"),
@@ -45,7 +47,7 @@ function render() {
   for(var i = 0; i < points.length; i++) {
     // get each point and do what we did before with a single point
     var p = Object.assign({},points[i]);
-    for(var j = 0; j < 300; j++) {
+    for(var j = 0; j < 100; j++) {
       var value = getValue(p.x, p.y, iterations * 0.005);
       p.vx += Math.cos(value) * 0.3;
       p.vy += Math.sin(value) * 0.3;

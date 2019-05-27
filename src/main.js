@@ -1,3 +1,4 @@
 // import './noiseLines'
-import './lines'
+// import './lines'
 // import './imagePainting'
+import './noiseLinesPixi'
