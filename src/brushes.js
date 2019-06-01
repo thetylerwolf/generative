@@ -1,3 +1,7 @@
+import './lib/noise'
+
+noise.seed(Math.random())
+
 // Sliced strokes (paint brush)
 function slicedStroke(ctx, length, direction, x, y, color) {
 
@@ -61,7 +65,7 @@ function pointBrush(ctx, radius, x, y, color) {
 
 }
 
-function ribbonBrush(ctx, length, direction, x, y, color) {
+function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1) {
 // TODO make this work
   let xDir = length * Math.cos( direction ),
       yDir = length * Math.sin( direction )
@@ -75,14 +79,19 @@ function ribbonBrush(ctx, length, direction, x, y, color) {
 
   let lastPoint = { x, y }
 
+  let vx = 0,
+      vy = 0
+
   for(let i=0; i<length; i += segLength) {
 
-    let pathProp = i / length
-
     let nextPoint = {
-      x: lastPoint.x + xDir * pathProp + 30 * Math.cos(direction + Math.PI * 2 * pathProp),
-      y: lastPoint.y + yDir * pathProp + 30 * Math.sin(direction + Math.PI * 2 * pathProp)
+      x: lastPoint.x + vx,
+      y: lastPoint.y + vy
     }
+
+    let nextV = getValue(nextPoint.x, nextPoint.y)
+    vx += Math.cos(nextV) * 0.3
+    vy += Math.sin(nextV) * 0.3
 
     ctx.strokeStyle = color
 
@@ -106,6 +115,13 @@ function ribbonBrush(ctx, length, direction, x, y, color) {
     ctx.lineTo(nextPoint.x + 4, nextPoint.y + 4);
     ctx.stroke();
 
+    lastPoint = nextPoint
+
+  }
+
+
+  function getValue(x, y) {
+    return noise.simplex2(x * noiseScale, y * noiseScale) * Math.PI * 2
   }
 
 }
@@ -113,5 +129,5 @@ function ribbonBrush(ctx, length, direction, x, y, color) {
 export {
   slicedStroke,
   pointBrush,
-  ribbonBrush
+  noiseBrush
 }

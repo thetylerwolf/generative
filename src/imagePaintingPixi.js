@@ -1,10 +1,17 @@
 import chroma from 'chroma-js'
+import * as PIXI from 'pixi.js'
 
 import {
   slicedStroke,
   pointBrush,
   noiseBrush
 } from './brushes'
+
+const app = new PIXI.Application({
+  antialias: true,
+  width: window.innerWidth,
+  height: window.innerHeight
+})
 
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
@@ -96,7 +103,7 @@ function redrawImage() {
         ribbonLength = 2 + Math.random() * 10
 
     // slicedStroke(context, strokeLength, strokeDir, pos.x, pos.y, color)
-    noiseBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color, 0.0025)
+    noiseBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color, 0.0005)
     // pointBrush(context, radius, pos.x, pos.y, color)
 
     i++
