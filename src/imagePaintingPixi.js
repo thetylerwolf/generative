@@ -16,22 +16,22 @@ const app = new PIXI.Application({
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
     width = canvas.width = window.innerWidth,
-    height = canvas.height = window.innerHeight;
+    height = canvas.height = window.innerHeight
 
 let imgCanvas = document.getElementById('imgCanvas'),
     imgCanvasContext = imgCanvas.getContext('2d')
 
 let dpr = window.devicePixelRatio || 1
 
-function scaleCanvases() {
+function scaleCanvases(scaleFactor = 1) {
 
-  canvas.style.width = imgCanvas.width * dpr + 'px'
-  canvas.style.height = imgCanvas.height * dpr + 'px'
+  canvas.style.width = imgCanvas.width * scaleFactor * dpr + 'px'
+  canvas.style.height = imgCanvas.height * scaleFactor * dpr + 'px'
 
   let rect = canvas.getBoundingClientRect()
 
-  canvas.width = imgCanvas.width * dpr
-  canvas.height = imgCanvas.height * dpr
+  canvas.width = imgCanvas.width * scaleFactor * dpr
+  canvas.height = imgCanvas.height * scaleFactor * dpr
 
   imgCanvas.width = imgCanvas.width * dpr
   imgCanvas.height = imgCanvas.height * dpr
@@ -48,7 +48,7 @@ img.addEventListener('load', () => {
   imgCanvas.width = img.width
   imgCanvas.height = img.height
 
-  scaleCanvases()
+  scaleCanvases(1/4)
 
   imgCanvasContext.drawImage(img, 0, 0)
 
