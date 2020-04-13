@@ -11,9 +11,11 @@
   "author": "Tyler Wolf",
   "license": "UNLICENSED",
   "dependencies": {
+    "@anvaka/streamlines": "^1.2.0",
     "chroma-js": "^2.0.3",
     "pixi.js": "^5.0.3",
     "three": "^0.105.1",
+    "tooloud": "^2.0.4",
     "toxiclibsjs": "^0.3.3"
   },
   "devDependencies": {

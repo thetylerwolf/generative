@@ -6,25 +6,30 @@ import {
   noiseBrush
 } from './brushes'
 
-var canvas = document.getElementById("canvas"),
+let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
-    width = canvas.width = window.innerWidth,
-    height = canvas.height = window.innerHeight;
+    // canvasWidth = canvas.width = window.innerWidth,
+    // canvasHeight = canvas.height = window.innerHeight,
+    width,
+    height
+
+const imageSrc = 'images/family.jpg'
 
 let imgCanvas = document.getElementById('imgCanvas'),
     imgCanvasContext = imgCanvas.getContext('2d')
 
 let dpr = window.devicePixelRatio || 1
 
-function scaleCanvases() {
+function scaleCanvases(scaleFactor = 1) {
+  
+  width = Math.floor(imgCanvas.width * scaleFactor)
+  height = Math.floor(imgCanvas.height * scaleFactor)
 
-  canvas.style.width = imgCanvas.width * dpr + 'px'
-  canvas.style.height = imgCanvas.height * dpr + 'px'
+  canvas.style.width = width + 'px'
+  canvas.style.height = height + 'px'
 
-  let rect = canvas.getBoundingClientRect()
-
-  canvas.width = imgCanvas.width * dpr
-  canvas.height = imgCanvas.height * dpr
+  canvas.width = imgCanvas.width * scaleFactor * dpr
+  canvas.height = imgCanvas.height * scaleFactor * dpr
 
   imgCanvas.width = imgCanvas.width * dpr
   imgCanvas.height = imgCanvas.height * dpr
@@ -41,24 +46,21 @@ img.addEventListener('load', () => {
   imgCanvas.width = img.width
   imgCanvas.height = img.height
 
-  scaleCanvases()
+  scaleCanvases(0.2)
 
   imgCanvasContext.drawImage(img, 0, 0)
 
   redrawImage()
-  redrawImage()
+  // redrawImage()
 
 }, false)
 
-img.src = 'images/family.jpg'
+img.src = imageSrc
 
 function redrawImage() {
 
   console.log('image', imgCanvas.width, imgCanvas.height)
   console.log('canvas', canvas.width, canvas.height)
-
-  let width = canvas.width,
-      height = canvas.height
 
   let imgHeight = imgCanvas.height,
       imgWidth = imgCanvas.width,
@@ -93,7 +95,7 @@ function redrawImage() {
     const strokeDir = Math.random() * Math.PI * 2,
         strokeLength = Math.random() * 15,
         radius = Math.random() * 30,
-        ribbonLength = 2 + Math.random() * 10
+        ribbonLength = 2 + Math.random() * 30
 
     // slicedStroke(context, strokeLength, strokeDir, pos.x, pos.y, color)
     noiseBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color, 0.0025)
@@ -108,8 +110,6 @@ function redrawImage() {
 
     let imageX = Math.floor( xNorm * imgWidth ),
         imageY = Math.floor( yNorm * imgHeight )
-
-    // console.log('in', x, y, 'out', imageX, imageY)
 
     return imageX + (imgWidth * imageY)
   }

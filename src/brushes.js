@@ -67,8 +67,8 @@ function pointBrush(ctx, radius, x, y, color) {
 
 function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1) {
 // TODO make this work
-  let xDir = length * Math.cos( direction ),
-      yDir = length * Math.sin( direction )
+//   let xDir = length * Math.cos( direction ),
+//       yDir = length * Math.sin( direction )
 
   ctx.lineWidth = 3;
   ctx.lineJoin = ctx.lineCap = 'round';

@@ -1,7 +1,9 @@
 // import './noiseLines'
 // import './lines'
+// import './streamlines'
 // import './imagePainting'
-import './imagePaintingPixi'
+import './imagePainting2'
+// import './imagePaintingPixi'
 // import './noiseLinesPixi'
 
 // import './3d/cylinderTracks.js'

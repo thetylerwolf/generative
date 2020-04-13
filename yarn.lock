@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@anvaka/streamlines@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@anvaka/streamlines/-/streamlines-1.2.0.tgz#e10458584e86aab730eb0a4540d64cb2cd65dd64"
+  integrity sha512-4UvFHxZwhLnwyyH3meCe+pI/12D1AJqZFcqB4uEsttG0DPgaZA+cnL5/FcuaJWazfIbn0vOV5CwjG/u8CAXzHg==
+
 "@pixi/accessibility@^5.0.3":
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/@pixi/accessibility/-/accessibility-5.0.3.tgz#1fbecf88a796b14271a683fbbb87dd5637d80039"
@@ -5387,6 +5392,11 @@ toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+
+tooloud@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/tooloud/-/tooloud-2.0.4.tgz#c4a69b9db8e5c1a41bcd936e1941963150b2559f"
+  integrity sha512-54LuvIiX+8TBs3AH7f/dUmrUEO9E9aT4WY9KvsgVHZN7GpejBfPae6qH+a5jaTi9XXlk1C6sYmx4Sib26WkdWA==
 
 toxiclibsjs@^0.3.3:
   version "0.3.3"
