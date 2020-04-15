@@ -1,8 +1,8 @@
 // import './noiseLines'
 // import './lines'
-// import './streamlines'
+import './streamlines'
 // import './imagePainting'
-import './imagePainting2'
+// import './imagePainting2'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
 

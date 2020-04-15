@@ -1,64 +1,80 @@
 import chroma from 'chroma-js'
 import streamlines from '@anvaka/streamlines'
 import tooloud from 'tooloud'
+import * as d3 from 'd3'
 
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
     canvasWidth = window.innerWidth,
     canvasHeight = window.innerHeight
 
-let dpr = window.devicePixelRatio || 1,
-  width = canvas.width = canvasWidth * dpr,
-  height = canvas.height = canvasHeight * dpr
+let dpr = 2 || window.devicePixelRatio || 1,
+  width = canvas.width = Math.floor( canvasWidth * dpr ),
+  height = canvas.height = Math.floor( canvasHeight * dpr )
 
 tooloud.Perlin.setSeed(Math.floor(Math.random() * 1000))
-const { noise } = tooloud.Fractal
+const { noise } = tooloud.Fractal,
+  perlin = tooloud.Perlin.noise,
+  simplex = tooloud.Simplex.noise
 
 // context.lineWidth = 0.1;
 
-// random attractor params
 
-// create points. each aligned to left edge of screen,
-// spread out top to bottom.
-var points = [];
 
-const sections = Math.ceil( height/5 )
+const hSections = Math.ceil( height/5 ),
+  wSections = Math.ceil( width/5 )
 const colorScale = chroma.scale(['#5D7190','#F78481'])
-  .mode('rgb').colors(sections)
+  .mode('rgb').colors(hSections)
 
-for(var y = 0; y < sections; y++) {
-  points.push({
-    x: 0,
-    y: y*5,
-    vx: 0,
-    vy: 0,
-    color: colorScale[y]
+const points = d3.range(0, wSections * hSections).map((d) => {
+  return {
+    x: (d * 10) % width * (15/width),
+    y: Math.floor(d / width)*10 * 15/width,
+    // value: 1000 * Math.random()
+    // vx: 0,
+    // vy: 0,
+    // color: colorScale[y]
     // color: chroma(`hsla(${ 360 * y / sections }, 100%, 50%, 1)`).css()
-  })
-};
+  }
+})
 
+const packingData = { children: points },
+  h = d3.hierarchy(packingData).sum(d => 1),
+  pack = d3.pack().size([15, 15]),
+  pointData = pack( h ).leaves().map(d => ({ x: Math.round(d.x), y: Math.round(d.y) }))
 
 render();
 
 function render() {
+
+  // points.slice(0, 3000).forEach(({x, y, r}) => {
+  //   // console.log(x,y)
+  //   context.beginPath()
+  //   context.ellipse(x, y, 3, 3, 0, 0, Math.PI * 2)
+  //   context.stroke()
+  // })
+
   streamlines({
     // As usual, define your vector field:
     vectorField(p) {
-      let noiseFactor = 0.3,
+      let noiseFactor = 0.2,
         xIn = p.x * noiseFactor,
         yIn = p.y * noiseFactor
 
-      let v = noise(xIn, yIn, 0, 1.4, tooloud.Perlin.noise),
-        x = Math.cos(v * Math.PI - Math.PI/2),
-        y = Math.sin(v * Math.PI - Math.PI/2)
+      let v = noise(xIn, yIn, 0, 2, simplex),
+        x = Math.cos(v * 1.9 * Math.PI - Math.PI/2),
+        y = Math.sin(v * 1.9 * Math.PI - Math.PI/2)
+      // let t = (Date.now() % 10)
+      // let [x, y] = computeCurl(xIn, yIn, p.x )
 
       return { x, y }
     },
-    // seed: points,
+    boundingBox: { left: 0, top: 0, width: 15, height: 15 },
+    seed: pointData,
     // Separation distance between new streamlines.
     dSep: 0.05,
     // Distance between streamlines when integration should stop.
-    dTest: 0.04,
+    dTest: 0.018,
     // Integration time step (passed to RK4 method.)
     timeStep: 0.01,
 
@@ -75,8 +91,9 @@ function render() {
 
     // },
     onStreamlineAdded(points, config) {
-      context.lineWidth = 4
-      context.strokeStyle = `rgba(0, 0, 0, 0.6)`;
+      context.lineWidth = 2.5
+      // context.strokeStyle = `rgba(128, 128, 175, 0.6)`;
+      context.strokeStyle = colorScale[Math.round(points[0].y * 6)]
       context.lineJoin = "round";
       context.lineCap = "round";
       // Points is just a sequence of points with `x, y` coordinates through which
@@ -111,19 +128,19 @@ function transform(pt, boundingBox) {
   }
 }
 
-function computeCurl(x, y){
+function computeCurl(x, y, z){
   var eps = 0.0001;
 
   //Find rate of change in X direction
-  var n1 = noise.simplex2(x + eps, y);
-  var n2 = noise.simplex2(x - eps, y); 
+  var n1 = perlin(x + eps, y, z);
+  var n2 = perlin(x - eps, y, z); 
 
   //Average to find approximate derivative
   var a = (n1 - n2)/(2 * eps);
 
   //Find rate of change in Y direction
-  var n1 = noise.simplex2(x, y + eps); 
-  var n2 = noise.simplex2(x, y - eps); 
+  var n1 = perlin(x, y + eps, z); 
+  var n2 = perlin(x, y - eps, z); 
 
   //Average to find approximate derivative
   var b = (n1 - n2)/(2 * eps);
