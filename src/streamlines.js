@@ -8,7 +8,7 @@ var canvas = document.getElementById("canvas"),
     canvasWidth = window.innerWidth,
     canvasHeight = window.innerHeight
 
-let dpr = 2 || window.devicePixelRatio || 1,
+let dpr = window.devicePixelRatio || 1,
   width = canvas.width = Math.floor( canvasWidth * dpr ),
   height = canvas.height = Math.floor( canvasHeight * dpr )
 
@@ -62,12 +62,12 @@ function render() {
         yIn = p.y * noiseFactor
 
       let v = noise(xIn, yIn, 0, 2, simplex),
-        x = Math.cos(v * 1.9 * Math.PI - Math.PI/2),
-        y = Math.sin(v * 1.9 * Math.PI - Math.PI/2)
+        x1 = Math.cos(v * 1.9 * Math.PI - Math.PI/4),
+        y1 = Math.sin(v * 1.9 * Math.PI - Math.PI/2)
       // let t = (Date.now() % 10)
-      // let [x, y] = computeCurl(xIn, yIn, p.x )
+      let [x, y] = computeCurl(xIn, yIn, 0 )
 
-      return { x, y }
+      return { x: x1, y: y }
     },
     boundingBox: { left: 0, top: 0, width: 15, height: 15 },
     seed: pointData,
