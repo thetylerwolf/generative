@@ -23,7 +23,7 @@ const { noise } = tooloud.Fractal,
   simplex = tooloud.Simplex.noise
 
 const colorScale = chroma.scale(['#5D7190','#F78481'])
-  .mode('rgb').colors(Math.ceil(height/5))
+  .mode('rgb').colors(Math.ceil(height/10))
 
 let pointData = [],
   sampler = poissonSampler(width, height, 5),
@@ -32,7 +32,7 @@ let pointData = [],
 while(sample = sampler()) pointData.push({ x: sample[0] * 15/width, y: sample[1] * 15/height })
 
 d3.shuffle(pointData)
-console.log(pointData.slice(0, 100))
+// console.log(pointData.slice(0, 100))
 render();
 
 function render() {
@@ -71,14 +71,14 @@ function render() {
 
     // If set to true, lines are going to be drawn from the seed points
     // only in the direction of the vector field
-    forwardOnly: false,
+    // forwardOnly: true,
 
     // onPointAdded(from, to, config) {
     //   context.lineWidth = 4
     //   context.strokeStyle = 'rgba(0, 0, 0, 0.6)';
     //   context.lineJoin = "round";
     //   context.lineCap = "round";
-    //   onPointAdded(from, to, config);
+    //   drawPointConnection(from, to, config);
 
     // },
     onStreamlineAdded(points, config) {
@@ -91,7 +91,7 @@ function render() {
       // the streamline goes.
       points.reduce((from, to) => {
         if(!from) return to
-        onPointAdded(from, to, config)
+        drawPointConnection(from, to, config)
         return to
       }, null)
     },
@@ -99,7 +99,7 @@ function render() {
   }).run();
 }
 
-function onPointAdded(a, b, config) {
+function drawPointConnection(a, b, config) {
   let ctx = context
   ctx.beginPath();
   a = transform(a, config.boundingBox);
