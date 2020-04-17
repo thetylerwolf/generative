@@ -9,7 +9,7 @@ var canvas = document.getElementById("canvas"),
     canvasWidth = 500 || window.innerWidth,
     canvasHeight = 500 || window.innerHeight
 
-let dpr = window.devicePixelRatio || 1,
+let dpr = 2 || window.devicePixelRatio || 1,
   width = canvas.width = Math.floor( canvasWidth * dpr ),
   height = canvas.height = Math.floor( canvasHeight * dpr )
 
