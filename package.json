@@ -11,7 +11,6 @@
   "author": "Tyler Wolf",
   "license": "UNLICENSED",
   "dependencies": {
-    "@anvaka/streamlines": "^1.2.0",
     "chroma-js": "^2.0.3",
     "d3": "^5.15.1",
     "pixi.js": "^5.0.3",

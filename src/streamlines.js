@@ -1,8 +1,9 @@
 import chroma from 'chroma-js'
-import streamlines from '@anvaka/streamlines'
+import streamlines from './lib/streamlines'
 import tooloud from 'tooloud'
 import * as d3 from 'd3'
 import computeCurl from './lib/curlNoise'
+import poissonSampler from './lib/poissonSampler'
 
 var canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
@@ -19,42 +20,30 @@ tooloud.Perlin.setSeed(noiseSeed)
 tooloud.Simplex.setSeed(noiseSeed)
 
 const { noise } = tooloud.Fractal,
-  perlin = tooloud.Perlin.noise,
   simplex = tooloud.Simplex.noise
 
-const hSections = Math.ceil( height/5 ),
-  wSections = Math.ceil( width/5 )
 const colorScale = chroma.scale(['#5D7190','#F78481'])
-  .mode('rgb').colors(hSections)
+  .mode('rgb').colors(Math.ceil(height/5))
 
-const points = d3.range(0, 1000).map((d) => {
-  return {
-    x: (d * 10) % width * (15/width),
-    y: Math.floor(d / width)*10 * 15/width,
-    value: 1000 * Math.random()
-    // vx: 0,
-    // vy: 0,
-    // color: colorScale[y]
-    // color: chroma(`hsla(${ 360 * y / sections }, 100%, 50%, 1)`).css()
-  }
-})
+let pointData = [],
+  sampler = poissonSampler(width, height, 5),
+  sample
 
-const packingData = { children: points },
-  h = d3.hierarchy(packingData).sum(d => d.value),
-  pack = d3.pack().size([15, 15]),
-  pointData = pack( h ).leaves().map(d => ({ x: Math.round(d.x), y: Math.round(d.y) }))
+while(sample = sampler()) pointData.push({ x: sample[0] * 15/width, y: sample[1] * 15/height })
 
+d3.shuffle(pointData)
+console.log(pointData.slice(0, 100))
 render();
 
 function render() {
 
-  // points.slice(0, 3000).forEach(({x, y, r}) => {
+  // pointData.slice(0, 3000).forEach(({x, y, r}) => {
   //   // console.log(x,y)
   //   context.beginPath()
   //   context.ellipse(x, y, 3, 3, 0, 0, Math.PI * 2)
   //   context.stroke()
   // })
-
+  // return
   streamlines({
     // As usual, define your vector field:
     vectorField(p) {
@@ -72,6 +61,7 @@ function render() {
     },
     boundingBox: { left: 0, top: 0, width: 15, height: 15 },
     seed: pointData,
+    maxLength: 1,
     // Separation distance between new streamlines.
     dSep: 0.1,
     // Distance between streamlines when integration should stop.
