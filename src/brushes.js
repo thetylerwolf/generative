@@ -65,7 +65,7 @@ function pointBrush(ctx, radius, x, y, color) {
 
 }
 
-function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1) {
+function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1, noiseFunction) {
 // TODO make this work
 //   let xDir = length * Math.cos( direction ),
 //       yDir = length * Math.sin( direction )
@@ -121,6 +121,7 @@ function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1) {
 
 
   function getValue(x, y) {
+    if(noiseFunction) return noiseFunction(x * noiseScale, y * noiseScale, 0) * Math.PI * 2
     return noise.simplex2(x * noiseScale, y * noiseScale) * Math.PI * 2
   }
 
