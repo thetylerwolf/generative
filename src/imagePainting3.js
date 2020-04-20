@@ -12,7 +12,7 @@ import poissonDiscSampler from './lib/poissonSampler'
 import streamlines from './lib/streamlines'
 
 const noiseSeed = Math.floor(Math.random() * 1000)
-
+console.log('noise seed', noiseSeed)
 tooloud.Perlin.setSeed(noiseSeed)
 tooloud.Simplex.setSeed(noiseSeed)
 
@@ -26,7 +26,7 @@ let canvas = document.getElementById("canvas"),
     width,
     height
 
-const imageSrc = 'images/12.jpg'
+const imageSrc = 'images/11.jpg'
 
 let imgCanvas = document.getElementById('imgCanvas'),
     imgCanvasContext = imgCanvas.getContext('2d')
@@ -72,7 +72,7 @@ img.src = imageSrc
 
 function redrawImage() {
 
-  
+  context.globalAlpha = 0.1
   let pointData = [],
   sampler = poissonDiscSampler(canvas.width, canvas.height, 10),
   sample
@@ -113,9 +113,9 @@ function redrawImage() {
     seed: pointData,
     maxLength: 2,
     // Separation distance between new streamlines.
-    dSep: 0.1,
+    dSep: 0.01,
     // Distance between streamlines when integration should stop.
-    dTest: 0.05,
+    dTest: 0.008,
     // Integration time step (passed to RK4 method.)
     timeStep: 0.01,
 
