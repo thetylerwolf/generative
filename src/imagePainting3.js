@@ -4,7 +4,7 @@ import {
   slicedStroke,
   pointBrush,
   noiseBrush
-} from './brushes'
+} from './brush'
 
 import tooloud from 'tooloud'
 import computeCurl from './lib/curlNoise'
@@ -34,7 +34,7 @@ let imgCanvas = document.getElementById('imgCanvas'),
 let dpr = window.devicePixelRatio || 1
 
 function scaleCanvases(scaleFactor = 1) {
-  
+
   width = Math.floor(imgCanvas.width * scaleFactor)
   height = Math.floor(imgCanvas.height * scaleFactor)
 
@@ -72,7 +72,7 @@ img.src = imageSrc
 
 function redrawImage() {
 
-  context.globalAlpha = 0.1
+  context.globalAlpha = 0.05
   let pointData = [],
   sampler = poissonDiscSampler(canvas.width, canvas.height, 10),
   sample
@@ -93,7 +93,7 @@ function redrawImage() {
   const maxPos = height * width
   const maxImgPos = imgHeight * imgWidth
   console.log('canvas max', maxPos, 'image max', maxImgPos)
-  
+
   streamlines({
     // As usual, define your vector field:
     vectorField(p) {
@@ -113,9 +113,9 @@ function redrawImage() {
     seed: pointData,
     maxLength: 2,
     // Separation distance between new streamlines.
-    dSep: 0.01,
+    dSep: 0.05,
     // Distance between streamlines when integration should stop.
-    dTest: 0.008,
+    dTest: 0.025,
     // Integration time step (passed to RK4 method.)
     timeStep: 0.01,
 
@@ -158,15 +158,11 @@ function redrawImage() {
 
   }).run();
 
-  function drawPointConnection(a, b, config) {
-    let ctx = context
-    a = transform(a, config.boundingBox);
-    b = transform(b, config.boundingBox);
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
-    ctx.closePath();
+  function drawPointConnection(from, to, config) {
+    let a = transform(from, config.boundingBox),
+      b = transform(to, config.boundingBox)
+
+    slicedStroke(context, a, b)
   }
 
   function transform(pt, boundingBox) {

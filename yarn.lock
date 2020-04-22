@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@anvaka/streamlines@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@anvaka/streamlines/-/streamlines-1.2.0.tgz#e10458584e86aab730eb0a4540d64cb2cd65dd64"
-  integrity sha512-4UvFHxZwhLnwyyH3meCe+pI/12D1AJqZFcqB4uEsttG0DPgaZA+cnL5/FcuaJWazfIbn0vOV5CwjG/u8CAXzHg==
-
 "@pixi/accessibility@^5.0.3":
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/@pixi/accessibility/-/accessibility-5.0.3.tgz#1fbecf88a796b14271a683fbbb87dd5637d80039"

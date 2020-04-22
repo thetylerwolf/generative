@@ -3,7 +3,8 @@
 // import './streamlines'
 // import './imagePainting'
 // import './imagePainting2'
-import './imagePainting3'
+// import './imagePainting3'
+import './imagePainting4'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
 
