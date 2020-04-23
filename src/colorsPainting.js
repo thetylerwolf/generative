@@ -1,3 +1,5 @@
+import niceColors from 'nice-color-palettes'
+
 import {
   ImageSampler,
   poissonSampler,
@@ -12,14 +14,21 @@ import {
   circle,
 } from './brush'
 
-const colors = ['#f0f', '#f0f', '#00f', '#00f', '#0ff0', '#f0f']
+let randomI = Math.floor(Math.random() * niceColors.length)
+const colors = niceColors[randomI]
+// const colors = [
+//   '#97312e',
+//   '#29242e',
+//   '#bf4631',
+//   '#f4ba41'
+// ]
 
 let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d")
 
 let dpr = window.devicePixelRatio || 1
 
-canvas.width = 500
+canvas.width = 960
 canvas.height = 960
 
 context.scale(dpr,dpr)
@@ -30,16 +39,20 @@ redrawImage()
 
 function redrawImage() {
 
-  context.globalAlpha = 0.4
+  context.globalAlpha = 0.5
 
-  const pointData = poissonSampler(canvas.width, canvas.height, 3)
+  const pointData = poissonSampler(canvas.width, canvas.height, 0.0025 * canvas.width)
 
   pointData.forEach(p => {
-    let c = colorSampler.getNearestColor(p.x, p.y, 20)
-    let path = noisePath(p.x, p.y, 10)
+    let c = colorSampler.getNearestColor(p.x, p.y, 10)
+    // circle(context, 4, p.x, p.y, c)
+    let path = noisePath(p.x, p.y, 10, 0.5)
     context.strokeStyle = c
-    context.lineWidth = 2
-    path.forEach((p,i) => i ? pointBrush(context, path[i-1], p, c) : null)
+    context.lineWidth = 5
+    context.lineJoin = "round";
+    context.lineCap = "round";
+    pointBrush(context, path[0], path[path.length-1])
+    // path.forEach((p,i) => i ? pointBrush(context, path[i-1], p) : null)
   })
 
 }

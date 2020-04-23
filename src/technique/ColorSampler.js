@@ -34,11 +34,18 @@ export default class ColorSampler {
 
     points.sort((a,b) => a.distance - b.distance)
 
-
     let lastIndex = Math.min(points.length, sampleSize),
-      randomIndex = Math.floor(Math.random() * lastIndex)
+      selectionPoints = points.slice(0, lastIndex)
 
-    return points[randomIndex].color
+    let pick = Math.random() < 0.03
+    if((lastIndex < points.length) && pick) {
+      let extraIndex = Math.floor(points.length * Math.random())
+      selectionPoints.push(points[extraIndex])
+    }
+
+    let randomIndex = Math.floor(Math.random() * selectionPoints.length)
+
+    return selectionPoints[randomIndex].color
 
   }
 
