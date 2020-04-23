@@ -1,6 +1,6 @@
 export default function poissonSampler(width, height, radius) {
   let pointData = [],
-    sampler = poissonDiscSampler(canvas.width, canvas.height, 10),
+    sampler = poissonDiscSampler(width, height, radius),
     sample
 
   while(sample = sampler()) pointData.push({ x: sample[0], y: sample[1] })
