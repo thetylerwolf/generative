@@ -16,6 +16,7 @@ import {
 
 let randomI = Math.floor(Math.random() * niceColors.length)
 const colors = niceColors[randomI]
+console.log('colors index', randomI)
 // const colors = [
 //   '#97312e',
 //   '#29242e',
