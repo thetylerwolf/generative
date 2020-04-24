@@ -44,7 +44,7 @@ export default class WaterColor {
     }
     for(let i=0; i<numLayers; i++) {
       let p = this.distortPolygon(subdivisions, dp)
-      // p = this.distortPolygon(subdivisions, p)
+      p = this.distortPolygon(subdivisions, p)
       this.distortedPolygons.push(p)
     }
   }

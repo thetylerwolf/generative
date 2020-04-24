@@ -42,7 +42,7 @@ context.scale(dpr,dpr)
 redrawImage()
 
 function redrawImage() {
-  context.globalAlpha = 0.02
+  context.globalAlpha = 0.04
 
   let p = {
     x: canvas.width/2,
@@ -58,7 +58,7 @@ function redrawImage() {
     centerY: p.y,
     numPoints: 8,
     subdivisions: 2,
-    rVariance: 20,
+    rVariance: 15,
     numLayers: 50,
     // noiseFunction: perlin.noise,
   })
