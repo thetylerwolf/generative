@@ -14,8 +14,10 @@ import {
   circle,
 } from './brush'
 
-let randomI = Math.floor(Math.random() * niceColors.length)
-const colors = niceColors[randomI]
+let randomI = () => Math.floor(Math.random() * niceColors.length)
+const colors = [
+  ...niceColors[randomI()]
+]
 console.log('colors index', randomI)
 // const colors = [
 //   '#97312e',
@@ -34,7 +36,7 @@ canvas.height = 960
 
 context.scale(dpr,dpr)
 
-const colorSampler = new ColorSampler(canvas.width, canvas.height, colors)
+const colorSampler = new ColorSampler(canvas.width, canvas.height, colors, 10, canvas.width/5)
 
 redrawImage()
 
@@ -44,8 +46,13 @@ function redrawImage() {
 
   const pointData = poissonSampler(canvas.width, canvas.height, 0.0025 * canvas.width)
 
+  // colorSampler.colorPaths.forEach(path => {
+  //   context.strokeStyle = path[0].color
+  //   path.forEach((p,i) => i ? pointBrush(context, path[i-1], p) : null)
+  // })
+
   pointData.forEach(p => {
-    let c = colorSampler.getNearestColor(p.x, p.y, 10)
+    let c = colorSampler.getNearestColor(p.x, p.y, 7, 0.03)
     // circle(context, 4, p.x, p.y, c)
     let path = noisePath(p.x, p.y, 10, 0.5)
     context.strokeStyle = c
