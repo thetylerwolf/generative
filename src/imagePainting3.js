@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 import {
   slicedStroke,
   pointBrush,
-  noiseBrush
+  noisePolygon,
 } from './brush'
 
 import tooloud from 'tooloud'
@@ -130,6 +130,10 @@ function redrawImage() {
     //   context.lineCap = "round";
     //   drawPointConnection(from, to, config);
 
+    // For watercolor feel
+    //   context.globalAlpha = 0.05
+    //   context.fillStyle = color
+    //   noisePolygon(context, 20, from[0], from[1], 20)
     // },
     onStreamlineAdded(points, config) {
       context.lineWidth = 2
@@ -147,6 +151,7 @@ function redrawImage() {
       context.strokeStyle = color
       context.lineJoin = "round";
       context.lineCap = "round";
+
       // Points is just a sequence of points with `x, y` coordinates through which
       // the streamline goes.
       points.reduce((from, to) => {

@@ -7,6 +7,7 @@
 // import './imagePainting4'
 // import './colorsPainting'
 import './noisePolygonTest'
+import './watercolorTest'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
 

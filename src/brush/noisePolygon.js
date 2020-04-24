@@ -1,11 +1,11 @@
 import { perlin } from '../noise'
 
-export default function noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, noiseFunction=perlin.noise, subdivisions=0) {
+export default function noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, subdivisions=0, noiseFunction=perlin.noise) {
 
   let points = []
   let noiseStart = Math.random() * 10,
     noiseStep = 0.01,
-    distortionRadius = 3
+    distortionRadius = 10
 
   for(let i=0; i<numPoints; i++) {
     let angle = i * (2 * Math.PI / numPoints),

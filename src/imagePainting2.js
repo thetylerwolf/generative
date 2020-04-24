@@ -3,8 +3,12 @@ import chroma from 'chroma-js'
 import {
   slicedStroke,
   pointBrush,
-  noiseBrush
+  noiseBrush,
 } from './brushes'
+
+import {
+  noisePolygon
+} from './brush'
 
 let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d"),
@@ -13,7 +17,7 @@ let canvas = document.getElementById("canvas"),
     width,
     height
 
-const imageSrc = 'images/3.jpg'
+const imageSrc = 'images/11.jpg'
 
 let imgCanvas = document.getElementById('imgCanvas'),
     imgCanvasContext = imgCanvas.getContext('2d')
@@ -21,7 +25,7 @@ let imgCanvas = document.getElementById('imgCanvas'),
 let dpr = window.devicePixelRatio || 1
 
 function scaleCanvases(scaleFactor = 1) {
-  
+
   width = Math.floor(imgCanvas.width * scaleFactor)
   height = Math.floor(imgCanvas.height * scaleFactor)
 
@@ -75,7 +79,7 @@ function redrawImage() {
   let i = 0
 
   setInterval(() => {
-    if( i > maxPos ) {
+    if( i > maxPos/10 ) {
       console.log('done')
       return
     }
@@ -98,9 +102,11 @@ function redrawImage() {
         ribbonLength = Math.random() * 5 + 50 * Math.abs(height/2 - pos.y) / height
 
     // slicedStroke(context, strokeLength, strokeDir, pos.x, pos.y, color)
-    noiseBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color, 0.0025)
+    // noiseBrush(context, ribbonLength, strokeDir, pos.x, pos.y, color, 0.0025)
     // pointBrush(context, radius, pos.x, pos.y, color)
-
+    context.globalAlpha = 0.05
+    context.fillStyle = color
+    noisePolygon(context, 20, pos.x, pos.y, 20)
     i++
   }, 0)
 
