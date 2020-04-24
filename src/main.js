@@ -5,7 +5,8 @@
 // import './imagePainting2'
 // import './imagePainting3'
 // import './imagePainting4'
-import './colorsPainting'
+// import './colorsPainting'
+import './noisePolygonTest'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
 
