@@ -4,15 +4,23 @@ export default function noisePolygon(context, baseRadius, centerX, centerY, numP
 
   let points = []
   let noiseStart = Math.random() * 10,
-    noiseStep = 0.0001
+    noiseStep = 0.01,
+    distortionRadius = 3
 
   for(let i=0; i<numPoints; i++) {
     let angle = i * (2 * Math.PI / numPoints),
       x = centerX + baseRadius * Math.cos(angle),
       y = centerY + baseRadius * Math.sin(angle)
 
-    let xOut = x + 10 * noiseFunction(x, 0, 0),
-      yOut = y + 10 * noiseFunction(0, y, 0)
+    // blob
+    // let noiseX = Math.cos(noiseStart + x * noiseStep),
+    //   noiseY = Math.sin(noiseStart + y * noiseStep)
+
+    let noiseX = Math.cos(angle * i + noiseStep * i + noiseStart),
+      noiseY = Math.sin(angle * i + noiseStep * i + noiseStart)
+
+    let xOut = x + distortionRadius * Math.cos(2 * Math.PI * noiseFunction(noiseX, noiseY, 0)),
+      yOut = y + distortionRadius * Math.sin(2 * Math.PI * noiseFunction(noiseX, noiseY, 0))
 
     points.push([ xOut, yOut ])
 
