@@ -60,41 +60,46 @@ export default class WaterColor {
 
     let distortedPoly = height === this.subdivisions ? [] : [...polygon]
 
-    polygon.forEach((from, i) => {
+    let p = polygon
+    for(let h=height; h>0; h--) {
+      p.forEach((from, i) => {
 
-      let to = polygon[i+1] ? polygon[i+1] : polygon[0]
+        let to = polygon[i+1] ? polygon[i+1] : polygon[0]
 
-      let midPoint = rand()
+        let midPoint = rand()
 
-      let twoPi = 2 * Math.PI
+        let twoPi = 2 * Math.PI
 
-      let x = from.x + midPoint * (to.x - from.x),
-        y = from.y + midPoint * (to.y - from.y),
-        angle = (from.angle + (to.angle === 0 ? twoPi : to.angle)) / 2
+        let x = from.x + midPoint * (to.x - from.x),
+          y = from.y + midPoint * (to.y - from.y),
+          angle = (from.angle + (to.angle === 0 ? twoPi : to.angle)) / 2
 
-      let variance = (angle > 0 && angle < Math.PI/2) ? this.rVariance/3 : this.rVariance
-      // let variance = this.rVariance
+        let variance = (angle > 0 && angle < Math.PI * 2/3) ? this.rVariance/3 : this.rVariance
+        // let variance = this.rVariance
 
-      let newFrom = {
-        x: from.x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-        y: from.y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-        angle: from.angle,
-      }
+        let newFrom = {
+          x: from.x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+          y: from.y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+          angle: from.angle,
+        }
 
-      let inserted = {
-        x: x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-        y: y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-        angle
-      }
+        let inserted = {
+          x: x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+          y: y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+          angle
+        }
 
-      distortedPoly.push(newFrom)
-      distortedPoly.push(inserted)
+        distortedPoly.push(newFrom)
+        distortedPoly.push(inserted)
 
-      return to
-    }, null)
+      }, null)
+
+      p = distortedPoly
+      distortedPoly = []
+    }
 
 
-    return this.distortPolygon(height - 1, distortedPoly)
+    return p
 
   }
 

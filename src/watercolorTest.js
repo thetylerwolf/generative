@@ -42,7 +42,7 @@ context.scale(dpr,dpr)
 redrawImage()
 
 function redrawImage() {
-  context.globalAlpha = 0.04
+  context.globalAlpha = 0.015
 
   let p = {
     x: canvas.width/2,
@@ -54,19 +54,19 @@ function redrawImage() {
   context.fillStyle = c
   let wc = new WaterColor(context, {
     baseRadius: 100,
-    centerX: p.x,
-    centerY: p.y,
+    centerX: p.x/dpr,
+    centerY: p.y/dpr,
     numPoints: 8,
-    subdivisions: 2,
+    subdivisions: 3,
     rVariance: 15,
-    numLayers: 50,
+    numLayers: 100,
     // noiseFunction: perlin.noise,
   })
 
   wc.distortedPolygons.forEach(drawPolygon)
 
   function drawPolygon(points) {
-
+    console.log(points.length)
     let polygon = new Path2D()
 
     points.forEach((point,i) => {
