@@ -1,4 +1,5 @@
 import niceColors from 'nice-color-palettes'
+import chroma from 'chroma-js'
 
 import {
   ImageSampler,
@@ -14,12 +15,13 @@ import {
   circle,
   noisePolygon,
 } from './brush'
+import { shuffle } from 'd3'
 
 let randomI = Math.floor(Math.random() * niceColors.length)
 const colors = [
-  ...niceColors[randomI]
+  ...shuffle(niceColors[randomI]).slice(0,3)
 ]
-// good indices - 43
+// good indices - 43 - 2
 console.log('colors index', randomI)
 // const colors = [
 //   '#97312e',
@@ -52,8 +54,16 @@ function redrawImage() {
   // })
   const pointData = poissonSampler(canvas.width, canvas.height, 0.0025 * canvas.width)
 
+  shuffle(pointData)
+
   pointData.forEach(p => {
     let c = colorSampler.getNearestColor(p.x, p.y, 7)
+    c = chroma(c)
+    c = c.hsl()
+    c[3] = 0.1 + Math.random() * 0.8
+    c = chroma.hsl(...c)
+    c = c.css()
+    
     // circle(context, 4, p.x, p.y, c)
     // let path = noisePath(p.x, p.y, 10, 0.5)
     // context.strokeStyle = c

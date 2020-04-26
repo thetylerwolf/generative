@@ -45,8 +45,8 @@ function redrawImage() {
   context.globalAlpha = 0.015
 
   let p = {
-    x: canvas.width/2,
-    y: canvas.height/2
+    x: canvas.width * dpr/2,
+    y: canvas.height * dpr/2
   }
 
   let c = 'rgba(192, 16, 0, 1)'
@@ -54,8 +54,8 @@ function redrawImage() {
   context.fillStyle = c
   let wc = new WaterColor(context, {
     baseRadius: 100,
-    centerX: p.x/dpr,
-    centerY: p.y/dpr,
+    centerX: p.x,
+    centerY: p.y,
     numPoints: 8,
     subdivisions: 3,
     rVariance: 15,
