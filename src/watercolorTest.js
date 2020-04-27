@@ -15,6 +15,7 @@ import {
   noisePolygon,
   WaterColor,
 } from './brush'
+import { makeCanvas } from './utils'
 
 let randomI = Math.floor(Math.random() * niceColors.length)
 const colors = [
@@ -29,13 +30,17 @@ console.log('colors index', randomI)
 //   '#f4ba41'
 // ]
 
+// let canvas = makeCanvas(),
 let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d")
 
 let dpr = window.devicePixelRatio || 1
 
-canvas.width = 960
-canvas.height = 960
+let width = 960,
+  height = 960
+
+canvas.width = width
+canvas.height = height
 
 context.scale(dpr,dpr)
 
@@ -45,10 +50,10 @@ function redrawImage() {
   context.globalAlpha = 0.015
 
   let p = {
-    x: canvas.width * dpr/2,
-    y: canvas.height * dpr/2
+    x: canvas.width / (dpr * 2),
+    y: canvas.height / (dpr * 2)
   }
-
+console.log(canvas.width, canvas.height, p)
   let c = 'rgba(192, 16, 0, 1)'
 
   context.fillStyle = c
@@ -59,14 +64,14 @@ function redrawImage() {
     numPoints: 8,
     subdivisions: 3,
     rVariance: 15,
-    numLayers: 100,
+    numLayers: 30,
     // noiseFunction: perlin.noise,
   })
 
   wc.distortedPolygons.forEach(drawPolygon)
 
-  function drawPolygon(points) {
-    console.log(points.length)
+  function drawPolygon(points, i) {
+    // console.log(points.length)
     let polygon = new Path2D()
 
     points.forEach((point,i) => {
@@ -81,7 +86,10 @@ function redrawImage() {
     })
 
     polygon.closePath()
-    context.fill(polygon)
-  }
+    setTimeout(() => {
+      context.fill(polygon)
+    },0)
 
+  }
+  console.log('done')
 }

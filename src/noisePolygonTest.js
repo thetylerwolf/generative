@@ -16,10 +16,12 @@ import {
   noisePolygon,
 } from './brush'
 import { shuffle } from 'd3'
+import { makeCanvas } from './utils'
 
-let randomI = Math.floor(Math.random() * niceColors.length)
+let randomI = Math.floor(Math.random() * niceColors.length),
+  randomColors = shuffle(niceColors[randomI])
 const colors = [
-  ...shuffle(niceColors[randomI]).slice(0,3)
+  ...randomColors.slice(0,3)
 ]
 // good indices - 43 - 2
 console.log('colors index', randomI)
@@ -33,11 +35,15 @@ console.log('colors index', randomI)
 let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d")
 
+let bgCanvas = makeCanvas(),
+    bgContext = bgCanvas.getContext('2d')
+
 let dpr = window.devicePixelRatio || 1
 
-canvas.width = 960
-canvas.height = 960
+bgCanvas.width = canvas.width = 960
+bgCanvas.height = canvas.height = 960
 
+bgContext.scale(dpr, dpr)
 context.scale(dpr,dpr)
 
 const colorSampler = new ColorSampler(canvas.width, canvas.height, colors, 10)
@@ -46,13 +52,14 @@ redrawImage()
 
 function redrawImage() {
   context.globalAlpha = 0.05
+
   // colorSampler.colorCenters.forEach(point => {
   //   context.fillStyle = point.color
   //   context.strokeStyle = point.color
   //   // circle(context, 20, point.x, point.y, point.color)
   //   noisePolygon(context, 20, point.x, point.y, 50)
   // })
-  const pointData = poissonSampler(canvas.width, canvas.height, 0.0025 * canvas.width)
+  const pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.0025 * canvas.width)
 
   shuffle(pointData)
 
@@ -63,7 +70,7 @@ function redrawImage() {
     c[3] = 0.1 + Math.random() * 0.8
     c = chroma.hsl(...c)
     c = c.css()
-    
+
     // circle(context, 4, p.x, p.y, c)
     // let path = noisePath(p.x, p.y, 10, 0.5)
     // context.strokeStyle = c
@@ -75,5 +82,26 @@ function redrawImage() {
     // pointBrush(context, path[0], path[path.length-1])
     // path.forEach((p,i) => i ? pointBrush(context, path[i-1], p) : null)
   })
+
+  drawShapes()
+
+}
+
+function drawShapes() {
+  // context.globalCompositeOperation = 'destination-over'
+  context.globalAlpha = 0.3
+  // context.fillStyle = randomColors[3];
+  context.strokeStyle = '#fff'; //randomColors[3];
+  context.lineWidth = 1;
+
+  [0.5].forEach(prop => {
+    context.beginPath()
+
+    context.ellipse(bgCanvas.width * prop, bgCanvas.height/(dpr * 2), 80, 80, 0, 0, Math.PI * 2)
+
+    // context.fill()
+    context.stroke()
+  })
+
 
 }
