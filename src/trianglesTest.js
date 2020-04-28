@@ -37,7 +37,7 @@ canvas.height = height
 
 context.scale(dpr,dpr)
 
-const colorSampler = new ColorSampler(canvas.width, canvas.height, colors, 10)
+const colorSampler = new ColorSampler(canvas.width, canvas.height, colors, 10, 0, 'lines')
 
 const divisions = 14,
   stopSplitChance = 0.07
@@ -50,25 +50,25 @@ for (let i = 0; i < divisions; i++) {
 redrawImage()
 
 function redrawImage() {
-  context.globalAlpha = 0.5
+  // context.globalAlpha = 0.5
 
   let n = triangles.length - 1
 
-  let i = setInterval(() => {
-    if(n < 0) {
-      console.log('done')
-      return clearInterval(i)
-    }
-    let triangle = triangles[n]
-    n--
-  // triangles.forEach((triangle) => {
+  // let i = setInterval(() => {
+  //   if(n < 0) {
+  //     console.log('done')
+  //     return clearInterval(i)
+  //   }
+  //   let triangle = triangles[n]
+  //   n--
+  triangles.forEach((triangle) => {
 
     let tCenter = {
       x: (triangle.point1.x + triangle.point2.x + triangle.point3.x ) / 3,
       y: (triangle.point1.y + triangle.point2.y + triangle.point3.y ) / 3,
     }
 
-    let c = colorSampler.getNearestColor(tCenter.x, tCenter.y, 5, 0.1)
+    let c = colorSampler.getNearestColor(tCenter.x, tCenter.y, 2, 0.01)
     c = chroma(c)
     c = c.hsl()
     c[3] = 0.5 + Math.random() * 0.5
@@ -76,6 +76,7 @@ function redrawImage() {
     c = c.css()
 
     context.fillStyle = c
+    context.strokeStyle = c
 
     context.beginPath()
 
@@ -84,10 +85,12 @@ function redrawImage() {
     context.lineTo(triangle.point3.x, triangle.point3.y);
     context.lineTo(triangle.point1.x, triangle.point1.y);
 
-    context.fill()
-  }, 1)
+    Math.random() > 0.2 ? context.fill() : context.stroke()
+    // context.stroke()
+  // }, 1)
+  })
 
-  context.stroke()
+  // context.stroke()
 }
 
 function rootTriangles() {
@@ -102,23 +105,4 @@ function rootTriangles() {
       new Point(canvas.width, 0), new Point(0, canvas.height), new Point(canvas.width, canvas.height), stopSplitChance
     )
   ]
-}
-
-function drawShapes() {
-  // context.globalCompositeOperation = 'destination-over'
-  context.globalAlpha = 0.3
-  // context.fillStyle = randomColors[3];
-  context.strokeStyle = '#fff'; //randomColors[3];
-  context.lineWidth = 1;
-
-  [0.5].forEach(prop => {
-    context.beginPath()
-
-    context.ellipse(bgCanvas.width * prop, bgCanvas.height/(dpr * 2), 80, 80, 0, 0, Math.PI * 2)
-
-    // context.fill()
-    context.stroke()
-  })
-
-
 }

@@ -70,12 +70,13 @@ function redrawImage() {
     boundingBox: { left: 0, top: 0, width: 15, height: 15 },
     seed: pointData,
     maxLength: 2,
+    lengthVariance: 2,
     // Separation distance between new streamlines.
-    dSep: 0.01,
+    dSep: 0.1,
     // Distance between streamlines when integration should stop.
-    dTest: 0.005,
+    dTest: 0.05,
     // Integration time step (passed to RK4 method.)
-    timeStep: 0.01,
+    timeStep: 0,
 
     // If set to true, lines are going to be drawn from the seed points
     // only in the direction of the vector field

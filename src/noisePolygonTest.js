@@ -97,7 +97,15 @@ function drawShapes() {
   [0.5].forEach(prop => {
     context.beginPath()
 
-    context.ellipse(bgCanvas.width * prop, bgCanvas.height/(dpr * 2), 80, 80, 0, 0, Math.PI * 2)
+    context.ellipse(
+      bgCanvas.width * Math.random(),
+      bgCanvas.height * Math.random(),
+      80,
+      80,
+      0,
+      0,
+      Math.PI * 2
+    )
 
     // context.fill()
     context.stroke()

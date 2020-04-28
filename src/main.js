@@ -4,10 +4,11 @@
 // import './imagePainting'
 // import './imagePainting2'
 // import './imagePainting3'
-// import './imagePainting4'
+import './imagePainting4'
 // import './colorsPainting'
 // import './noisePolygonTest'
-import './trianglesTest'
+// import './trianglesTest'
+
 // import './watercolorTest'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'

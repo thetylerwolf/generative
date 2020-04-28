@@ -10,6 +10,7 @@ export default class ColorSampler {
 
     if(type === 'points') this.placeColorCentersPoints(width, height, radius, colors)
     else if (type === 'lines') this.placeColorCentersPaths(width, height, radius, colors)
+    else throw new Error('Color sampler type must be "points" or "lines"')
 
     this.colorField = poissonSampler(width, height, width * 1/density)
 

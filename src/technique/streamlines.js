@@ -35,6 +35,7 @@
     options.onPointAdded = protoOptions.onPointAdded;
     options.forwardOnly = protoOptions.forwardOnly;
     options.maxLength = protoOptions.maxLength || 0;
+    options.lengthVariance = protoOptions.lengthVariance || 0;
 
     if (!protoOptions.seed) {
       options.seed = new Vector(
@@ -438,7 +439,7 @@
     var pos = start;
     var state = FORWARD;
     var length = 0;
-    var maxLength = config.maxLength;
+    var maxLength = config.maxLength - config.lengthVariance/2 + Math.random() * config.lengthVariance;
     var candidate = null;
     var lastCheckedSeed = -1;
     var ownGrid = createLookupGrid(config.boundingBox, config.timeStep * 0.9);
@@ -502,6 +503,8 @@
 
     function next() {
       while(true) {
+        maxLength = config.maxLength - config.lengthVariance/2 + Math.random() * config.lengthVariance;
+
         candidate = null;
         if (state === FORWARD) {
           var point = growForward();
