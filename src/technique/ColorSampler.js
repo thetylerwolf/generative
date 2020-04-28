@@ -2,7 +2,7 @@ import poissonSampler from './poissonSampler'
 
 export default class ColorSampler {
 
-  constructor(width, height, colors=[], density=10, maxCenterRange=0, type='points') {
+  constructor(width, height, colors=[], density=10, maxCenterRange=0, type='points', angle=Math.PI/2) {
 
     this.colorPaths = []
     // radius so that colors.length # of points will fit and no more
@@ -10,6 +10,7 @@ export default class ColorSampler {
 
     if(type === 'points') this.placeColorCentersPoints(width, height, radius, colors)
     else if (type === 'lines') this.placeColorCentersPaths(width, height, radius, colors)
+    else if (type === 'gradient') this.placeColorCentersGradient(width, height, radius, colors, angle)
     else throw new Error('Color sampler type must be "points" or "lines"')
 
     this.colorField = poissonSampler(width, height, width * 1/density)
@@ -25,6 +26,16 @@ export default class ColorSampler {
     this.colorCenters = poissonSampler(width, height, radius).slice(0, colors.length)
 
     this.colorCenters.forEach((d,i) => d.color = colors[i] || 'rgba(255,255,255,0)')
+
+  }
+
+  placeColorCentersGradient(width, height, radius, colors, angle) {
+
+    this.colorCenters = colors.map((c,i) => ({
+      x: width/2,
+      y: height * (i/colors.length),
+      color: c || 'rgba(255,255,255,0)',
+    }))
 
   }
 

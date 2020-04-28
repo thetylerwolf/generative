@@ -3,8 +3,9 @@
 // import './streamlines'
 // import './imagePainting'
 // import './imagePainting2'
-// import './imagePainting3'
-import './imagePainting4'
+import './imagePainting3'
+// import './imagePainting4'
+
 // import './colorsPainting'
 // import './noisePolygonTest'
 // import './trianglesTest'

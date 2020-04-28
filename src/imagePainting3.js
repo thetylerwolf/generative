@@ -1,4 +1,6 @@
+import niceColors from 'nice-color-palettes'
 import chroma from 'chroma-js'
+import { shuffle } from 'd3'
 
 import {
   slicedStroke,
@@ -6,93 +8,60 @@ import {
   noisePolygon,
 } from './brush'
 
-import tooloud from 'tooloud'
-import computeCurl from './lib/curlNoise'
-import poissonDiscSampler from './lib/poissonSampler'
-import streamlines from './lib/streamlines'
+import { 
+  streamlines, 
+  poissonSampler, 
+  ColorSampler
+} from './technique'
 
-const noiseSeed = Math.floor(Math.random() * 1000)
-console.log('noise seed', noiseSeed)
-tooloud.Perlin.setSeed(noiseSeed)
-tooloud.Simplex.setSeed(noiseSeed)
+import {
+  curl,
+  perlin,
+  simplex,
+  fractal
+} from './noise'
 
-const { noise } = tooloud.Fractal,
-  simplex = tooloud.Simplex.noise
+const width = 960,
+  height = 960
+
+const { noise } = fractal,
+  simplexNoise = simplex.noise
+
+simplex.setSeed(Math.random() * 10000)
+
+
+let randomI = Math.floor(Math.random() * niceColors.length),
+  randomColors = shuffle(niceColors[randomI])
+const colors = [
+  ...randomColors.slice(0,3)
+]
 
 let canvas = document.getElementById("canvas"),
-    context = canvas.getContext("2d"),
-    // canvasWidth = canvas.width = window.innerWidth,
-    // canvasHeight = canvas.height = window.innerHeight,
-    width,
-    height
+    context = canvas.getContext("2d")
 
-const imageSrc = 'images/11.jpg'
-
-let imgCanvas = document.getElementById('imgCanvas'),
-    imgCanvasContext = imgCanvas.getContext('2d')
+canvas.width = width
+canvas.height = height
 
 let dpr = window.devicePixelRatio || 1
 
-function scaleCanvases(scaleFactor = 1) {
+context.scale(dpr,dpr)
 
-  width = Math.floor(imgCanvas.width * scaleFactor)
-  height = Math.floor(imgCanvas.height * scaleFactor)
+// context.fillStyle = '#eeddce'
+// context.rect(0, 0, width, height)
+// context.fill()
 
-  canvas.style.width = width + 'px'
-  canvas.style.height = height + 'px'
+const colorSampler = new ColorSampler(width, height, colors, 10, 0, 'gradient')
 
-  canvas.width = imgCanvas.width * scaleFactor * dpr
-  canvas.height = imgCanvas.height * scaleFactor * dpr
-
-  imgCanvas.width = imgCanvas.width * dpr
-  imgCanvas.height = imgCanvas.height * dpr
-
-  context.scale(dpr, dpr)
-  imgCanvasContext.scale(dpr, dpr)
-
-}
-
-let img = new Image()
-
-img.addEventListener('load', () => {
-
-  imgCanvas.width = img.width
-  imgCanvas.height = img.height
-
-  scaleCanvases(0.2)
-
-  imgCanvasContext.drawImage(img, 0, 0)
-
-  redrawImage()
-  // redrawImage()
-
-}, false)
-
-img.src = imageSrc
+redrawImage()
 
 function redrawImage() {
 
-  context.globalAlpha = 0.05
-  let pointData = [],
-  sampler = poissonDiscSampler(canvas.width, canvas.height, 10),
-  sample
+  context.globalAlpha = 0.3
 
-  while(sample = sampler()) pointData.push({ x: sample[0] * 15/canvas.width, y: sample[1] * 15/canvas.height })
+  let w = 15,
+    h = height/width * 15
 
-
-  console.log('image', imgCanvas.width, imgCanvas.height)
-  console.log('canvas', canvas.width, canvas.height)
-
-  let imgHeight = imgCanvas.height,
-      imgWidth = imgCanvas.width,
-      image = imgCanvasContext.getImageData( 0, 0, imgWidth, imgHeight )
-
-  console.log(image)
-  console.log('canvas in', width, height, 'image out', canvasToImage(0,2))
-
-  const maxPos = height * width
-  const maxImgPos = imgHeight * imgWidth
-  console.log('canvas max', maxPos, 'image max', maxImgPos)
+  const pointData = poissonSampler(w, h, 0.025 * w)
 
   streamlines({
     // As usual, define your vector field:
@@ -101,21 +70,22 @@ function redrawImage() {
         xIn = p.x * noiseFactor,
         yIn = p.y * noiseFactor
 
-      let v = noise(xIn, yIn, 0, 2, simplex),
-        x1 = Math.cos(v * 1.9 * Math.PI - Math.PI/4),
+      let v = noise(xIn, yIn, 0, 2, simplexNoise),
+        x1 = Math.cos(v * 1.9 * Math.PI - Math.PI/2),
         y1 = Math.sin(v * 1.9 * Math.PI - Math.PI/2)
       // let t = (Date.now() % 10)
-      let [x, y] = computeCurl(xIn, yIn, 0 )
+      let [x, y] = curl(xIn, yIn, 0 )
 
-      return { x: x1, y: y }
+      return { x: x1, y: y1 }
     },
     boundingBox: { left: 0, top: 0, width: 15, height: 15 },
     seed: pointData,
-    maxLength: 2,
+    maxLength: 0.5,
+    lengthVariance: 0.1,
     // Separation distance between new streamlines.
-    dSep: 0.05,
+    dSep: 0.01,
     // Distance between streamlines when integration should stop.
-    dTest: 0.025,
+    dTest: 0.005,
     // Integration time step (passed to RK4 method.)
     timeStep: 0.01,
 
@@ -140,15 +110,15 @@ function redrawImage() {
 
       let a = transform(points[0], config.boundingBox);
 
-      // context.strokeStyle = `rgba(128, 128, 175, 0.6)`;
-      let pxPos = canvasToImage( a.x, a.y ),
-      pxValue = image.data.slice(pxPos*4,(pxPos*4)+3)
+      let c = colorSampler.getNearestColor(a.x, a.y, 10)
+      
+      c = chroma(c)
+      c = c.hsl()
+      c[3] = 0.1 + Math.random() * 0.8
+      c = chroma.hsl(...c)
+      c = c.css()
 
-      pxValue = Array.from(pxValue)
-
-      const color = chroma(pxValue).css()
-
-      context.strokeStyle = color
+      context.strokeStyle = c
       context.lineJoin = "round";
       context.lineCap = "round";
 
@@ -167,7 +137,7 @@ function redrawImage() {
     let a = transform(from, config.boundingBox),
       b = transform(to, config.boundingBox)
 
-    slicedStroke(context, a, b)
+    pointBrush(context, a, b)
   }
 
   function transform(pt, boundingBox) {
@@ -177,16 +147,6 @@ function redrawImage() {
       x: tx * width,
       y: (1 - ty) * height
     }
-  }
-
-  function canvasToImage(x,y) {
-    let xNorm = x / width,
-        yNorm = y / height
-
-    let imageX = Math.floor( xNorm * imgWidth ),
-        imageY = Math.floor( yNorm * imgHeight )
-
-    return imageX + (imgWidth * imageY)
   }
 
 }

@@ -503,7 +503,6 @@
 
     function next() {
       while(true) {
-        maxLength = config.maxLength - config.lengthVariance/2 + Math.random() * config.lengthVariance;
 
         candidate = null;
         if (state === FORWARD) {
@@ -548,6 +547,7 @@
 
         if (state === DONE) {
           points.forEach(occupyPointInGrid);
+          maxLength = config.maxLength - config.lengthVariance/2 + Math.random() * config.lengthVariance;
           return true;
         }
       }
