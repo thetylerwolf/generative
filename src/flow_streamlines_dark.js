@@ -6,11 +6,12 @@ import {
   slicedStroke,
   pointBrush,
   noisePolygon,
+  circle,
 } from './brush'
 
-import { 
-  streamlines, 
-  poissonSampler, 
+import {
+  streamlines,
+  poissonSampler,
   ColorSampler
 } from './technique'
 
@@ -33,7 +34,7 @@ simplex.setSeed(Math.random() * 10000)
 let randomI = Math.floor(Math.random() * niceColors.length),
   randomColors = shuffle(niceColors[randomI])
 const colors = [
-  ...randomColors.slice(0,3)
+  ...randomColors.slice(1)
 ]
 
 let canvas = document.getElementById("canvas"),
@@ -46,15 +47,37 @@ let dpr = window.devicePixelRatio || 1
 
 context.scale(dpr,dpr)
 
-// context.fillStyle = '#eeddce'
+const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
+// context.fillStyle = bgColor
 // context.rect(0, 0, width, height)
 // context.fill()
 
-const colorSampler = new ColorSampler(width, height, colors, 10, 0, 'gradient')
+const colorSampler = new ColorSampler({
+  width,
+  height,
+  colors,
+  density: 10,
+  maxCenterRange: 0,
+  type: 'gradient',
+  gradientAngle: Math.random() * 2 * Math.PI,
+  gradientSteps: 10,
+})
 
-redrawImage()
+const spaceSampler = new ColorSampler({
+  width,
+  height,
+  colors: [0,1,2,2,2],
+  density: 10,
+  maxCenterRange: 0,
+  type: 'points'
+})
 
-function redrawImage() {
+drawBg()
+drawLines()
+
+function drawLines() {
+
+  // drawShapes()
 
   context.globalAlpha = 0.3
 
@@ -62,6 +85,12 @@ function redrawImage() {
     h = height/width * 15
 
   const pointData = poissonSampler(w, h, 0.025 * w)
+  shuffle(pointData)
+
+  // colorSampler.colorField.forEach(path => {
+  //   context.strokeStyle = path.color
+  //   circle(context, 10, path.x, path.y, path.color)
+  // })
 
   streamlines({
     // As usual, define your vector field:
@@ -80,12 +109,12 @@ function redrawImage() {
     },
     boundingBox: { left: 0, top: 0, width: 15, height: 15 },
     seed: pointData,
-    maxLength: 0.5,
-    lengthVariance: 0.1,
+    maxLength: 0.1,
+    // lengthVariance: 0.1,
     // Separation distance between new streamlines.
-    dSep: 0.01,
+    dSep: 0.05,
     // Distance between streamlines when integration should stop.
-    dTest: 0.005,
+    dTest: 0.015,
     // Integration time step (passed to RK4 method.)
     timeStep: 0.01,
 
@@ -110,15 +139,16 @@ function redrawImage() {
 
       let a = transform(points[0], config.boundingBox);
 
-      let c = colorSampler.getNearestColor(a.x, a.y, 10)
-      
+      let c = colorSampler.getNearestColor(a.x, a.y, 10, 0.3)
+      let blank = spaceSampler.getNearestColor(a.x, a.y, 5, 0.3) === 1
+
       c = chroma(c)
       c = c.hsl()
       c[3] = 0.1 + Math.random() * 0.8
       c = chroma.hsl(...c)
       c = c.css()
 
-      context.strokeStyle = c
+      context.strokeStyle = blank ? 'rgba(255,255,255,0)' : c
       context.lineJoin = "round";
       context.lineCap = "round";
 
@@ -148,5 +178,57 @@ function redrawImage() {
       y: (1 - ty) * height
     }
   }
+
+}
+
+function drawBg() {
+  let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.0025 * canvas.width)
+  shuffle(pointData)
+
+  pointData.forEach((point) => {
+    let c = chroma.mix('#fff', randomColors[0],0.2)
+    c = c.hsl()
+    c[1] += -0.05 + Math.random() * 0.1
+    c[3] += -0.4 + Math.random() * 0.8
+    c = chroma.hsl(...c)
+    c = c.css()
+    context.fillStyle = c
+    // context.globalAlpha = 0.01
+    noisePolygon(context, 20, point.x, point.y)
+  })
+
+  let circleData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.015 * canvas.width)
+  shuffle(circleData)
+
+  circleData.forEach(point => {
+    circle(context, 10, point.x, point.y, `rgba(255,255,255,${0.5 * Math.random() * 0.2})`)
+  })
+}
+
+function drawShapes() {
+  // context.globalCompositeOperation = 'destination-over'
+  context.globalAlpha = 1
+  context.fillStyle = '#000';
+  // context.strokeStyle = '#fff'; //randomColors[3];
+  context.lineWidth = 1;
+
+  [1].forEach(prop => {
+    context.beginPath()
+
+    let r = 30 + Math.random() * 70
+
+    context.ellipse(
+      canvas.width * Math.random(),
+      canvas.height * Math.random(),
+      r,
+      r,
+      0,
+      0,
+      Math.PI * 2
+    )
+
+    context.fill()
+    // context.stroke()
+  })
 
 }

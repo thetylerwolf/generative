@@ -3,7 +3,7 @@
 // import './streamlines'
 // import './imagePainting'
 // import './imagePainting2'
-import './imagePainting3'
+import './flow_streamlines_dark'
 // import './imagePainting4'
 
 // import './colorsPainting'
