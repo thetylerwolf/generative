@@ -28,7 +28,8 @@ const width = 960,
 const { noise } = fractal,
   simplexNoise = simplex.noise
 
-simplex.setSeed(Math.random() * 10000)
+const noiseSeed = Math.random() * 10000
+simplex.setSeed(noiseSeed)
 
 
 let randomI = Math.floor(Math.random() * niceColors.length),
@@ -47,10 +48,17 @@ let dpr = window.devicePixelRatio || 1
 
 context.scale(dpr,dpr)
 
-const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
+// const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
 // context.fillStyle = bgColor
 // context.rect(0, 0, width, height)
 // context.fill()
+
+// good ones
+// noiseSeed: 2611.4470717715667
+// colorIndex: 29
+// gradientAngle: 1.7238562714163377
+
+let gradientAngle = Math.random() * 2 * Math.PI
 
 const colorSampler = new ColorSampler({
   width,
@@ -59,7 +67,7 @@ const colorSampler = new ColorSampler({
   density: 10,
   maxCenterRange: 0,
   type: 'gradient',
-  gradientAngle: Math.random() * 2 * Math.PI,
+  gradientAngle,
   gradientSteps: 10,
 })
 
@@ -70,6 +78,12 @@ const spaceSampler = new ColorSampler({
   density: 10,
   maxCenterRange: 0,
   type: 'points'
+})
+
+console.log({
+  noiseSeed,
+  colorIndex: randomI,
+  gradientAngle,
 })
 
 drawBg()
