@@ -61,6 +61,10 @@ context.scale(dpr,dpr)
 // noiseSeed: 6302.2242614440875
 // gradientAngle: 0.8801110241308333
 
+// noiseSeed: 2147.7695448663294
+// colorIndex: 83
+// gradientAngle: 0.9105212795999468
+
 let gradientAngle = Math.random() * 2 * Math.PI
 
 const colorSampler = new ColorSampler({
