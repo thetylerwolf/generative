@@ -1,4 +1,4 @@
-import { randomNormal, interpolateArray } from 'd3'
+  import { randomNormal, interpolateArray } from 'd3'
 import { perlin } from '../noise'
 
 export default class WaterColor {
@@ -14,6 +14,7 @@ export default class WaterColor {
       noiseFunction = perlin.noise,
       rVariance = 5,
       numLayers = 1,
+      maxPoints = 5000,
     } = options
 
     this.baseRadius = baseRadius
@@ -38,20 +39,26 @@ export default class WaterColor {
 
     this.polygon = points
 
-    let dp = this.polygon
-    for(let j=0; j<3; j++) {
-      dp = this.distortPolygon(subdivisions, dp)
+    for(let k=0; k<7; k++) {
+      this.polygon = this.distortPolygon(subdivisions, this.polygon, maxPoints)
     }
-    for(let i=0; i<numLayers; i++) {
-      let p = this.distortPolygon(subdivisions, dp)
-      p = this.distortPolygon(subdivisions, p)
-      this.distortedPolygons.push(p)
+
+
+    for(let j=0; j<numLayers; j++) {
+      
+      let dp = this.polygon
+
+      for(let i=0; i<7; i++) {
+        dp = this.distortPolygon(subdivisions, dp, maxPoints)
+      }
+
+      this.distortedPolygons.push(dp)
     }
   }
 
 
 
-  distortPolygon(height, polygon) {
+  distortPolygon(height, polygon, maxPoints) {
     if(!height) {
       return polygon
     }
@@ -61,7 +68,9 @@ export default class WaterColor {
     let distortedPoly = height === this.subdivisions ? [] : [...polygon]
 
     let p = polygon
+
     for(let h=height; h>0; h--) {
+
       p.forEach((from, i) => {
 
         let to = polygon[i+1] ? polygon[i+1] : polygon[0]
@@ -74,23 +83,27 @@ export default class WaterColor {
           y = from.y + midPoint * (to.y - from.y),
           angle = (from.angle + (to.angle === 0 ? twoPi : to.angle)) / 2
 
-        let variance = (angle > 0 && angle < Math.PI * 2/3) ? this.rVariance/3 : this.rVariance
-        // let variance = this.rVariance
+        // let variance = (angle > 0 && angle < Math.PI) ? this.rVariance/3 : this.rVariance
+        let variance = this.rVariance * Math.random()
 
         let newFrom = {
           x: from.x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-          y: from.y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+          y: from.y + (Math.random() > 0.2 ? 1 : -1) * (Math.random() * variance),
           angle: from.angle,
         }
 
-        let inserted = {
-          x: x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-          y: y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-          angle
-        }
-
         distortedPoly.push(newFrom)
-        distortedPoly.push(inserted)
+
+        if(polygon.length < maxPoints) {
+
+          let inserted = {
+            x: x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+            y: y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
+            angle
+          }
+
+          distortedPoly.push(inserted)
+        }
 
       }, null)
 

@@ -58,13 +58,14 @@ console.log(canvas.width, canvas.height, p)
 
   context.fillStyle = c
   let wc = new WaterColor(context, {
-    baseRadius: 100,
+    baseRadius: 10,
     centerX: p.x,
     centerY: p.y,
     numPoints: 8,
     subdivisions: 3,
-    rVariance: 15,
-    numLayers: 30,
+    rVariance: 20,
+    numLayers: 100,
+    maxPoints: 6000,
     // noiseFunction: perlin.noise,
   })
 
