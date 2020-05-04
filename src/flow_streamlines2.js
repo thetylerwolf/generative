@@ -157,9 +157,9 @@ function drawBg() {
   shuffle(pointData)
 
   pointData.forEach((point) => {
-    let c = chroma.mix('#fff', randomColors[0],0.2)
+    let c = chroma.mix('#fff', randomColors[0],0.3)
     c = c.hsl()
-    c[1] += -0.05 + Math.random() * 0.1
+    // c[1] += -0.05 + Math.random() * 0.1
     c[3] += -0.4 + Math.random() * 0.8
     c = chroma.hsl(...c)
     c = c.css()
@@ -172,7 +172,7 @@ function drawBg() {
   shuffle(circleData)
 
   circleData.forEach(point => {
-    circle(context, 6, point.x, point.y, `rgba(255,255,255,${0.5 * Math.random() * 0.2})`)
+    circle(context, 3, point.x, point.y, `rgba(255,255,255,${0 + Math.random() * 0.05})`)
   })
 }
 
