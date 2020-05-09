@@ -7,22 +7,22 @@ import {
   pointBrush,
   noisePolygon,
   circle,
-} from './brush'
+} from '../brush'
 
 import {
   streamlines,
   streamlines2,
   poissonSampler,
   ColorSampler
-} from './technique'
+} from '../technique'
 
 import {
   curl,
   perlin,
   simplex,
   fractal
-} from './noise'
-import { gaussianRand } from './utils'
+} from '../noise'
+import { gaussianRand } from '../utils'
 
 const width = 960,
   height = 960
@@ -177,9 +177,8 @@ function drawBg() {
     // c[1] += -0.05 + Math.random() * 0.1
     c[2] += -0.05 + gaussianRand() * 0.1
     // c[3] += -0.6 * (centerDist/dMax) + gaussianRand() * 0.4
-    c[3] += -0.8 + gaussianRand() * 0.4
+    c[3] += -0.2 + gaussianRand() * 0.4
     c = chroma.hsl(...c)
-    // c.darken(3)
     c = c.css()
     context.fillStyle = c
 

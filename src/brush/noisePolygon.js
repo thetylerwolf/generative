@@ -26,7 +26,7 @@ export default function noisePolygon(context, baseRadius, centerX, centerY, numP
 
   }
 
-  // context.beginPath()
+  context.beginPath()
 
   let polygon = new Path2D()
 

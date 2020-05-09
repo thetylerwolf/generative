@@ -71,7 +71,7 @@ function redrawImage() {
     let c = colorSampler.getNearestColor(tCenter.x, tCenter.y, 2, 0.01)
     c = chroma(c)
     c = c.hsl()
-    c[3] = 0.5 + Math.random() * 0.5
+    c[3] += -0.5 + Math.random() * 0.5
     c = chroma.hsl(...c)
     c = c.css()
 

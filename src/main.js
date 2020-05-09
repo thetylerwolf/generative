@@ -1,3 +1,5 @@
+// import './colorPreview'
+
 // import './noiseLines'
 // import './lines'
 // import './streamlines'
@@ -5,13 +7,13 @@
 // import './imagePainting2'
 
 // import './flow_streamlines_dark'
-import './flow_streamlines2'
+// import './flow_streamlines2'
 
 // import './imagePainting4'
 
 // import './colorsPainting'
 // import './noisePolygonTest'
-// import './trianglesTest'
+import './trianglesTest'
 
 // import './watercolorTest'
 // import './imagePaintingPixi'

@@ -7,22 +7,22 @@ import {
   pointBrush,
   noisePolygon,
   circle,
-} from './brush'
+} from '../brush'
 
 import {
   streamlines,
   streamlines2,
   poissonSampler,
   ColorSampler
-} from './technique'
+} from '../technique'
 
 import {
   curl,
   perlin,
   simplex,
   fractal
-} from './noise'
-import { gaussianRand } from './utils'
+} from '../noise'
+import { gaussianRand } from '../utils'
 
 const width = 960,
   height = 960
@@ -35,7 +35,7 @@ simplex.setSeed(noiseSeed)
 
 // [2, 5, 8, 11, 15, 17, 23, 24, 29, 36, 48, 51, 55, 66, 94, 98]
 
-let randomI = 17 || Math.floor(Math.random() * niceColors.length),
+let randomI = 15 || Math.floor(Math.random() * niceColors.length),
   randomColors = niceColors[randomI] || shuffle(niceColors[randomI])
 const colors = [
   ...randomColors.slice(1)
@@ -92,7 +92,7 @@ function drawLines() {
 
   // drawShapes()
 
-  context.globalAlpha = 0.3
+  context.globalAlpha = 0.5
 
   const pointData = poissonSampler(width, height, 0.004 * width)
   shuffle(pointData)
@@ -164,7 +164,7 @@ function drawBg() {
   let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.0035 * canvas.width)
   shuffle(pointData)
 
-  context.globalAlpha = 1
+  context.globalAlpha = 0.1
 
   pointData.forEach((point) => {
     let dx = point.x - width/2,
@@ -177,9 +177,8 @@ function drawBg() {
     // c[1] += -0.05 + Math.random() * 0.1
     c[2] += -0.05 + gaussianRand() * 0.1
     // c[3] += -0.6 * (centerDist/dMax) + gaussianRand() * 0.4
-    c[3] += -0.8 + gaussianRand() * 0.4
+    c[3] += -0.2 + gaussianRand() * 0.4
     c = chroma.hsl(...c)
-    // c.darken(3)
     c = c.css()
     context.fillStyle = c
 
