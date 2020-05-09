@@ -25,23 +25,10 @@ export default class WaterColor {
     this.noiseFunction = noiseFunction
     this.rVariance = rVariance
     this.distortedPolygons = []
+    this.maxPoints = maxPoints
 
-    let points = []
-
-    for(let i=0; i<numPoints; i++) {
-      let angle = i * (2 * Math.PI / numPoints),
-        x = centerX + baseRadius * Math.cos(angle),
-        y = centerY + baseRadius * Math.sin(angle)
-
-      points.push({ x, y, angle })
-
-    }
-
-    this.polygon = points
-
-    for(let k=0; k<7; k++) {
-      this.polygon = this.distortPolygon(subdivisions, this.polygon, maxPoints)
-    }
+    this.init()
+    this.run()
 
 
     for(let j=0; j<numLayers; j++) {
@@ -56,7 +43,25 @@ export default class WaterColor {
     }
   }
 
+  init() {
+    let points = []
+    
+    for(let i=0; i<this. numPoints; i++) {
+      let angle = i * (2 * Math.PI / numPoints),
+        x = centerX + baseRadius * Math.cos(angle),
+        y = centerY + baseRadius * Math.sin(angle)
 
+      points.push({ x, y, angle })
+    }
+
+    this.polygon = points
+  }
+
+  run() {
+    for(let k=0; k<7; k++) {
+      this.polygon = this.distortPolygon(this.subdivisions, this.polygon, this.maxPoints)
+    }
+  }
 
   distortPolygon(height, polygon, maxPoints) {
     if(!height) {
