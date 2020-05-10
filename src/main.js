@@ -13,9 +13,9 @@
 
 // import './colorsPainting'
 // import './noisePolygonTest'
-import './trianglesTest'
+// import './trianglesTest'
 
-// import './watercolorTest'
+import './watercolorTest'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
 

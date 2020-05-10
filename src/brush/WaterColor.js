@@ -1,12 +1,14 @@
   import { randomNormal, interpolateArray } from 'd3'
 import { perlin } from '../noise'
 
+const randomSeed = Math.random() * 10000
+
 export default class WaterColor {
 
   constructor(context, options) {
     this.ctx = context
     const {
-      baseRadius = 10,
+      baseRadius = 100,
       centerX = 0,
       centerY = 0,
       numPoints = 12,
@@ -21,6 +23,7 @@ export default class WaterColor {
     this.centerX = centerX
     this.centerY = centerY
     this.numPoints = numPoints
+    this.numLayers = numLayers
     this.subdivisions = subdivisions
     this.noiseFunction = noiseFunction
     this.rVariance = rVariance
@@ -28,143 +31,89 @@ export default class WaterColor {
     this.maxPoints = maxPoints
 
     this.init()
-    this.run()
 
-
-    for(let j=0; j<numLayers; j++) {
-      
-      let dp = this.polygon
-
-      for(let i=0; i<7; i++) {
-        dp = this.distortPolygon(subdivisions, dp, maxPoints)
-      }
-
-      this.distortedPolygons.push(dp)
-    }
   }
 
   init() {
     let points = []
     
-    for(let i=0; i<this. numPoints; i++) {
-      let angle = i * (2 * Math.PI / numPoints),
-        x = centerX + baseRadius * Math.cos(angle),
-        y = centerY + baseRadius * Math.sin(angle)
+    for(let i=0; i<this.numPoints; i++) {
+      let angle = i * (2 * Math.PI / this.numPoints),
+        x = this.centerX + this.baseRadius * Math.cos(angle),
+        y = this.centerY + this.baseRadius * Math.sin(angle),
+        seed = Math.abs(this.noiseFunction(i * 0.01,0,randomSeed))
+        // seed = randomNormal(0.25,0.25)()
+        // seed = 1
 
-      points.push({ x, y, angle })
+      points.push({ x, y, angle, seed })
+    }
+
+    for(let i=0; i<this.subdivisions; i++) {
+      points = this.subdivide(points)
     }
 
     this.polygon = points
   }
 
   run() {
-    for(let k=0; k<7; k++) {
-      this.polygon = this.distortPolygon(this.subdivisions, this.polygon, this.maxPoints)
+    let dp
+    for(let k=0; k<this.numLayers; k++) {
+      dp = this.distort(this.polygon)
+      this.distortedPolygons.push(dp)
     }
   }
 
-  distortPolygon(height, polygon, maxPoints) {
-    if(!height) {
-      return polygon
+  distort(points) {
+    let p = points
+    for(let i=0; i<5; i++) {
+      p = p.map(point => this.shiftPoint(point, this.rVariance))
     }
-
-    let rand = randomNormal(0.5, 0.2)
-
-    let distortedPoly = height === this.subdivisions ? [] : [...polygon]
-
-    let p = polygon
-
-    for(let h=height; h>0; h--) {
-
-      p.forEach((from, i) => {
-
-        let to = polygon[i+1] ? polygon[i+1] : polygon[0]
-
-        let midPoint = rand()
-
-        let twoPi = 2 * Math.PI
-
-        let x = from.x + midPoint * (to.x - from.x),
-          y = from.y + midPoint * (to.y - from.y),
-          angle = (from.angle + (to.angle === 0 ? twoPi : to.angle)) / 2
-
-        // let variance = (angle > 0 && angle < Math.PI) ? this.rVariance/3 : this.rVariance
-        let variance = this.rVariance * Math.random()
-
-        let newFrom = {
-          x: from.x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-          y: from.y + (Math.random() > 0.2 ? 1 : -1) * (Math.random() * variance),
-          angle: from.angle,
-        }
-
-        distortedPoly.push(newFrom)
-
-        if(polygon.length < maxPoints) {
-
-          let inserted = {
-            x: x + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-            y: y + (Math.random() > 0.5 ? 1 : -1) * (Math.random() * variance),
-            angle
-          }
-
-          distortedPoly.push(inserted)
-        }
-
-      }, null)
-
-      p = distortedPoly
-      distortedPoly = []
-    }
-
-
     return p
-
   }
 
-  noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, subdivisions=0, noiseFunction=perlin.noise) {
+  subdivide(points) {
 
-    let points = []
-    let noiseStart = Math.random() * 10,
-      noiseStep = 0.01,
-      distortionRadius = 10
+    let newPoly = [],
+      rand = randomNormal(0.5, 0.2)
 
-    for(let i=0; i<numPoints; i++) {
-      let angle = i * (2 * Math.PI / numPoints),
-        x = centerX + baseRadius * Math.cos(angle),
-        y = centerY + baseRadius * Math.sin(angle)
+    points.forEach((from, i) => {
 
-      // blob
-      // let noiseX = Math.cos(noiseStart + x * noiseStep),
-      //   noiseY = Math.sin(noiseStart + y * noiseStep)
+      let to = points[i+1] ? points[i+1] : points[0]
 
-      let noiseX = Math.cos(angle * i + noiseStep * i + noiseStart),
-        noiseY = Math.sin(angle * i + noiseStep * i + noiseStart)
+      let midPoint = rand()
+      let twoPi = 2 * Math.PI
 
-      let xOut = x + distortionRadius * Math.cos(2 * Math.PI * noiseFunction(noiseX, noiseY, 0)),
-        yOut = y + distortionRadius * Math.sin(2 * Math.PI * noiseFunction(noiseX, noiseY, 0))
+      let x = from.x + midPoint * (to.x - from.x),
+        y = from.y + midPoint * (to.y - from.y),
+        seed = from.seed + midPoint * (to.seed - from.seed),
+        angle = (from.angle + (to.angle === 0 ? twoPi : to.angle)) / 2
 
-      points.push([ xOut, yOut ])
+      let newPoint = {
+        x: x,
+        y: y,
+        angle,
+        seed
+      }
 
-    }
+      newPoint = this.shiftPoint(newPoint, this.rVariance)
 
-    // context.beginPath()
-
-    let polygon = new Path2D()
-
-    points.forEach((point,i) => {
-      let from = point,
-        to = points[i+1]
-
-      if(!to) return
-
-      if(!i) polygon.moveTo(from[0], from[1])
-      polygon.lineTo(to[0], to[1])
+      newPoly.push(from)
+      newPoly.push(newPoint)
 
     })
 
-    polygon.closePath()
-    context.fill(polygon)
+    return newPoly
+  }
 
+  shiftPoint(point, dist) {
+    let p = {
+      x: randomNormal(point.x, point.seed * dist)(),
+      y: randomNormal(point.y, point.seed * dist)()
+    }
+    return {
+      ...point,
+      ...p
+    }
   }
 
 }

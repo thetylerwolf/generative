@@ -53,21 +53,23 @@ function redrawImage() {
     x: canvas.width / (dpr * 2),
     y: canvas.height / (dpr * 2)
   }
-console.log(canvas.width, canvas.height, p)
+
   let c = 'rgba(192, 16, 0, 1)'
 
   context.fillStyle = c
   let wc = new WaterColor(context, {
-    baseRadius: 10,
+    // baseRadius: 10,
     centerX: p.x,
     centerY: p.y,
-    numPoints: 8,
-    subdivisions: 3,
-    rVariance: 20,
+    numPoints: 12,
+    subdivisions: 7,
+    rVariance: 100,
     numLayers: 100,
     maxPoints: 6000,
     // noiseFunction: perlin.noise,
   })
+
+  wc.run()
 
   wc.distortedPolygons.forEach(drawPolygon)
 
