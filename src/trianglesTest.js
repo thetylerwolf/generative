@@ -10,10 +10,12 @@ import {
 
 import { makeCanvas } from './utils'
 
-let randomI = Math.floor(Math.random() * niceColors.length),
+const best = [2, 5, 8, 11, 15, 17, 23, 24, 29, 36, 48, 51, 55, 66, 94, 98]
+
+let randomI = Math.floor(Math.random() * best.length),
   randomColors = shuffle(niceColors[randomI])
 const colors = [
-  ...randomColors.slice(0,3)
+  ...randomColors
 ]
 // good indices - 43 - 2
 console.log('colors index', randomI)
@@ -37,7 +39,14 @@ canvas.height = height
 
 context.scale(dpr,dpr)
 
-const colorSampler = new ColorSampler(canvas.width, canvas.height, colors, 10, 0, 'lines')
+const colorSampler = new ColorSampler({
+  width, 
+  height, 
+  colors, 
+  density: 10, 
+  maxCenterRange: 0, 
+  type: 'lines',
+})
 
 const divisions = 14,
   stopSplitChance = 0.07
