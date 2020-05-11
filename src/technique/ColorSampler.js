@@ -51,7 +51,7 @@ export default class ColorSampler {
 
     this.colorCenters = poissonSampler(width, height, radius).slice(0, colors.length)
 
-    this.colorCenters.forEach((d,i) => d.color = colors[i] || 'rgba(255,255,255,0)')
+    this.colorCenters.forEach((d,i) => d.color = colors[i])
 
   }
 

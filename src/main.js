@@ -13,7 +13,7 @@
 
 // import './colorsPainting'
 // import './noisePolygonTest'
-import './trianglesTest'
+// import './trianglesTest'
 
 // import './watercolorTest'
 // import './imagePaintingPixi'
@@ -21,3 +21,5 @@ import './trianglesTest'
 
 // import './3d/cylinderTracks.js'
 // import './3d/sphereSpline.js'
+
+import './comp1'

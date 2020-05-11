@@ -4,7 +4,7 @@ import { gaussianRand } from "../utils"
 export default class Line {
 
   constructor(points=[]) {
-    this.points = points
+    this.points = points.map(p => p.copy())
     this.length = Line.lineLength(points)
   }
 

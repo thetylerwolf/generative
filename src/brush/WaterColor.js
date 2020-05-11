@@ -14,7 +14,8 @@ export default class WaterColor {
       numPoints = 12,
       subdivisions = 0,
       noiseFunction = perlin.noise,
-      rVariance = 5,
+      rVariance = 90,
+      initialrVariance = 300,
       numLayers = 1,
       maxPoints = 5000,
     } = options
@@ -27,6 +28,7 @@ export default class WaterColor {
     this.subdivisions = subdivisions
     this.noiseFunction = noiseFunction
     this.rVariance = rVariance
+    this.initialrVariance = initialrVariance
     this.distortedPolygons = []
     this.maxPoints = maxPoints
 
@@ -36,7 +38,7 @@ export default class WaterColor {
 
   init() {
     let points = []
-    
+
     for(let i=0; i<this.numPoints; i++) {
       let angle = i * (2 * Math.PI / this.numPoints),
         x = this.centerX + this.baseRadius * Math.cos(angle),
@@ -52,6 +54,8 @@ export default class WaterColor {
       points = this.subdivide(points)
     }
 
+    points = this.distort(points, this.initialrVariance)
+
     this.polygon = points
   }
 
@@ -63,10 +67,10 @@ export default class WaterColor {
     }
   }
 
-  distort(points) {
+  distort(points, variance) {
     let p = points
     for(let i=0; i<5; i++) {
-      p = p.map(point => this.shiftPoint(point, this.rVariance))
+      p = p.map(point => this.shiftPoint(point, variance || this.rVariance))
     }
     return p
   }

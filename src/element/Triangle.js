@@ -58,7 +58,7 @@ export default class Triangle {
 
     m = m.copy()
 
-    let am = mIndex > -1 ? new Line(ab.points.slice(0, mIndex)) : new Line([a, m]),
+    let am = mIndex > -1 ? new Line(ab.points.slice(0, mIndex+1)) : new Line([a, m]),
       mc = new Line([m, c]),
       mb = mIndex > -1 ? new Line(ab.points.slice(mIndex)) : new Line([m, b]),
       cm = new Line([c, m])
@@ -80,7 +80,8 @@ export default class Triangle {
       }
 
       nc = new Line([ nc0.copy(), ...curve, nc1.copy() ])
-      nc.shiftPoints(nc.length/10)
+      // This (below) can fix any games
+      nc.shiftPoints(gaussianRand() * cm.length/10)
 
       curve = chaikin(nc.points.map(p => [p.x, p.y]), 4)
       curve = curve.map(p => new Point(p[0],p[1]))

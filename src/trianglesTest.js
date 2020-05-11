@@ -88,6 +88,7 @@ console.log(triangles)
     // context.fillStyle = c
     // context.strokeStyle = c
     context.strokeStyle = "#338"
+    context.fillStyle = "#338"
 
     context.beginPath()
 
@@ -107,6 +108,7 @@ console.log(triangles)
 
     // Math.random() > 0.2 ? context.fill() : context.stroke()
     context.stroke()
+    // context.fill()
   // }, 1)
   })
 
