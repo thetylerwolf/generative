@@ -25,8 +25,13 @@ export default class Line {
       )
     } else {
       let midPoint = this.points[Math.round(percentFromStart * this.points.length)]
-      return new Point(midPoint.x, midPoint.y)
+      // return new Point(midPoint.x, midPoint.y)
+      return midPoint
     }
+  }
+
+  copy() {
+    return new Line(this.points.map(p => p.copy()))
   }
 
   static lineLength(points) {

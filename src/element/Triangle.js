@@ -6,22 +6,22 @@ export default class Triangle {
   constructor(p1, p2, p3, stopSplitChance=0, curveChance=0) {
 
     if(p1 instanceof Point) {
-      this.p1 = p1
-      this.p2 = p2
-      this.p3 = p3
+      this.p1 = p1.copy()
+      this.p2 = p2.copy()
+      this.p3 = p3.copy()
 
       this.sides = [
-        new Line([p1, p2]),
-        new Line([p2, p3]),
-        new Line([p3, p1])
+        new Line([this.p1, this.p2]),
+        new Line([this.p2, this.p3]),
+        new Line([this.p3, this.p1])
       ]
 
     } else if (p1 instanceof Line) {
-      this.p1 = p1.points[0]
-      this.p2 = p2.points[0]
-      this.p3 = p3.points[0]
+      this.sides = [ p1.copy(), p2.copy(), p3.copy() ]
 
-      this.sides = [ p1, p2, p3 ]
+      this.p1 = p1.points[0].copy()
+      this.p2 = p2.points[0].copy()
+      this.p3 = p3.points[0].copy()
     }
 
     this.stopSplitChance = stopSplitChance
@@ -46,18 +46,21 @@ export default class Triangle {
     let [ab, bc, ca] = sides,
       a = ab.points[0],
       b = ab.points[ab.points.length-1],
-      c = bc.points.find((p) => p !== a && p !== b )
+      c = bc.points[0].equals(b) ? bc.points[bc.points.length-1] : bc.points[0]
 
     // Gaussian point around 0.5
-    const r = gaussianRand(0.5, 0.4);
+    const r = gaussianRand(0.5, 0.8);
 
     // Get the split point on the line formed by `a` and `b` at the random
     // position
-    const m = ab.pointAlong(r)
+    let m = ab.pointAlong(r),
+      mIndex = ab.points.indexOf(m)
 
-    let am = new Line([a, m]),
+    m = m.copy()
+
+    let am = mIndex > -1 ? new Line(ab.points.slice(0, mIndex)) : new Line([a, m]),
       mc = new Line([m, c]),
-      mb = new Line([m, b]),
+      mb = mIndex > -1 ? new Line(ab.points.slice(mIndex)) : new Line([m, b]),
       cm = new Line([c, m])
 
     ca = new Line([c, a])
@@ -76,17 +79,21 @@ export default class Triangle {
         curve.push(mp)
       }
 
-      nc = new Line([ nc0, ...curve, nc1 ])
-      nc.shiftPoints(gaussianRand() * 20)
+      nc = new Line([ nc0.copy(), ...curve, nc1.copy() ])
+      nc.shiftPoints(nc.length/10)
 
       curve = chaikin(nc.points.map(p => [p.x, p.y]), 4)
       curve = curve.map(p => new Point(p[0],p[1]))
-
+      curve.splice(0, 1, nc0)
+      curve.splice(curve.length-1, 1, nc1)
       mc = new Line([...curve])
 
       // let reversePoints = curve.slice(1,mc.points.length).reverse()
       // cm = new Line([ nc1, ...reversePoints, nc0 ])
-      cm = new Line([...mc.points].reverse())
+      cm = mc.copy()
+      cm.points.reverse()
+
+
     }
 
     // Form two new triangles that are formed from drawing a line from the

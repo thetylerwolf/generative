@@ -50,7 +50,7 @@ const colorSampler = new ColorSampler({
 
 const divisions = 14,
   stopSplitChance = 0,
-  curveChance = 0.2
+  curveChance = 0.5
 
 let triangles = rootTriangles();
 for (let i = 0; i < divisions; i++) {

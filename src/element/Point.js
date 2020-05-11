@@ -5,6 +5,11 @@ export default class Point {
     this.y = y
   }
 
+  equals(point) {
+    return point.x === this.x &&
+    point.y === this.y
+  }
+
   copy() {
     return new Point(this.x, this.y)
   }
