@@ -1,5 +1,6 @@
 import chroma from 'chroma-js'
 import poissonSampler from './poissonSampler'
+import chaikin from './chaikin'
 
 let defaultParams = {
   width: 300,
@@ -82,7 +83,7 @@ export default class ColorSampler {
       // TODO: Rather than making the paths with the sampler,
       // build them so that they overlap minimally (maybe use nosie?)
       let colorPath = poissonSampler(width, height, radius).map(p => [p.x, p.y])
-      colorPath = this.chaikin(colorPath, 3)
+      colorPath = chaikin(colorPath, 3)
       colorPath = colorPath.map(d => ({
         x: d[0],
         y: d[1],
@@ -93,18 +94,6 @@ export default class ColorSampler {
     }
 
     this.colorCenters = this.colorPaths.flat()
-  }
-
-  chaikin(arr, num) {
-    if (num === 0) return arr;
-    const l = arr.length;
-    const smooth = arr.map((c,i) => {
-      return [
-        [0.75*c[0] + 0.25*arr[(i + 1)%l][0],0.75*c[1] + 0.25*arr[(i + 1)%l][1]],
-        [0.25*c[0] + 0.75*arr[(i + 1)%l][0],0.25*c[1] + 0.75*arr[(i + 1)%l][1]]
-      ];
-    }).flat();
-    return num === 1 ? smooth : this.chaikin(smooth, num - 1);
   }
 
   getNearestColor(x, y, sampleSize=1, pickProbability=0) {

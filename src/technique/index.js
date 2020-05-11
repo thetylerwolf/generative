@@ -3,9 +3,8 @@ import noisePath from './noisePath'
 import ColorSampler from './ColorSampler'
 import poissonSampler from './poissonSampler'
 import streamlines from './streamlines'
-import Triangle from './Triangle'
-import Point from './Point'
 import { linesGenerator as streamlines2 } from './streamlines2'
+import chaikin from './chaikin'
 
 export {
   ImageSampler,
@@ -14,6 +13,5 @@ export {
   streamlines2,
   noisePath,
   ColorSampler,
-  Triangle,
-  Point,
+  chaikin,
 }

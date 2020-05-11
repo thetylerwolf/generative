@@ -1,7 +1,7 @@
 import niceColors from 'nice-color-palettes'
 import chroma from 'chroma-js'
 import { shuffle } from 'd3'
-import { Triangle, Point } from './technique'
+import { Triangle, Point } from './element'
 
 import {
   ImageSampler,
@@ -31,7 +31,7 @@ let canvas = document.getElementById("canvas"),
 
 let dpr = window.devicePixelRatio || 1
 
-const width = 960 ,
+const width = 960,
   height = 960
 
 canvas.width = width
@@ -40,16 +40,17 @@ canvas.height = height
 context.scale(dpr,dpr)
 
 const colorSampler = new ColorSampler({
-  width, 
-  height, 
-  colors, 
-  density: 10, 
-  maxCenterRange: 0, 
+  width,
+  height,
+  colors,
+  density: 10,
+  maxCenterRange: 0,
   type: 'lines',
 })
 
 const divisions = 14,
-  stopSplitChance = 0.07
+  stopSplitChance = 0,
+  curveChance = 0.2
 
 let triangles = rootTriangles();
 for (let i = 0; i < divisions; i++) {
@@ -62,7 +63,7 @@ function redrawImage() {
   // context.globalAlpha = 0.5
 
   let n = triangles.length - 1
-
+console.log(triangles)
   // let i = setInterval(() => {
   //   if(n < 0) {
   //     console.log('done')
@@ -72,30 +73,40 @@ function redrawImage() {
   //   n--
   triangles.forEach((triangle) => {
 
-    let tCenter = {
-      x: (triangle.point1.x + triangle.point2.x + triangle.point3.x ) / 3,
-      y: (triangle.point1.y + triangle.point2.y + triangle.point3.y ) / 3,
-    }
+    // let tCenter = {
+    //   x: (triangle.p1.x + triangle.p2.x + triangle.p3.x ) / 3,
+    //   y: (triangle.p1.y + triangle.p2.y + triangle.p3.y ) / 3,
+    // }
 
-    let c = colorSampler.getNearestColor(tCenter.x, tCenter.y, 2, 0.01)
-    c = chroma(c)
-    c = c.hsl()
-    c[3] += -0.5 + Math.random() * 0.5
-    c = chroma.hsl(...c)
-    c = c.css()
+    // let c = colorSampler.getNearestColor(tCenter.x, tCenter.y, 2, 0.01)
+    // c = chroma(c)
+    // c = c.hsl()
+    // c[3] += -0.5 + Math.random() * 0.5
+    // c = chroma.hsl(...c)
+    // c = c.css()
 
-    context.fillStyle = c
-    context.strokeStyle = c
+    // context.fillStyle = c
+    // context.strokeStyle = c
+    context.strokeStyle = "#338"
 
     context.beginPath()
 
-    context.moveTo(triangle.point1.x, triangle.point1.y);
-	  context.lineTo(triangle.point2.x, triangle.point2.y);
-    context.lineTo(triangle.point3.x, triangle.point3.y);
-    context.lineTo(triangle.point1.x, triangle.point1.y);
+    triangle.sides.forEach((side,i) => {
+      side.points.forEach((p,j) => {
+        if(!i && !j) {
+          context.moveTo(p.x, p.y);
+        }
+        context.lineTo(p.x, p.y);
+      })
+    })
 
-    Math.random() > 0.2 ? context.fill() : context.stroke()
-    // context.stroke()
+    // context.moveTo(triangle.p1.x, triangle.p1.y);
+	  // context.lineTo(triangle.p2.x, triangle.p2.y);
+    // context.lineTo(triangle.p3.x, triangle.p3.y);
+    // context.lineTo(triangle.p1.x, triangle.p1.y);
+
+    // Math.random() > 0.2 ? context.fill() : context.stroke()
+    context.stroke()
   // }, 1)
   })
 
@@ -108,10 +119,10 @@ function rootTriangles() {
 
   return [
     new Triangle(
-      new Point(0, 0), new Point(canvas.width, 0), new Point(0, canvas.height), stopSplitChance
+      new Point(0, 0), new Point(canvas.width, 0), new Point(0, canvas.height), stopSplitChance, curveChance
     ),
     new Triangle(
-      new Point(canvas.width, 0), new Point(0, canvas.height), new Point(canvas.width, canvas.height), stopSplitChance
+      new Point(canvas.width, 0), new Point(0, canvas.height), new Point(canvas.width, canvas.height), stopSplitChance, curveChance
     )
   ]
 }
