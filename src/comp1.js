@@ -148,7 +148,7 @@ function drawTriangles() {
 function drawBg() {
 
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
-  const bgColor = '#000'
+  const bgColor = '#fff'
   context.fillStyle = bgColor
   context.rect(0, 0, width, height)
   context.fill()
@@ -161,7 +161,7 @@ function drawBg() {
   pointData.forEach((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
-    let c = randomColors[Math.floor(randomColors.length * Math.random()) ]
+    let c = colors[Math.floor(colors.length * Math.random()) ]
     c = chroma(c)
     c = c.hsl()
     // c[1] += -0.05 + Math.random() * 0.1
@@ -179,11 +179,11 @@ function drawBg() {
       baseRadius: 40,
       centerX: point.x,
       centerY: point.y,
-      numPoints: 12,
+      numPoints: 6,
       subdivisions: 7,
-      rVariance: 90,
+      rVariance: 60,
       numLayers: 60,
-      // noiseFunction: perlin.noise,
+      noiseFunction: () => gaussianRand(0.3,0.2),
     })
 
     wc.run()
