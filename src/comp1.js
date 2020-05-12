@@ -3,26 +3,14 @@ import chroma from 'chroma-js'
 import { shuffle } from 'd3'
 
 import {
-  slicedStroke,
-  pointBrush,
-  noisePolygon,
-  circle,
   WaterColor,
 } from './brush'
 
 import {
-  streamlines,
-  streamlines2,
   poissonSampler,
   ColorSampler
 } from './technique'
 
-import {
-  curl,
-  perlin,
-  simplex,
-  fractal
-} from './noise'
 import { gaussianRand } from './utils'
 import { Triangle, Point } from './element'
 
@@ -32,10 +20,10 @@ const width = 960,
 
 // [2, 5, 8, 11, 15, 17, 23, 24, 29, 36, 48, 51, 55, 66, 94, 98]
 
-let randomI = 52 || Math.floor(Math.random() * niceColors.length),
+let randomI = 5 || Math.floor(Math.random() * niceColors.length),
   randomColors = niceColors[randomI] || shuffle(niceColors[randomI])
 const colors = [
-  ...randomColors.slice(1)
+  ...shuffle(randomColors.slice(2))
 ]
 
 let canvas = document.getElementById("canvas"),
@@ -52,19 +40,10 @@ context.scale(dpr,dpr)
 
 // colorIndex: 52
 
-const colorSampler = new ColorSampler({
-  width,
-  height,
-  colors,
-  density: 250,
-  maxCenterRange: 0,
-  type: 'points',
-})
-
 const spaceSampler = new ColorSampler({
   width,
   height,
-  colors: [0,0,0,1,1],
+  colors: [0,0,0,0,1,1],
   density: 10,
   maxCenterRange: 0,
   type: 'points'
@@ -85,16 +64,9 @@ function drawTriangles() {
   }
   // drawShapes()
 
-  context.globalAlpha = 0.3
+  context.globalAlpha = 0.5
   context.lineWidth = 0.5
 
-  // let i = setInterval(() => {
-  //   if(n < 0) {
-  //     console.log('done')
-  //     return clearInterval(i)
-  //   }
-  //   let triangle = triangles[n]
-  //   n--
   triangles.forEach((triangle) => {
 
     let tCenter = {
@@ -103,7 +75,7 @@ function drawTriangles() {
     }
 
     let o = spaceSampler.getNearestColor(tCenter.x, tCenter.y, 1, 0)
-    let c = chroma('#88c')
+    let c = chroma('#fff')
     c = c.hsl()
     c[3] = o
     c = chroma.hsl(...c)
@@ -135,10 +107,16 @@ function drawTriangles() {
 
     return [
       new Triangle(
-        new Point(0, 0), new Point(canvas.width * gaussianRand(), 0), new Point(0, canvas.height * gaussianRand()), stopSplitChance, curveChance
+        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(0, 0.1)),
+        new Point(canvas.width * gaussianRand(1, 0.1), canvas.height * gaussianRand(0, 0.1)),
+        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
+        stopSplitChance, curveChance
       ),
       new Triangle(
-        new Point(canvas.width * gaussianRand(), 0), new Point(0, canvas.height * gaussianRand()), new Point(canvas.width * gaussianRand(), canvas.height * gaussianRand()), stopSplitChance, curveChance
+        new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(0, 0.1)),
+        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
+        new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(1,0.1)),
+        stopSplitChance, curveChance
       )
     ]
   }
@@ -148,7 +126,9 @@ function drawTriangles() {
 function drawBg() {
 
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
-  const bgColor = '#fff'
+  // const bgColor = '#ffe6cc' // orange
+  const bgColor = '#ccdbff' // blue
+
   context.fillStyle = bgColor
   context.rect(0, 0, width, height)
   context.fill()
@@ -156,19 +136,21 @@ function drawBg() {
   let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 200)
   shuffle(pointData)
 
-  context.globalAlpha = 0.01
+  context.globalAlpha = 0.015
 
   pointData.forEach((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
     let c = colors[Math.floor(colors.length * Math.random()) ]
+
     c = chroma(c)
     c = c.hsl()
     // c[1] += -0.05 + Math.random() * 0.1
     // c[2] += -0.05 + gaussianRand() * 0.1
     // c[3] += -0.6 * (centerDist/dMax) + gaussianRand() * 0.4
-    c[3] += gaussianRand(-0.3, 0.6)
-    c[3] = 0.5
+    // c[3] = gaussianRand()
+    // c[3] = 0.2
+    c[2] += gaussianRand(-0.05, 0.1)
 
     c = chroma.hsl(...c)
     c = c.css()
