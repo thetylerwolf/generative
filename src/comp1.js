@@ -23,7 +23,8 @@ const width = 960,
 let randomI = 5 || Math.floor(Math.random() * niceColors.length),
   randomColors = niceColors[randomI] || shuffle(niceColors[randomI])
 const colors = [
-  ...shuffle(randomColors.slice(2))
+  // ...shuffle(randomColors.slice(2))
+  ...randomColors.slice(-1)
 ]
 
 let canvas = document.getElementById("canvas"),
@@ -128,33 +129,45 @@ function drawBg() {
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
   const bgColor = '#ccdbff' // blue
-
+  // const bgColor = '#010a18' // dark blue
   context.fillStyle = bgColor
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 200)
-  shuffle(pointData)
+  let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 400)
+
+  // let pointData = []
+  // for(let h = 100; h<canvas.height;h+=450) {
+  //   for(let w = 100; w<canvas.width;w+=450) {
+  //     pointData.push({
+  //       x: w,
+  //       y: h
+  //     })
+  //   }
+  // }
 
   context.globalAlpha = 0.015
 
-  pointData.forEach((point) => {
+  let wcs = pointData.map((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
     let c = colors[Math.floor(colors.length * Math.random()) ]
 
     c = chroma(c)
-    c = c.hsl()
+    // c = c.hsl()
     // c[1] += -0.05 + Math.random() * 0.1
     // c[2] += -0.05 + gaussianRand() * 0.1
     // c[3] += -0.6 * (centerDist/dMax) + gaussianRand() * 0.4
     // c[3] = gaussianRand()
     // c[3] = 0.2
-    c[2] += gaussianRand(-0.05, 0.1)
+    // c[2] += gaussianRand(-0.05, 0.1)
 
-    c = chroma.hsl(...c)
+    // c = chroma.hsl(...c)
+    c = c.darken(gaussianRand(0.5,0.5))
+    c = c.desaturate(gaussianRand(0,0.2))
+
     c = c.css()
-    context.fillStyle = c
+    // context.fillStyle = c
 
     // context.globalAlpha = 0.01
     let wc = new WaterColor(context, {
@@ -164,33 +177,42 @@ function drawBg() {
       numPoints: 6,
       subdivisions: 7,
       rVariance: 60,
+      initialrVariance: 250,
       numLayers: 60,
       noiseFunction: () => gaussianRand(0.3,0.2),
+      color: c,
     })
 
     wc.run()
 
-    wc.distortedPolygons.forEach(drawPolygon)
-
-    function drawPolygon(points, i) {
-      // console.log(points.length)
-      let polygon = new Path2D()
-
-      points.forEach((point,i) => {
-        let from = point,
-          to = points[i+1]
-
-        if(!to) return
-
-        if(!i) polygon.moveTo(from.x, from.y)
-        polygon.lineTo(to.x, to.y)
-
-      })
-
-      polygon.closePath()
-
-      context.fill(polygon)
-    }
+    return wc
   })
+  wcs[0].distortedPolygons.forEach((p,i) => {
+    wcs.forEach(wc => {
+      context.fillStyle = wc.color
+      drawPolygon(wc.distortedPolygons[i])
+    })
+  })
+
+  function drawPolygon(points) {
+    // console.log(points.length)
+    let polygon = new Path2D()
+
+    points.forEach((point,i) => {
+      let from = point,
+        to = points[i+1]
+
+      if(!to) return
+
+      if(!i) polygon.moveTo(from.x, from.y)
+      polygon.lineTo(to.x, to.y)
+
+    })
+
+    polygon.closePath()
+
+    context.fill(polygon)
+  }
+
 
 }

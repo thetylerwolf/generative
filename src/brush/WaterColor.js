@@ -18,6 +18,7 @@ export default class WaterColor {
       initialrVariance = 300,
       numLayers = 1,
       maxPoints = 5000,
+      color = '#ccc',
     } = options
 
     this.baseRadius = baseRadius
@@ -31,6 +32,7 @@ export default class WaterColor {
     this.initialrVariance = initialrVariance
     this.distortedPolygons = []
     this.maxPoints = maxPoints
+    this.color = color
 
     this.init()
 

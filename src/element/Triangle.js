@@ -49,12 +49,18 @@ export default class Triangle {
       c = bc.points[0].equals(b) ? bc.points[bc.points.length-1] : bc.points[0]
 
     // Gaussian point around 0.5
-    const r = gaussianRand(0.5, 0.8);
+    let r = gaussianRand(0.5, 0.8);
 
     // Get the split point on the line formed by `a` and `b` at the random
     // position
     let m = ab.pointAlong(r),
       mIndex = ab.points.indexOf(m)
+
+    // Make sure we're not splitting on an end point
+    if(mIndex == 0 || mIndex == ab.length-1) {
+      mIndex = Math.max(mIndex, 1)
+      mIndex = Math.min(mIndex, ab.length-2)
+    }
 
     m = m.copy()
 
@@ -66,7 +72,7 @@ export default class Triangle {
     ca = new Line([c, a])
     bc = new Line([b, c])
 
-    if(Math.random() < curveChance && mc.length > 60) {
+    if(Math.random() > curveChance && mc.length > 60) {
 
       let nc = mc
 
@@ -80,8 +86,8 @@ export default class Triangle {
       }
 
       nc = new Line([ nc0.copy(), ...curve, nc1.copy() ])
-      // This (below) can fix any games
-      nc.shiftPoints(gaussianRand() * cm.length/10)
+      // This (below) can fix any gaps
+      nc.shiftPoints(gaussianRand(0, 10) * cm.length/10)
 
       curve = chaikin(nc.points.map(p => [p.x, p.y]), 4)
       curve = curve.map(p => new Point(p[0],p[1]))
@@ -93,7 +99,6 @@ export default class Triangle {
       // cm = new Line([ nc1, ...reversePoints, nc0 ])
       cm = mc.copy()
       cm.points.reverse()
-
 
     }
 
