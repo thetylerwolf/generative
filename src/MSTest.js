@@ -4,6 +4,7 @@ import { simplex } from './noise'
 import { makeCanvas } from './utils';
 import { MarchingSquares } from './technique'
 
+simplex.setSeed(Math.random() * 1000)
 const { draw_poly } = MarchingSquares
 
 let noise_grid;
@@ -11,7 +12,7 @@ let noise_grid;
 let opts;
 let palette;
 
-let tick = 1;
+let tick = 0;
 let canvas, context
 
 const grid_dim_x = 960;
@@ -22,12 +23,18 @@ const canvas_dim_y = grid_dim_y + 2 * padding;
 const cell_dim = 5;
 const nx = grid_dim_x / cell_dim;
 const ny = grid_dim_y / cell_dim;
+let points = []
 
 init()
 draw()
+console.log(points)
+
+document.body.appendChild(canvas)
 
 function init() {
   canvas = makeCanvas()
+  canvas.width = canvas_dim_x
+  canvas.height = canvas_dim_y
   context = canvas.getContext('2d')
 
   opts = {
@@ -38,7 +45,7 @@ function init() {
     bottom_size: -0.1,
     top_size: 0.5,
     gradient: 'radial',
-    palette: niceColors[5]
+    palette: niceColors[5].slice(3)
   };
 
   palette = opts.palette
@@ -46,7 +53,8 @@ function init() {
 };
 
 function draw() {
-  const bgColor = '#010a18' // dark blue
+  // const bgColor = '#010a18' // dark blue
+  const bgColor = '#fff' // dark blue
   context.fillStyle = bgColor
   context.rect(0, 0, canvas_dim_x, canvas_dim_y)
   context.fill()
@@ -55,10 +63,15 @@ function draw() {
   const z_val = opts.bottom_size + (range * tick) / opts.num_shapes;
   const col = palette[tick % palette.length];
 
+  context.fillStyle = col
+  // context.strokeStyle = '#fff'
+
   noise_grid = build_noise_grid(opts.gradient);
-  context.fill()
+
+  // context.stroke()
   process_grid(z_val);
-  context.restore()
+  // context.fill()
+  // context.restore()
 
 };
 
@@ -91,8 +104,8 @@ function process_cell(x, y, threshold) {
 
   if (id === 0) return;
 
-
-  draw_poly(context, id, v1, v2, v3, v4, threshold, cell_dim)
+  let p = draw_poly(context, id, v1, v2, v3, v4, threshold, cell_dim)
+  points = points.concat(p)
 }
 
 function get_noise(x, y) {
