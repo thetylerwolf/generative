@@ -20,14 +20,13 @@ const grid_dim_y = 960;
 const padding = 0;
 const canvas_dim_x = grid_dim_x + 2 * padding;
 const canvas_dim_y = grid_dim_y + 2 * padding;
-const cell_dim = 5;
+const cell_dim = 2;
 const nx = grid_dim_x / cell_dim;
 const ny = grid_dim_y / cell_dim;
 let points = []
 
 init()
 draw()
-console.log(points)
 
 document.body.appendChild(canvas)
 

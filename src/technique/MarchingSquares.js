@@ -149,8 +149,10 @@ export function draw_poly(ctx, id, v1, v2, v3, v4, threshold, dim) {
 
     points = points.concat([w, n, nw])
   }
+
   ctx.closePath();
-ctx.fill()
+  ctx.fill()
+
   return points
 }
 
