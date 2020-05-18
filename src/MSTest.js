@@ -5,7 +5,7 @@ import { makeCanvas } from './utils';
 import { MarchingSquares } from './technique'
 
 simplex.setSeed(Math.random() * 1000)
-const { draw_poly } = MarchingSquares
+const { draw_poly, draw_line } = MarchingSquares
 
 let noise_grid;
 
@@ -67,11 +67,21 @@ function draw() {
 
   noise_grid = build_noise_grid(opts.gradient);
 
-  // context.stroke()
   process_grid(z_val);
-  // context.fill()
-  // context.restore()
 
+  // points.forEach(square => {
+  //   context.beginPath()
+  //   square.forEach((p,i) => {
+  //     let [x,y] = p
+  //     if(!i) {
+  //       context.moveTo(...p)
+  //     } else {
+  //       context.lineTo(...p)
+  //     }
+  //   })
+  //   context.closePath()
+  //   context.fill()
+  // })
 };
 
 function process_grid(z_val) {
@@ -103,8 +113,9 @@ function process_cell(x, y, threshold) {
 
   if (id === 0) return;
 
+  // let p = draw_line(context, id, v1, v2, v3, v4, threshold, cell_dim)
   let p = draw_poly(context, id, v1, v2, v3, v4, threshold, cell_dim)
-  points = points.concat(p)
+  points.push(p)
 }
 
 function get_noise(x, y) {
