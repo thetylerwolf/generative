@@ -5,7 +5,7 @@ import poissonSampler from './poissonSampler'
 import streamlines from './streamlines'
 import { linesGenerator as streamlines2 } from './streamlines2'
 import chaikin from './chaikin'
-import * as MarchingSquares from './MarchingSquares'
+import MarchingSquares from './MarchingSquares'
 
 export {
   ImageSampler,

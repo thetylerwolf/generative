@@ -8,7 +8,8 @@ import {
 
 import {
   poissonSampler,
-  ColorSampler
+  ColorSampler,
+  MarchingSquares
 } from './technique'
 
 import { gaussianRand } from './utils'
@@ -52,6 +53,7 @@ const spaceSampler = new ColorSampler({
 
 drawBg()
 drawTriangles()
+drawBlob()
 
 function drawTriangles() {
 
@@ -214,5 +216,36 @@ function drawBg() {
     context.fill(polygon)
   }
 
+
+}
+
+function drawBlob() {
+
+  const params = {
+    noise_scale: 50,
+    noise_persistence: 0.5,
+    // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
+    apply_sigmoid: 0,
+    num_shapes: 20,
+    bottom_size: -0.1,
+    top_size: 0.5,
+    gradient: 'radial',
+    colors: ['#fff'],
+    width,
+    height,
+    padding: 0,
+    cell_dim: 2,
+    context,
+  }
+
+  let ms = new MarchingSquares(params)
+
+  context.globalAlpha = 1
+  context.save()
+  let dx = width + Math.random() * -2*width,
+    dy = height + Math.random() * -2*height
+  context.translate(dx, dy)
+  ms.draw()
+  context.restore()
 
 }
