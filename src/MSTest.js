@@ -1,10 +1,7 @@
 import niceColors from 'nice-color-palettes'
 
-import { simplex } from './noise'
 import { makeCanvas } from './utils';
 import { MarchingSquares } from './technique'
-
-simplex.setSeed(Math.random() * 1000)
 
 const width = 960;
 const height = 960;
@@ -21,10 +18,10 @@ document.body.appendChild(canvas)
 function draw() {
   const params = {
     noise_scale: 50,
-    noise_persistence: 0.5,
-    noiseFunction: (x,y,z) => simplex.noise(x,y,z),
-    apply_sigmoid: 0,
-    num_shapes: 20,
+    noise_persistence: 0.8,
+    // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
+    // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
+    num_shapes: 5,
     bottom_size: -0.1,
     top_size: 0.5,
     gradient: 'radial',

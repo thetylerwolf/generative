@@ -1,10 +1,11 @@
 import { scaleLinear } from "d3";
-import { simplex } from "../noise";
+import SimplexNoise from 'simplex-noise'
+
+const simplex = new SimplexNoise()
 
 const defaultParams = {
   noise_scale: 50,
   noise_persistence: 0.5,
-  apply_sigmoid: 0,
   num_shapes: 20,
   bottom_size: -0.1,
   top_size: 0.5,
@@ -15,7 +16,7 @@ const defaultParams = {
   height: 300,
   padding: 0,
   cell_dim: 2,
-  noiseFunction: (x,y,z) => simplex.noise(x,y,z),
+  noiseFunction: (x,y,z) => simplex.noise3D(x,y,z),
 };
 
 export default class MarchingSquares {
@@ -25,7 +26,7 @@ export default class MarchingSquares {
     if(!params.context) throw new Error('MarchingSquares requires a canvas context2D')
 
     Object.assign(this, defaultParams, params)
-    this.tick = 0
+    this.tick = 1
     this.grid_dim_x = params.width;
     this.grid_dim_y = params.height
     this.canvas_dim_x = this.grid_dim_x + 2 * this.padding;

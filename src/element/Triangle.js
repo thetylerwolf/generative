@@ -3,6 +3,7 @@ import { gaussianRand } from '../utils'
 import { chaikin } from '../technique'
 
 export default class Triangle {
+  
   constructor(p1, p2, p3, stopSplitChance=0, curveChance=0) {
 
     if(p1 instanceof Point) {

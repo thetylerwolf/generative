@@ -13,7 +13,7 @@ import {
 } from './technique'
 
 import { gaussianRand } from './utils'
-import { Triangle, Point } from './element'
+import { Triangle, Point, Line } from './element'
 
 const width = 960,
   height = 960
@@ -57,7 +57,7 @@ drawBlob()
 
 function drawTriangles() {
 
-  const divisions = 14,
+  const divisions = 16,
     stopSplitChance = 0,
     curveChance = 0.5
 
@@ -108,20 +108,32 @@ function drawTriangles() {
 
   function rootTriangles() {
 
-    return [
-      new Triangle(
-        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(0, 0.1)),
-        new Point(canvas.width * gaussianRand(1, 0.1), canvas.height * gaussianRand(0, 0.1)),
-        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
-        stopSplitChance, curveChance
-      ),
-      new Triangle(
-        new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(0, 0.1)),
-        new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
-        new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(1,0.1)),
-        stopSplitChance, curveChance
-      )
-    ]
+    let nw = new Point(-10,-10),
+      ne = new Point(width+10, -10),
+      se = new Point(width+10,height+10),
+      sw = new Point(-10,height+10)
+
+    return [new Triangle(
+      new Line([nw,ne]),
+      new Line([ne,se]),
+      new Line([se,sw,nw]),
+      stopSplitChance, curveChance
+    )]
+
+    // return [
+    //   new Triangle(
+    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(0, 0.1)),
+    //     new Point(canvas.width * gaussianRand(1, 0.1), canvas.height * gaussianRand(0, 0.1)),
+    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
+    //     stopSplitChance, curveChance
+    //   ),
+    //   new Triangle(
+    //     new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(0, 0.1)),
+    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
+    //     new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(1,0.1)),
+    //     stopSplitChance, curveChance
+    //   )
+    // ]
   }
 
 }
@@ -223,10 +235,10 @@ function drawBlob() {
 
   const params = {
     noise_scale: 50,
-    noise_persistence: 0.5,
+    noise_persistence: 0.8,
     // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
-    apply_sigmoid: 0,
-    num_shapes: 20,
+    // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
+    num_shapes: 5,
     bottom_size: -0.1,
     top_size: 0.5,
     gradient: 'radial',
@@ -242,8 +254,8 @@ function drawBlob() {
 
   context.globalAlpha = 1
   context.save()
-  let dx = width + Math.random() * -2*width,
-    dy = height + Math.random() * -2*height
+  let dx = Math.random() * -width,
+    dy = Math.random() * -height
   context.translate(dx, dy)
   ms.draw()
   context.restore()
