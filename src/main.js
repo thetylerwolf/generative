@@ -1,6 +1,8 @@
 // import './colorPreview'
 
 // import './MSTest'
+// import './ColorSamplerTest'
+// import './TrianglesTest'
 
 // import './noiseLines'
 // import './lines'
@@ -15,7 +17,6 @@
 
 // import './colorsPainting'
 // import './noisePolygonTest'
-// import './trianglesTest'
 
 // import './watercolorTest'
 // import './imagePaintingPixi'

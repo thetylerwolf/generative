@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 import { shuffle } from 'd3'
 
 import {
-  WaterColor,
+  WaterColor, circle,
 } from './brush'
 
 import {
@@ -47,13 +47,13 @@ const spaceSampler = new ColorSampler({
   height,
   colors: [0,0,0,0,1,1],
   density: 10,
-  maxCenterRange: 0,
+  maxCenterRange: 10,
   type: 'points'
 })
 
 drawBg()
 drawTriangles()
-drawBlob()
+// drawBlob()
 
 function drawTriangles() {
 
@@ -79,13 +79,14 @@ function drawTriangles() {
 
     let o = spaceSampler.getNearestColor(tCenter.x, tCenter.y, 1, 0)
     let c = chroma('#fff')
-    c = c.hsl()
-    c[3] = o
-    c = chroma.hsl(...c)
+    c.alpha(o)
+    // console.log(o)
+
+    // c = chroma.hsl(...c)
     // c = c.hsl()
     // c[3] += -0.5 + Math.random() * 0.5
     // c = chroma.hsl(...c)
-    // c = c.css()
+    c = c.css()
 
     // context.fillStyle = c
     // context.strokeStyle = c
@@ -94,6 +95,9 @@ function drawTriangles() {
 
     context.beginPath()
 
+    // colorSampler.colorField.forEach(c => {
+    //   circle(context, 5, c.x, c.y, c.color)
+    // })
     triangle.sides.forEach((side,i) => {
       side.points.forEach((p,j) => {
         if(!i && !j) {
@@ -106,6 +110,10 @@ function drawTriangles() {
     context.stroke()
   })
 
+  spaceSampler.colorCenters.forEach(c => {
+    circle(context, 5, c.x, c.y, c.color === 1 ? 'red' : c.color)
+  })
+
   function rootTriangles() {
 
     let nw = new Point(-10,-10),
@@ -113,27 +121,27 @@ function drawTriangles() {
       se = new Point(width+10,height+10),
       sw = new Point(-10,height+10)
 
-    return [new Triangle(
-      new Line([nw,ne]),
-      new Line([ne,se]),
-      new Line([se,sw,nw]),
-      stopSplitChance, curveChance
-    )]
+    // return [new Triangle(
+    //   new Line([nw,ne]),
+    //   new Line([ne,se]),
+    //   new Line([se,sw,nw]),
+    //   stopSplitChance, curveChance
+    // )]
 
-    // return [
-    //   new Triangle(
-    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(0, 0.1)),
-    //     new Point(canvas.width * gaussianRand(1, 0.1), canvas.height * gaussianRand(0, 0.1)),
-    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
-    //     stopSplitChance, curveChance
-    //   ),
-    //   new Triangle(
-    //     new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(0, 0.1)),
-    //     new Point(canvas.width * gaussianRand(0, 0.1), canvas.height * gaussianRand(1,0.1)),
-    //     new Point(canvas.width * gaussianRand(1,0.1), canvas.height * gaussianRand(1,0.1)),
-    //     stopSplitChance, curveChance
-    //   )
-    // ]
+    return [
+      new Triangle(
+        new Point(nw, nw),
+        new Point(ne, ne),
+        new Point(sw,sw),
+        stopSplitChance, curveChance
+      ),
+      new Triangle(
+        new Point(ne, ne),
+        new Point(se, se),
+        new Point(sw, sw),
+        stopSplitChance, curveChance
+      )
+    ]
   }
 
 }
@@ -207,6 +215,8 @@ function drawBg() {
       drawPolygon(wc.distortedPolygons[i])
     })
   })
+
+
 
   function drawPolygon(points) {
     // console.log(points.length)

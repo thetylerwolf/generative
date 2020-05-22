@@ -3,7 +3,7 @@ import { gaussianRand } from '../utils'
 import { chaikin } from '../technique'
 
 export default class Triangle {
-  
+
   constructor(p1, p2, p3, stopSplitChance=0, curveChance=0) {
 
     if(p1 instanceof Point) {
@@ -52,6 +52,7 @@ export default class Triangle {
     // Gaussian point around 0.5
     let r = gaussianRand(0.5, 0.8);
 
+
     // Get the split point on the line formed by `a` and `b` at the random
     // position
     let m = ab.pointAlong(r),
@@ -73,7 +74,7 @@ export default class Triangle {
     ca = new Line([c, a])
     bc = new Line([b, c])
 
-    if(Math.random() > curveChance && mc.length > 60) {
+    if(Math.random() < curveChance && mc.length > 60) {
 
       let nc = mc
 
@@ -88,7 +89,7 @@ export default class Triangle {
 
       nc = new Line([ nc0.copy(), ...curve, nc1.copy() ])
       // This (below) can fix any gaps
-      nc.shiftPoints(gaussianRand(0, 10) * cm.length/10)
+      nc.shiftPoints(gaussianRand(0.05, 0.05) * nc.length)
 
       curve = chaikin(nc.points.map(p => [p.x, p.y]), 4)
       curve = curve.map(p => new Point(p[0],p[1]))

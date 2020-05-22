@@ -1,7 +1,7 @@
 import niceColors from 'nice-color-palettes'
 import chroma from 'chroma-js'
 import { shuffle } from 'd3'
-import { Triangle, Point } from './element'
+import { Triangle, Point, Line } from './element'
 
 import {
   ImageSampler,
@@ -48,9 +48,9 @@ const colorSampler = new ColorSampler({
   type: 'lines',
 })
 
-const divisions = 14,
+const divisions = 15,
   stopSplitChance = 0,
-  curveChance = 0.5
+  curveChance = 0.1
 
 let triangles = rootTriangles();
 for (let i = 0; i < divisions; i++) {
@@ -116,8 +116,21 @@ console.log(triangles)
 }
 
 function rootTriangles() {
-  const d = divisions;
-  const s = stopSplitChance;
+
+  let nw = new Point(0,0),
+      ne = new Point(width, 0),
+      se = new Point(width,height),
+      sw = new Point(0,height)
+
+  // return [new Triangle(
+  //   new Line([nw,ne]),
+  //   new Line([ne,se]),
+  //   new Line([se,sw,nw]),
+  //   stopSplitChance, curveChance
+  // )]
+
+  // const d = divisions;
+  // const s = stopSplitChance;
 
   return [
     new Triangle(

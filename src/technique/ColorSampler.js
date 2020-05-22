@@ -97,6 +97,9 @@ export default class ColorSampler {
   }
 
   getNearestColor(x, y, sampleSize=1, pickProbability=0) {
+
+    if(!sampleSize) sampleSize = 1
+
     let points = this.colorField.map(c => {
       let dx = c.x - x,
         dy = c.y - y,
@@ -126,7 +129,7 @@ export default class ColorSampler {
 
   }
 
-  getNearestColorCenter(x, y, maxDistance) {
+  getNearestColorCenter(x, y, maxDistance=Infinity) {
     let nearestPoint = null,
       nearestPos = Infinity
 
@@ -144,7 +147,7 @@ export default class ColorSampler {
 
     })
 
-    if(!nearestPoint) return 'rgba(255,255,255,0)'
+    if(nearestPoint === null) return 0
     return nearestPoint.color
 
   }
