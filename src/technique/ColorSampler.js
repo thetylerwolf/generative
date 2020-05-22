@@ -129,7 +129,7 @@ export default class ColorSampler {
 
   }
 
-  getNearestColorCenter(x, y, maxDistance=Infinity) {
+  getNearestColorCenter(x, y, maxDistance) {
     let nearestPoint = null,
       nearestPos = Infinity
 
@@ -147,7 +147,7 @@ export default class ColorSampler {
 
     })
 
-    if(nearestPoint === null) return 0
+    if(nearestPoint === null) return 'rgba(255,255,255,0)'
     return nearestPoint.color
 
   }

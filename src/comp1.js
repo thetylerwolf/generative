@@ -45,15 +45,15 @@ context.scale(dpr,dpr)
 const spaceSampler = new ColorSampler({
   width,
   height,
-  colors: [0,0,0,0,1,1],
+  colors: [0,0,0,0,0,1,1,1],
   density: 10,
-  maxCenterRange: 10,
+  maxCenterRange: 500,
   type: 'points'
 })
 
 drawBg()
 drawTriangles()
-// drawBlob()
+drawBlob()
 
 function drawTriangles() {
 
@@ -70,7 +70,14 @@ function drawTriangles() {
   context.globalAlpha = 0.5
   context.lineWidth = 0.5
 
-  triangles.forEach((triangle) => {
+//   spaceSampler.colorCenters.forEach(c => {
+//     circle(context, 5, c.x, c.y, c.color === 1 ? 'blue' : 'green')
+//   })
+//     spaceSampler.colorField.forEach(c => {
+//       circle(context, 5, c.x, c.y, c.color === 1 ? 'red' : 'black')
+//     })
+// return
+  triangles.forEach((triangle,i) => {
 
     let tCenter = {
       x: (triangle.p1.x + triangle.p2.x + triangle.p3.x ) / 3,
@@ -78,8 +85,8 @@ function drawTriangles() {
     }
 
     let o = spaceSampler.getNearestColor(tCenter.x, tCenter.y, 1, 0)
-    let c = chroma('#fff')
-    c.alpha(o)
+    let c = chroma('#fff').alpha(+o || 0)
+    // if(!(i%100)) console.log('o', o)
     // console.log(o)
 
     // c = chroma.hsl(...c)
@@ -110,9 +117,7 @@ function drawTriangles() {
     context.stroke()
   })
 
-  spaceSampler.colorCenters.forEach(c => {
-    circle(context, 5, c.x, c.y, c.color === 1 ? 'red' : c.color)
-  })
+  
 
   function rootTriangles() {
 
@@ -129,18 +134,8 @@ function drawTriangles() {
     // )]
 
     return [
-      new Triangle(
-        new Point(nw, nw),
-        new Point(ne, ne),
-        new Point(sw,sw),
-        stopSplitChance, curveChance
-      ),
-      new Triangle(
-        new Point(ne, ne),
-        new Point(se, se),
-        new Point(sw, sw),
-        stopSplitChance, curveChance
-      )
+      new Triangle(nw, ne, sw, stopSplitChance, curveChance),
+      new Triangle(ne, se, sw, stopSplitChance, curveChance)
     ]
   }
 
@@ -245,14 +240,14 @@ function drawBlob() {
 
   const params = {
     noise_scale: 50,
-    noise_persistence: 0.8,
+    noise_persistence: 0.1,
     // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
     // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
     num_shapes: 5,
     bottom_size: -0.1,
     top_size: 0.5,
     gradient: 'radial',
-    colors: ['#fff'],
+    colors: ['#ffa'],
     width,
     height,
     padding: 0,
