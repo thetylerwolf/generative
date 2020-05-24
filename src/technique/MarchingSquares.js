@@ -125,7 +125,7 @@ export default class MarchingSquares {
     for (let y = 0; y < ny; y++) {
       for (let x = 0; x < nx; x++) {
 
-        if(y < 2) console.log(x, xOffset, xOffset+cell_dim)
+        // if(y < 2) console.log(x, xOffset, xOffset+cell_dim)
         this.process_cell(x, y, z_val, true, xOffset, yOffset);
         xOffset += cell_dim
       }
@@ -243,22 +243,21 @@ export default class MarchingSquares {
   }
 
   build_path(id, nw, ne, se, sw, threshold, x, y) {
-    const r = (n) => Math.round(n * 10) / 10
     const n = [
-      r(map(threshold, nw, ne, x, x+this.cell_dim)), 
-      r(y+this.cell_dim)
+      map(threshold, nw, ne, x, x+this.cell_dim), 
+      y+this.cell_dim
     ];
     const e = [
-      r(x+this.cell_dim), 
-      r(map(threshold, ne, se, y, y+this.cell_dim))
+      x+this.cell_dim, 
+      map(threshold, ne, se, y, y+this.cell_dim)
     ];
     const s = [
-      r(map(threshold, sw, se, x, x+this.cell_dim)), 
-      r(y+this.cell_dim)
+      map(threshold, sw, se, x, x+this.cell_dim), 
+      y+this.cell_dim
     ];
     const w = [
-      r(x), 
-      r(map(threshold, nw, sw, y, y+this.cell_dim))
+      x, 
+      map(threshold, nw, sw, y, y+this.cell_dim)
     ];
 
     if (id === 1 || id === 14) {
