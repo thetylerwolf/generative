@@ -35,7 +35,27 @@ function draw() {
 
   let ms = new MarchingSquares(params)
 
-  ms.draw()
-  let p = ms.gen_path()
+  // ms.draw()
+  let p = ms.trace()
   console.log(p)
+
+  context.beginPath()
+
+  p.forEach(poly => 
+  poly.forEach((point,i) => {
+    
+    let x0 = point[0].x,
+      y0 = point[0].y,
+      x1 = point[1].x,
+      y1 = point[1].y
+    if(!i) context.moveTo(x0,y0)
+    context.lineTo(x1,y1)
+    
+  })
+  )
+  context.stroke()
+  context.fillStyle = 'rgba(255,0,0,0.5)'
+  context.fill()
+  context.closePath()
+
 }

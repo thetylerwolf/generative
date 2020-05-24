@@ -1,5 +1,6 @@
 import { scaleLinear } from "d3";
 import SimplexNoise from 'simplex-noise'
+import { Point, Line } from "../element";
 
 const simplex = new SimplexNoise()
 
@@ -57,6 +58,7 @@ export default class MarchingSquares {
     const col = colors[Math.floor(Math.random() * colors.length)];
 
     context.fillStyle = col
+    context.strokeStyle = col
     // context.strokeStyle = '#fff'
 
     this.process_grid(z_val);
@@ -90,7 +92,10 @@ export default class MarchingSquares {
     // const bgColor = '#010a18' // dark blue
     const z_val = bottom_size + (range * tick) / num_shapes;
 
-    this.process_grid(z_val);
+    this.process_path(z_val);
+    this.split_paths()
+
+    return this.polygons
   }
 
   process_grid(z_val) {
@@ -110,7 +115,27 @@ export default class MarchingSquares {
     context.restore()
   }
 
-  process_cell(x, y, threshold) {
+  process_path(z_val) {
+
+    const { context, nx, ny, cell_dim } = this
+
+    let xOffset = 0,
+        yOffset = 0
+
+    for (let y = 0; y < ny; y++) {
+      for (let x = 0; x < nx; x++) {
+
+        if(y < 2) console.log(x, xOffset, xOffset+cell_dim)
+        this.process_cell(x, y, z_val, true, xOffset, yOffset);
+        xOffset += cell_dim
+      }
+      xOffset = 0
+      yOffset += cell_dim
+    }
+    yOffset = 0
+  }
+
+  process_cell(x, y, threshold, pathOnly=false, xOffset=0, yOffset=0) {
     const v1 = this.get_noise(x, y);
     const v2 = this.get_noise(x + 1, y);
     const v3 = this.get_noise(x + 1, y + 1);
@@ -126,8 +151,9 @@ export default class MarchingSquares {
     if (id === 0) return;
 
     // let p = draw_line(context, id, v1, v2, v3, v4, threshold, cell_dim)
-    let p = this.draw_poly(this.context, id, v1, v2, v3, v4, threshold, this.cell_dim)
-    this.points.push(p)
+    if(pathOnly) this.build_path(id, v1, v2, v3, v4, threshold, xOffset, yOffset)
+    else this.draw_poly(this.context, id, v1, v2, v3, v4, threshold, this.cell_dim)
+
   }
 
   get_noise(x, y) {
@@ -216,37 +242,100 @@ export default class MarchingSquares {
     ctx.stroke()
   }
 
-  gen_path(id, nw, ne, se, sw, threshold, dim) {
-    const n = [map(threshold, nw, ne, 0, dim), 0];
-    const e = [dim, map(threshold, ne, se, 0, dim)];
-    const s = [map(threshold, sw, se, 0, dim), dim];
-    const w = [0, map(threshold, nw, sw, 0, dim)];
-
-    const path = []
+  build_path(id, nw, ne, se, sw, threshold, x, y) {
+    const r = (n) => Math.round(n * 10) / 10
+    const n = [
+      r(map(threshold, nw, ne, x, x+this.cell_dim)), 
+      r(y+this.cell_dim)
+    ];
+    const e = [
+      r(x+this.cell_dim), 
+      r(map(threshold, ne, se, y, y+this.cell_dim))
+    ];
+    const s = [
+      r(map(threshold, sw, se, x, x+this.cell_dim)), 
+      r(y+this.cell_dim)
+    ];
+    const w = [
+      r(x), 
+      r(map(threshold, nw, sw, y, y+this.cell_dim))
+    ];
 
     if (id === 1 || id === 14) {
-      path.push([s, w]);
+      this.points.push([ new Point(...s),  new Point(...w)]);
     }
     else if (id === 2 || id === 13) {
-      path.push([e, s]);
+      this.points.push([ new Point(...e),  new Point(...s)]);
     }
     else if (id === 3 || id === 12) {
-      path.push([e, w]);
+      this.points.push([ new Point(...e),  new Point(...w)]);
     }
     else if (id === 4 || id === 11) {
-      path.push([n, e]);
+      this.points.push([ new Point(...n),  new Point(...e)]);
     }
     else if (id === 6 || id === 9) {
-      path.push([n, s]);
+      this.points.push([ new Point(...n),  new Point(...s)]);
     }
     else if (id === 7 || id === 8) {
-      path.push([w, n]);
+      this.points.push([ new Point(...w),  new Point(...n)]);
     }
     else if (id === 5 || id == 10) {
-      path.push([e, s, w, n]);
+      this.points.push([ new Point(...e),  new Point(...s),  new Point(...w),  new Point(...n)]);
     }
 
-    return path
+    return this.points
+  }
+
+  split_paths() {
+    // TODO: make this function
+
+    let polygons = [],
+      currentPoly = []
+
+    while(this.points.length) {
+      let currentPoint = this.points.shift()
+      while(currentPoint) {
+        // console.log('found', currentPoint)
+
+        currentPoly.push(currentPoint)
+
+        let nearest = null,
+          nearestDist = Infinity
+        this.points.forEach((line) => {
+          let d1 = Line.distance(currentPoint[1], line[0]),
+            d2 = Line.distance(currentPoint[1], line[1])
+          // if(line[0].x === currentPoint[1].x || line[1].x === currentPoint[0].x) console.log(currentPoint, line);
+          // (new Line(currentPoint)).equals(new Line(line))
+          if(d1 < nearestDist) {
+            nearest = line
+            nearestDist = d1
+          }
+          
+          if (d2 < nearestDist) {
+            line.reverse()
+            nearest = line
+            nearestDist = d2
+          }
+        })
+        
+        // console.log(Line.distance(currentPoint[1], nearest[0]), currentPoint, nearest)
+        if(nearestDist < 4) {
+          currentPoint = nearest
+          let i = this.points.indexOf(currentPoint)
+          this.points.splice(i,1)
+          currentPoly.push(currentPoint)
+        }
+        else currentPoint = null
+      
+      }
+      polygons.push(currentPoly)
+      currentPoly = []
+    }
+
+    this.polygons = polygons
+    return polygons
+    console.log('polygons', polygons)
+
   }
 
   draw_poly(ctx, id, v1, v2, v3, v4, threshold, dim) {
@@ -376,6 +465,7 @@ export default class MarchingSquares {
 
     ctx.closePath();
     ctx.fill()
+    ctx.stroke()
 
     return square
   }

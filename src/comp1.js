@@ -31,10 +31,15 @@ const colors = [
 let canvas = document.getElementById("canvas"),
     context = canvas.getContext("2d")
 
-canvas.width = width
-canvas.height = height
+let rect = canvas.getBoundingClientRect()
 
 let dpr = window.devicePixelRatio || 1
+
+canvas.style.width = width
+canvas.style.height = height
+
+canvas.width = width * dpr
+canvas.height = height * dpr
 
 context.scale(dpr,dpr)
 
@@ -145,13 +150,15 @@ function drawBg() {
 
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
-  const bgColor = '#ccdbff' // blue
+  // const bgColor = '#ccdbff' // blue
+  // const bgColor = '#141d2f' // darker blue
+  const bgColor = '#26375a' // dark blue
   // const bgColor = '#010a18' // dark blue
   context.fillStyle = bgColor
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 400)
+  let pointData = poissonSampler(canvas.width, canvas.height, 400)
 
   // let pointData = []
   // for(let h = 100; h<canvas.height;h+=450) {
@@ -240,7 +247,7 @@ function drawBlob() {
 
   const params = {
     noise_scale: 50,
-    noise_persistence: 0.1,
+    noise_persistence: 0.5,
     // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
     // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
     num_shapes: 5,
@@ -248,20 +255,21 @@ function drawBlob() {
     top_size: 0.5,
     gradient: 'radial',
     colors: ['#ffa'],
-    width,
-    height,
+    width: 800,
+    height: 200,
     padding: 0,
-    cell_dim: 2,
+    cell_dim: 5,
     context,
   }
 
   let ms = new MarchingSquares(params)
 
-  context.globalAlpha = 1
+  // context.globalAlpha = 0.8
   context.save()
-  let dx = Math.random() * -width,
-    dy = Math.random() * -height
+  let dx = 0,//-600 + Math.random() * width,
+    dy = -200 + Math.random() * height
   context.translate(dx, dy)
+  // ms.trace()
   ms.draw()
   context.restore()
 

@@ -34,6 +34,13 @@ export default class Line {
     return new Line(this.points.map(p => p.copy()))
   }
 
+  equals(l) {
+    if(this.length === l.length) {
+      return this.points.every((p,i) => p.equals(l.points[i]))
+    }
+    return false
+  }
+
   static lineLength(points) {
     let length = 0
 

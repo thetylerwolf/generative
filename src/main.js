@@ -1,6 +1,6 @@
 // import './colorPreview'
 
-// import './MSTest'
+import './MSTest'
 // import './ColorSamplerTest'
 // import './TrianglesTest'
 
@@ -25,4 +25,4 @@
 // import './3d/cylinderTracks.js'
 // import './3d/sphereSpline.js'
 
-import './comp1'
+// import './comp1'
