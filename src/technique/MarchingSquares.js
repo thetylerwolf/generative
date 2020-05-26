@@ -36,6 +36,7 @@ export default class MarchingSquares {
     this.ny = this.grid_dim_y / this.cell_dim;
     this.range = this.top_size - this.bottom_size;
     this.points = []
+    this.polygons = []
 
     this.noise_grid = this.build_noise_grid(this.gradient);
 
@@ -93,7 +94,7 @@ export default class MarchingSquares {
     const z_val = bottom_size + (range * tick) / num_shapes;
 
     this.process_path(z_val);
-    this.split_paths()
+    this.link_points()
 
     return this.polygons
   }
@@ -243,50 +244,129 @@ export default class MarchingSquares {
   }
 
   build_path(id, nw, ne, se, sw, threshold, x, y) {
+
     const n = [
-      map(threshold, nw, ne, x, x+this.cell_dim), 
-      y+this.cell_dim
+      map(threshold, nw, ne, x, x+this.cell_dim),
+      y
     ];
     const e = [
-      x+this.cell_dim, 
+      x+this.cell_dim,
       map(threshold, ne, se, y, y+this.cell_dim)
     ];
     const s = [
-      map(threshold, sw, se, x, x+this.cell_dim), 
+      map(threshold, sw, se, x, x+this.cell_dim),
       y+this.cell_dim
     ];
     const w = [
-      x, 
+      x,
       map(threshold, nw, sw, y, y+this.cell_dim)
     ];
 
+    let line
+
     if (id === 1 || id === 14) {
-      this.points.push([ new Point(...s),  new Point(...w)]);
+      line = [ new Point(...s),  new Point(...w)]
     }
     else if (id === 2 || id === 13) {
-      this.points.push([ new Point(...e),  new Point(...s)]);
+      line = [ new Point(...e),  new Point(...s)]
     }
     else if (id === 3 || id === 12) {
-      this.points.push([ new Point(...e),  new Point(...w)]);
+      line = [ new Point(...e),  new Point(...w)]
     }
     else if (id === 4 || id === 11) {
-      this.points.push([ new Point(...n),  new Point(...e)]);
+      line = [ new Point(...n),  new Point(...e)]
     }
     else if (id === 6 || id === 9) {
-      this.points.push([ new Point(...n),  new Point(...s)]);
+      line = [ new Point(...n),  new Point(...s)]
     }
     else if (id === 7 || id === 8) {
-      this.points.push([ new Point(...w),  new Point(...n)]);
-    }
-    else if (id === 5 || id == 10) {
-      this.points.push([ new Point(...e),  new Point(...s),  new Point(...w),  new Point(...n)]);
+      line = [ new Point(...w),  new Point(...n)]
     }
 
-    return this.points
+    this.points.push(line)
+
+    if (id === 5 || id == 10) {
+      line = [
+        [ new Point(...e),  new Point(...s) ],
+        [ new Point(...s), new Point(...w) ],
+        [ new Point(...w), new Point(...n)],
+        [ new Point(...n), new Point(...e)]
+      ]
+      this.points.push(...line)
+    }
+  }
+
+  link_points() {
+    // TODO: Still not quite there
+    // let found = line.length === 4
+
+    // if(found) {
+    //   this.polygons.push(line)
+    //   console.log('square!')
+    //   return
+    // }
+
+    while(this.points.length) {
+      let poly = this.points.shift()
+
+      let found = true
+
+      while(found) {
+
+        found = false
+
+        this.points = this.points.filter((line,i) => {
+          if(!line) return
+          let start = poly[0],
+            end = poly[poly.length - 1]
+
+          const from = line[0],
+            to = line[line.length-1],
+            head = line.slice(0, line.length-1),
+            tail = line.slice(1, line.length),
+            mid0 = line.length === 4 ? line[1] : null,
+            mid1 = line.length === 4 ? line[2] : null
+
+          if(start.equals(from)) {
+            tail.reverse()
+            poly.unshift(...tail)
+            found = true
+            return false
+            // console.log('found!')
+          } else if (start.equals(to)) {
+            poly.unshift(...head)
+            found = true
+            return false
+            // console.log('found!')
+          } else if (end.equals(from)) {
+            poly.push(...tail)
+            found = true
+            return false
+            // console.log('found!')
+          } else if (end.equals(to)) {
+            head.reverse()
+            poly.push(...head)
+            found = true
+            return false
+            // console.log('found!')
+          } else if (mid0 && start.equals(mid0)) {
+            console.log('mid0')
+          } else if (mid1 && start.equals(mid1)) {
+            console.log('mid1')
+          }
+
+          return true
+
+        })
+      }
+
+      this.polygons.push(poly)
+
+    }
+
   }
 
   split_paths() {
-    // TODO: make this function
 
     let polygons = [],
       currentPoly = []
@@ -301,22 +381,12 @@ export default class MarchingSquares {
         let nearest = null,
           nearestDist = Infinity
         this.points.forEach((line) => {
-          let d1 = Line.distance(currentPoint[1], line[0]),
-            d2 = Line.distance(currentPoint[1], line[1])
+
           // if(line[0].x === currentPoint[1].x || line[1].x === currentPoint[0].x) console.log(currentPoint, line);
           // (new Line(currentPoint)).equals(new Line(line))
-          if(d1 < nearestDist) {
-            nearest = line
-            nearestDist = d1
-          }
-          
-          if (d2 < nearestDist) {
-            line.reverse()
-            nearest = line
-            nearestDist = d2
-          }
+
         })
-        
+
         // console.log(Line.distance(currentPoint[1], nearest[0]), currentPoint, nearest)
         if(nearestDist < 4) {
           currentPoint = nearest
@@ -325,7 +395,7 @@ export default class MarchingSquares {
           currentPoly.push(currentPoint)
         }
         else currentPoint = null
-      
+
       }
       polygons.push(currentPoly)
       currentPoly = []

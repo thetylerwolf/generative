@@ -1,6 +1,9 @@
 import niceColors from 'nice-color-palettes'
 import chroma from 'chroma-js'
 import { shuffle } from 'd3'
+import SimplexNoise from 'simplex-noise'
+
+const simplex = new SimplexNoise()
 
 import {
   WaterColor, circle,
@@ -12,7 +15,7 @@ import {
   MarchingSquares
 } from './technique'
 
-import { gaussianRand } from './utils'
+import { gaussianRand, makeCanvas } from './utils'
 import { Triangle, Point, Line } from './element'
 
 const width = 960,
@@ -56,8 +59,11 @@ const spaceSampler = new ColorSampler({
   type: 'points'
 })
 
-drawBg()
+drawBg(context, colors, '#ccdbff')
 drawTriangles()
+
+context.globalAlpha = 1
+
 drawBlob()
 
 function drawTriangles() {
@@ -122,7 +128,7 @@ function drawTriangles() {
     context.stroke()
   })
 
-  
+
 
   function rootTriangles() {
 
@@ -146,13 +152,14 @@ function drawTriangles() {
 
 }
 
-function drawBg() {
+function drawBg(context, colors, bgColor) {
 
+  const canvas = context.canvas
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
   // const bgColor = '#ccdbff' // blue
   // const bgColor = '#141d2f' // darker blue
-  const bgColor = '#26375a' // dark blue
+  // const bgColor = '#26375a' // dark blue
   // const bgColor = '#010a18' // dark blue
   context.fillStyle = bgColor
   context.rect(0, 0, width, height)
@@ -245,32 +252,55 @@ function drawBg() {
 
 function drawBlob() {
 
+  const sCanvas = makeCanvas(),
+    sCtx = sCanvas.getContext('2d')
+
+  sCanvas.width = width * dpr
+  sCanvas.height = height * dpr
+
+  context.scale(dpr,dpr)
+
+  // document.body.append(sCanvas)
+
+  const colors = ['rgba(255, 255, 170, 0.8)']
+
   const params = {
     noise_scale: 50,
     noise_persistence: 0.5,
-    // noiseFunction: (x,y,z) => simplex.noise(x,y,z),
+    noiseFunction: (x,y,z) => simplex.noise3D(x/2,y,z),
     // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
     num_shapes: 5,
     bottom_size: -0.1,
     top_size: 0.5,
     gradient: 'radial',
-    colors: ['#ffa'],
-    width: 800,
-    height: 200,
+    colors,
+    width: width * dpr,
+    height: height * dpr,
     padding: 0,
-    cell_dim: 5,
-    context,
+    cell_dim: 2,
+    context: sCtx,
   }
 
   let ms = new MarchingSquares(params)
 
-  // context.globalAlpha = 0.8
-  context.save()
+  sCtx.globalAlpha = 1
+  // context.save()
   let dx = 0,//-600 + Math.random() * width,
-    dy = -200 + Math.random() * height
-  context.translate(dx, dy)
+    dy = -height * dpr / 2 + Math.random() * height * dpr
+  // context.translate(dx, dy)
   // ms.trace()
   ms.draw()
-  context.restore()
+  // context.restore()
+
+  sCtx.globalCompositeOperation = 'source-atop'
+
+  let paintColors = [
+    chroma('#ffa').darken().css(),
+    chroma('#ffa').darken(2).css(),
+    // chroma('#ffa').darken(3).css()
+  ]
+  drawBg(sCtx, paintColors, '#fff')
+
+  context.drawImage(sCanvas, dx, dy)
 
 }
