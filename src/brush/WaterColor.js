@@ -1,8 +1,6 @@
   import { randomNormal, interpolateArray } from 'd3'
 import { perlin } from '../noise'
 
-const randomSeed = Math.random() * 10000
-
 export default class WaterColor {
 
   constructor(context, options) {
@@ -33,6 +31,7 @@ export default class WaterColor {
     this.distortedPolygons = []
     this.maxPoints = maxPoints
     this.color = color
+    this.randomSeed = Math.random() * 10000
 
     this.init()
 
@@ -45,7 +44,7 @@ export default class WaterColor {
       let angle = i * (2 * Math.PI / this.numPoints),
         x = this.centerX + this.baseRadius * Math.cos(angle),
         y = this.centerY + this.baseRadius * Math.sin(angle),
-        seed = Math.abs(this.noiseFunction(i * 0.01,0,randomSeed))
+        seed = Math.abs(this.noiseFunction(i * 0.01,0,this.randomSeed))
         // seed = randomNormal(0.25,0.25)()
         // seed = 1
 
