@@ -1,0 +1,58 @@
+{
+  "_from": "tooloud@^2.0.4",
+  "_id": "tooloud@2.0.4",
+  "_inBundle": false,
+  "_integrity": "sha512-54LuvIiX+8TBs3AH7f/dUmrUEO9E9aT4WY9KvsgVHZN7GpejBfPae6qH+a5jaTi9XXlk1C6sYmx4Sib26WkdWA==",
+  "_location": "/tooloud",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "tooloud@^2.0.4",
+    "name": "tooloud",
+    "escapedName": "tooloud",
+    "rawSpec": "^2.0.4",
+    "saveSpec": null,
+    "fetchSpec": "^2.0.4"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/tooloud/-/tooloud-2.0.4.tgz",
+  "_shasum": "c4a69b9db8e5c1a41bcd936e1941963150b2559f",
+  "_spec": "tooloud@^2.0.4",
+  "_where": "/Users/tylerwolf/personal/generative",
+  "author": {
+    "name": "jackunion"
+  },
+  "bugs": {
+    "url": "https://github.com/jackunion/tooloud/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Collection of noise functions written in JavaScript",
+  "devDependencies": {
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "homepage": "https://github.com/jackunion/tooloud#readme",
+  "keywords": [
+    "Perlin",
+    "Simplex",
+    "Worley",
+    "Fractal",
+    "noise"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "tooloud",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackunion/tooloud.git"
+  },
+  "scripts": {
+    "build": "webpack"
+  },
+  "version": "2.0.4"
+}
