@@ -22,7 +22,13 @@ var config = {
         query: {
           plugins: ['transform-runtime', 'transform-object-rest-spread', ["transform-es2015-classes", {
             "loose": true
-          }]],
+          }],[
+            "babel-plugin-root-import",
+            {
+              "rootPathSuffix": "./src/",
+              "rootPathPrefix": "~/"
+            }
+          ]],
           presets: [['env', {
             'targets': {
               'browsers': [
@@ -48,7 +54,7 @@ var config = {
     path: path.resolve(__dirname, './'),
     publicPath: '/'
   },
-  entry: [ './src/main.js' ],
+  entry: [ './src/index.js' ],
   watch: false,
   resolve: {
     alias: {
