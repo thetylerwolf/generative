@@ -1,2 +1,1 @@
-// import './src'
-require('./src')
+import './src'

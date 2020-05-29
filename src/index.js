@@ -25,5 +25,4 @@
 // import './3d/cylinderTracks.js'
 // import './3d/sphereSpline.js'
 
-// import './comps/islandHopper'
-require('./comps/islandHopper')
+import './comps/islandHopper'
