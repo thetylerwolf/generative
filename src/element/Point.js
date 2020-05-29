@@ -1,4 +1,4 @@
-export default class Point {
+module.exports = class Point {
 
   constructor(x,y) {
     this.x = x

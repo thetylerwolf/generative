@@ -1,6 +1,6 @@
-import chroma from 'chroma-js'
+const chroma = require('chroma-js')
 
-export default class ImageSampler {
+module.exports = class ImageSampler {
 
   constructor(canvas, imageSrc, options) {
 

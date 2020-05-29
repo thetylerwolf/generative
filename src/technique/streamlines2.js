@@ -1,6 +1,6 @@
-import * as d3 from 'd3'
+const d3 = require('d3')
 
-export function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
+module.exports = function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
   let params = {
     discontinuationRate: 0.009,
     maxLineLength: 200,

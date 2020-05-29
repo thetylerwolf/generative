@@ -1,9 +1,9 @@
-import chroma from 'chroma-js'
+const chroma = require('chroma-js')
 
-import { Point, Triangle } from "~/element";
-import { ColorSampler } from "~/technique";
+const { Point, Triangle } = require("../../element")
+const { ColorSampler } = require("../../technique")
 
-export default function drawTriangles(context, width, height) {
+module.exports = function drawTriangles(context, width, height) {
 
   const spaceSampler = new ColorSampler({
     width,

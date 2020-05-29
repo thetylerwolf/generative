@@ -1,7 +1,7 @@
-import { Point } from "./"
-import { gaussianRand } from "../utils"
+const { Point } = require("./")
+const { gaussianRand } = require("../utils")
 
-export default class Line {
+module.exports = class Line {
 
   constructor(points=[]) {
     this.points = points.map(p => p.copy())

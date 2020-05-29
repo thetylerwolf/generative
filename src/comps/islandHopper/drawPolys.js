@@ -1,15 +1,15 @@
-import chroma from 'chroma-js'
-import { shuffle } from 'd3'
+const chroma = require('chroma-js')
+const { shuffle } = require('d3')
 
-import { gaussianRand } from '~/utils'
-import {
+const { gaussianRand } = require('../../utils')
+const {
   poissonSampler,
-} from '~/technique'
-import {
+} = require('../../technique')
+const {
   noisePolygon,
-} from '~/brush'
+} = require('../../brush')
 
-export default function drawPolys(context, colors, bgColor) {
+module.exports = function drawPolys(context, colors, bgColor) {
   context.globalAlpha = 0.05
   const canvas = context.canvas
 

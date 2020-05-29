@@ -1,4 +1,4 @@
-export default function poissonSampler(width, height, radius) {
+module.exports = function poissonSampler(width, height, radius) {
   let pointData = [],
     sampler = poissonDiscSampler(width, height, radius),
     sample
@@ -9,7 +9,7 @@ export default function poissonSampler(width, height, radius) {
 }
 
 // straight lifted from https://bl.ocks.org/mbostock/22fd67be72552774736d
-export function poissonDiscSampler(width, height, radius) {
+function poissonDiscSampler(width, height, radius) {
   var k = 30, // maximum number of samples before rejection
       radius2 = radius * radius,
       R = 3 * radius2,

@@ -1,8 +1,8 @@
-import tooloud from 'tooloud'
+const tooloud = require('../lib/tooloud')
 
 const perlin = tooloud.Perlin.noise
 
-export default function computeCurl(x, y, z){
+module.exports = function computeCurl(x, y, z){
   var eps = 0.0001;
 
   //Find rate of change in X direction

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   bluesteel: [
     'rgba(255, 255, 255, 1)',
     'rgba(0, 23, 31, 1)',

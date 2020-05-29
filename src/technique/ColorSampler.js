@@ -1,6 +1,6 @@
-import chroma from 'chroma-js'
-import poissonSampler from './poissonSampler'
-import chaikin from './chaikin'
+const chroma = require('chroma-js')
+const poissonSampler = require('./poissonSampler')
+const chaikin = require('./chaikin')
 
 let defaultParams = {
   width: 300,
@@ -13,7 +13,7 @@ let defaultParams = {
   gradientSteps: 10,
 }
 
-export default class ColorSampler {
+module.exports = class ColorSampler {
 
   constructor(params=defaultParams) {
 

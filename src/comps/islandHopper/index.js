@@ -1,15 +1,16 @@
 const canvasSketch = require('canvas-sketch')
-const Canvas = require('canvas')
-const comp = require('./comp').default
+const createCanvas = require('canvas').createCanvas
+const comp = require('./comp')
 
 // import canvasSketch from 'canvas-sketch'
 // import Canvas from 'canvas'
 // import comp from './comp.js'
 
-const canvas = new Canvas()
+const dimensions = [ 2048, 2048 ]
+const canvas = createCanvas()
 
 const settings = {
-  dimensions: [ 2048, 2048 ],
+  dimensions,
   canvas,
 };
 
@@ -18,9 +19,10 @@ const sketch = () => {
     comp(config)
   };
 };
-
+console.log('hey!')
 canvasSketch(sketch, settings)
   .then(() => {
+    console.log('start!')
     // Once sketch is loaded & rendered, stream a PNG with node-canvas
     const out = fs.createWriteStream('output.png');
     const stream = canvas.createPNGStream();

@@ -1,2 +1,2 @@
-// import './src'
-require('./src')
+import './src'
+// require('./src')

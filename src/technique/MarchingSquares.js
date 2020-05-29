@@ -1,6 +1,6 @@
-import { scaleLinear } from "d3";
-import SimplexNoise from 'simplex-noise'
-import { Point, Line } from "../element";
+const { scaleLinear } = require("d3")
+const SimplexNoise = require('simplex-noise')
+const { Point, Line } = require("../element")
 
 const simplex = new SimplexNoise()
 
@@ -20,7 +20,7 @@ const defaultParams = {
   noiseFunction: (x,y,z) => simplex.noise3D(x,y,z),
 };
 
-export default class MarchingSquares {
+module.exports = class MarchingSquares {
 
   constructor(params=defaultParams) {
 

@@ -1,13 +1,13 @@
-import ImageSampler from './ImageSampler'
-import noisePath from './noisePath'
-import ColorSampler from './ColorSampler'
-import poissonSampler from './poissonSampler'
-import streamlines from './streamlines'
-import { linesGenerator as streamlines2 } from './streamlines2'
-import chaikin from './chaikin'
-import MarchingSquares from './MarchingSquares'
+const ImageSampler = require('./ImageSampler')
+const noisePath = require('./noisePath')
+const ColorSampler = require('./ColorSampler')
+const poissonSampler = require('./poissonSampler')
+const streamlines = require('./streamlines')
+const streamlines2 = require('./streamlines2')
+const chaikin = require('./chaikin')
+const MarchingSquares = require('./MarchingSquares')
 
-export {
+module.exports = {
   ImageSampler,
   poissonSampler,
   streamlines,

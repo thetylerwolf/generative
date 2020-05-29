@@ -1,8 +1,8 @@
-import tooloud from 'tooloud'
+const tooloud = require('../lib/tooloud')
 
 const { noise } = tooloud.Simplex
 
-export default function noisePath(x, y, length, noiseScale=1, noiseFunction = noise) {
+module.exports = function noisePath(x, y, length, noiseScale=1, noiseFunction = noise) {
   // This is the draw function
     const segLength = 1
 

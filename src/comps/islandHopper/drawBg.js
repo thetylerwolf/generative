@@ -1,9 +1,9 @@
-import chroma from 'chroma-js'
-import { poissonSampler } from "~/technique"
-import { WaterColor } from "~/brush"
-import { gaussianRand } from '~/utils'
+const chroma = require('chroma-js')
+const { poissonSampler } = require("../../technique")
+const { WaterColor } = require("../../brush")
+const { gaussianRand } = require('../../utils')
 
-export default function drawBg(context, width, height, colors, bgColor) {
+module.exports = function drawBg(context, width, height, colors, bgColor) {
 
   const canvas = context.canvas
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
@@ -29,7 +29,7 @@ export default function drawBg(context, width, height, colors, bgColor) {
   // }
 
   context.globalAlpha = 0.015
-
+console.log('a')
   let wcs = pointData.map((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
@@ -70,33 +70,37 @@ export default function drawBg(context, width, height, colors, bgColor) {
 
     return wc
   })
+  console.log('b')
   wcs[0].distortedPolygons.forEach((p,i) => {
+    console.log(i)
     wcs.forEach(wc => {
       context.fillStyle = wc.color
       drawPolygon(wc.distortedPolygons[i])
     })
   })
+  console.log('c')
 
 
 
   function drawPolygon(points) {
     // console.log(points.length)
-    let polygon = new Path2D()
+    // let polygon = new Path2D()
 
     points.forEach((point,i) => {
+
       let from = point,
         to = points[i+1]
 
       if(!to) return
 
-      if(!i) polygon.moveTo(from.x, from.y)
-      polygon.lineTo(to.x, to.y)
+      if(!i) context.moveTo(from.x, from.y)
+      context.lineTo(to.x, to.y)
 
     })
 
-    polygon.closePath()
+    context.closePath()
 
-    context.fill(polygon)
+    context.fill()
   }
 
 

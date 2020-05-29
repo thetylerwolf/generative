@@ -1,20 +1,20 @@
-import chroma from 'chroma-js'
-import SimplexNoise from 'simplex-noise'
+const chroma = require('chroma-js')
+const SimplexNoise = require('simplex-noise')
 
-import {
+const {
   // gaussianRand,
   makeCanvas,
-} from '~/utils'
-import {
+} = require('../../utils')
+const {
   // poissonSampler,
   MarchingSquares,
-} from '~/technique'
-// import {
+} = require('../../technique')
+// const {
 //   WaterColor,
-// } from '~/brush'
-import drawPolys from './drawPolys'
+// } = require('../../brush')
+const drawPolys = require('./drawPolys')
 
-export default function drawBlob(context, dpr, colors) {
+module.exports = function drawBlob(context, dpr, colors) {
 
   const sCanvas = makeCanvas(),
     sCtx = sCanvas.getContext('2d')

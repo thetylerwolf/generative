@@ -1,5 +1,5 @@
 // straight lifted from https://bl.ocks.org/mbostock/22fd67be72552774736d
-export default function poissonDiscSampler(width, height, radius) {
+module.exports = function poissonDiscSampler(width, height, radius) {
   var k = 30, // maximum number of samples before rejection
       radius2 = radius * radius,
       R = 3 * radius2,

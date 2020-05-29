@@ -1,8 +1,8 @@
-import { Line, Point } from './'
-import { gaussianRand } from '../utils'
-import { chaikin } from '../technique'
+const { Line, Point } = require('./')
+const { gaussianRand } = require('../utils')
+const { chaikin } = require('../technique')
 
-export default class Triangle {
+module.exports = class Triangle {
 
   constructor(p1, p2, p3, stopSplitChance=0, curveChance=0) {
 

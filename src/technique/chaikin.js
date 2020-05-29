@@ -1,4 +1,4 @@
-export default function chaikin(arr, num) {
+module.exports = function chaikin(arr, num) {
   if (num === 0) return arr;
   const l = arr.length;
   const smooth = arr.map((c,i) => {

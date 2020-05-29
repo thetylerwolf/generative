@@ -1,9 +1,9 @@
-import Point from './Point'
-import Triangle from './Triangle'
-import Line from './Line'
-import color from './color'
+const Point = require('./Point')
+const Triangle = require('./Triangle')
+const Line = require('./Line')
+const color = require('./color')
 
-export {
+module.exports = {
   Point,
   Line,
   Triangle,
