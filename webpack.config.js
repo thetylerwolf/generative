@@ -29,14 +29,7 @@ var config = {
               "rootPathPrefix": "~/"
             }
           ]],
-          presets: [['env', {
-            'targets': {
-              'browsers': [
-                'last 2 versions',
-                'ie >= 10'
-              ]
-            }
-          }]],
+          presets: ['env'],
         }
       },
       {
