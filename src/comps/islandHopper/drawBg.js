@@ -1,11 +1,10 @@
 import chroma from 'chroma-js'
-import { poissonSampler } from "~/technique"
+import { poissonSampler, ColorSampler } from "~/technique"
 import { WaterColor } from "~/brush"
 import { gaussianRand } from '~/utils'
 
 export default function drawBg(context, width, height, colors, bgColor) {
 
-  const canvas = context.canvas
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
   // const bgColor = '#ccdbff' // blue
@@ -16,7 +15,20 @@ export default function drawBg(context, width, height, colors, bgColor) {
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(canvas.width, canvas.height, 400)
+  let colorSampler = new ColorSampler({
+    width,
+    height,
+    colors: [colors[2], colors[5], colors[2], colors[5]],
+    density: 20,
+    maxCenterRange: 500,
+    type: 'points'
+  })
+
+  let pointData = poissonSampler(
+    width,
+    height,
+    Math.sqrt(width*width + height*height) / 15
+  )
 
   // let pointData = []
   // for(let h = 100; h<canvas.height;h+=450) {
@@ -33,7 +45,9 @@ export default function drawBg(context, width, height, colors, bgColor) {
   let wcs = pointData.map((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
-    let c = ['rgba(255,255,255,0)', colors[2], colors[5]][Math.floor(Math.random() * 3)] || colors[0]
+    // let c = ['rgba(255,255,255,0)', colors[2], colors[5]][Math.floor(Math.random() * 3)] || colors[0]
+    let c = colorSampler.getNearestColor(point.x, point.y, 10, 0)
+    if(!c) return
 
     c = chroma(c)
     // c = c.hsl()
@@ -69,7 +83,7 @@ export default function drawBg(context, width, height, colors, bgColor) {
     wc.run()
 
     return wc
-  })
+  }).filter(d => d)
   wcs[0].distortedPolygons.forEach((p,i) => {
     wcs.forEach(wc => {
       context.fillStyle = wc.color

@@ -22,18 +22,6 @@ export default function comp(config) {
   //   ...randomColors.slice(-1)
   // ]
 
-  let canvas = context.canvas
-
-  let dpr = window.devicePixelRatio || 1
-
-  canvas.style.width = width
-  canvas.style.height = height
-
-  canvas.width = width * dpr
-  canvas.height = height * dpr
-
-  context.scale(dpr,dpr)
-
   // colorIndex: 66, 8, 5
 
   // colorIndex: 52
@@ -44,5 +32,6 @@ export default function comp(config) {
 
   context.globalAlpha = 1
 
-  drawBlob(context, dpr, colors)
+  drawBlob(context, colors)
+
 }
