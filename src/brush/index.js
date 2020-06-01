@@ -1,11 +1,11 @@
-import slicedStroke from './slicedStroke'
-import pointBrush from './pointBrush'
-import circle from './circle'
-import noisePolygon from './noisePolygon'
-import WaterColor from './WaterColor'
+const slicedStroke = require('./slicedStroke')
+const pointBrush = require('./pointBrush')
+const circle = require('./circle')
+const noisePolygon = require('./noisePolygon')
+const WaterColor = require('./WaterColor')
 // import noiseBrush from './noiseBrush'
 
-export {
+module.exports = {
   slicedStroke,
   pointBrush,
   circle,

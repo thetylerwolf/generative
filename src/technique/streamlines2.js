@@ -62,7 +62,7 @@ module.exports = function lineTracer (startLocation, fieldFn, quadtree, incoming
   return l
 }
 
-export function linesGenerator(startingPoints, fieldFn, incomingParams) {
+function linesGenerator(startingPoints, fieldFn, incomingParams) {
   let params = {
     minStartSpace: 4,
     ...incomingParams

@@ -1,4 +1,4 @@
-export default function slicedStroke(ctx, from, to, opts) {
+module.exports = function slicedStroke(ctx, from, to, opts) {
 
   ctx.beginPath();
 

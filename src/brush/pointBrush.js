@@ -1,4 +1,4 @@
-export default function pointBrush(ctx, from, to) {
+module.exports = function pointBrush(ctx, from, to) {
 
   ctx.beginPath()
 

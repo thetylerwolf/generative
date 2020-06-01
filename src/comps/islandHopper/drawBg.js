@@ -14,7 +14,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(width, height, Math.sqrt(width*width + height*height)/2)
+  let pointData = poissonSampler(width, height, Math.sqrt(width*width + height*height)/15)
 
   // let pointData = []
   // for(let h = 100; h<canvas.height;h+=450) {
@@ -65,7 +65,7 @@ console.log('a')
     })
 
     wc.run()
-    console.log(wc)
+    // console.log(wc)
     return wc
   }).filter(d => d)
   console.log('b')
@@ -83,7 +83,7 @@ console.log('a')
   function drawPolygon(points) {
     // console.log(points.length)
     // let polygon = new Path2D()
-
+    context.beginPath()
     points.forEach((point,i) => {
 
       let from = point,

@@ -1,6 +1,6 @@
-import { perlin } from '../noise'
+const { perlin } = require('../noise')
 
-export default function noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, subdivisions=0, noiseFunction=perlin.noise) {
+module.exports = function noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, subdivisions=0, noiseFunction=perlin.noise) {
 
   let points = []
   let noiseStart = Math.random() * 10,

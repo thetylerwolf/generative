@@ -1,7 +1,7 @@
-  import { randomNormal, interpolateArray } from 'd3'
-import { perlin } from '../noise'
+const { randomNormal } = require('d3')
+const { perlin } = require('../noise')
 
-export default class WaterColor {
+module.exports = class WaterColor {
 
   constructor(context, options) {
     this.ctx = context
