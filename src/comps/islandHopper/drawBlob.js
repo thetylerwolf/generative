@@ -14,7 +14,7 @@ const {
 // } = require('../../brush')
 const drawPolys = require('./drawPolys')
 
-module.exports = function drawBlob(context, dpr, colors) {
+module.exports = function drawBlob(context, colors) {
 
   const sCanvas = makeCanvas(),
     sCtx = sCanvas.getContext('2d')
@@ -23,8 +23,6 @@ module.exports = function drawBlob(context, dpr, colors) {
 
   sCanvas.width = width
   sCanvas.height = height
-
-  context.scale(dpr,dpr)
 
   // document.body.append(sCanvas)
 
@@ -59,16 +57,16 @@ module.exports = function drawBlob(context, dpr, colors) {
   let ms2 = new MarchingSquares(params2)
 
   sCtx.globalAlpha = 1
-  let dx = -width * dpr / 2 + Math.random() * width * dpr,
-    dy = -height * dpr / 2 + Math.random() * height * dpr
+  let dx = -width / 2 + Math.random() * width,
+    dy = -height / 2 + Math.random() * height
   sCtx.save()
   sCtx.translate(dx, dy)
   // ms.trace()
   ms.draw()
   sCtx.restore()
 
-  dx = -width * dpr / 2 + Math.random() * width * dpr,
-  dy = -height * dpr / 2 + Math.random() * height * dpr
+  dx = -width / 2 + Math.random() * width,
+  dy = -height / 2 + Math.random() * height
   sCtx.save()
   sCtx.translate(dx, dy)
   ms2.draw()

@@ -1,6 +1,9 @@
-const { Line, Point } = require('./')
+const Line = require('./Line')
+const Point = require('./Point')
 const { gaussianRand } = require('../utils')
 const { chaikin } = require('../technique')
+
+
 
 module.exports = class Triangle {
 

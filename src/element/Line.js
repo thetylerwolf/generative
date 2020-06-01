@@ -1,4 +1,4 @@
-const { Point } = require("./")
+const Point = require("./Point")
 const { gaussianRand } = require("../utils")
 
 module.exports = class Line {

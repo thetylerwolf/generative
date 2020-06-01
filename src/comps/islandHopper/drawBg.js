@@ -4,8 +4,6 @@ const { WaterColor } = require("../../brush")
 const { gaussianRand } = require('../../utils')
 
 module.exports = function drawBg(context, width, height, colors, bgColor) {
-
-  const canvas = context.canvas
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
   // const bgColor = '#ccdbff' // blue
@@ -16,7 +14,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(canvas.width, canvas.height, 400)
+  let pointData = poissonSampler(width, height, Math.sqrt(width*width + height*height)/2)
 
   // let pointData = []
   // for(let h = 100; h<canvas.height;h+=450) {
@@ -33,8 +31,8 @@ console.log('a')
   let wcs = pointData.map((point) => {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
-    let c = ['rgba(255,255,255,0)', colors[2], colors[5]][Math.floor(Math.random() * 3)] || colors[0]
-
+    let c = [0, colors[2], colors[5]][Math.floor(Math.random() * 3)] || colors[0]
+    if(!c) return
     c = chroma(c)
     // c = c.hsl()
     // c[1] += -0.05 + Math.random() * 0.1
@@ -67,12 +65,12 @@ console.log('a')
     })
 
     wc.run()
-
+    console.log(wc)
     return wc
-  })
+  }).filter(d => d)
   console.log('b')
   wcs[0].distortedPolygons.forEach((p,i) => {
-    console.log(i)
+    // console.log(i)
     wcs.forEach(wc => {
       context.fillStyle = wc.color
       drawPolygon(wc.distortedPolygons[i])
