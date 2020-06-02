@@ -8,8 +8,10 @@ import drawBlob2 from './drawBlob2'
 // const colors = color.bluegold
 const colorIndex = Math.floor(Math.random() * color.colorDictionary.length)
 // const colors = color.colorDictionary[colorIndex]
-const colors = color.colorDictionary[113]
-
+const colors = color.colorDictionary[76]
+// const colors = [ 'rgb(18,53,78)', 'rgb(197,97,39)' ]
+// 113!¨¨¨
+// [/0, 24x, /50, 76, /84, 106?]
 export default function comp(config) {
 
   const {

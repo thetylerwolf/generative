@@ -83,6 +83,9 @@ export default function drawBlob(context, colors) {
 
   // drawBg2(sCtx, paintColors, '#c0c0c0')
   sCtx.drawImage(context.canvas, 0, 0)
+
+  sCtx.strokeWidth = 1.5
+
   drawTriangles(sCtx, width, height)
 
   context.globalAlpha = 1
