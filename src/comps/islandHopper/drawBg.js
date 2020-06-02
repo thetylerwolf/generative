@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
-import { poissonSampler, ColorSampler } from "~/technique"
-import { WaterColor } from "~/brush"
-import { gaussianRand } from '~/utils'
+import { poissonSampler, ColorSampler } from "../../technique"
+import { WaterColor, circle, noiseBrush } from "../../brush"
+import { gaussianRand } from '../../utils'
 
 export default function drawBg(context, width, height, colors, bgColor) {
 
@@ -18,16 +18,18 @@ export default function drawBg(context, width, height, colors, bgColor) {
   let colorSampler = new ColorSampler({
     width,
     height,
-    colors: [colors[2], colors[5], colors[2], colors[5]],
+    // colors: [colors[2], colors[5], colors[2], colors[5]],
+    colors: [...colors, ...colors],
     density: 20,
-    maxCenterRange: 500,
-    type: 'points'
+    // maxCenterRange: 500,
+    type: 'points',
+    // gradientAngle: Math.PI,
   })
 
   let pointData = poissonSampler(
     width,
     height,
-    Math.sqrt(width*width + height*height) / 15
+    Math.sqrt(width*width + height*height) / 17
   )
 
   // let pointData = []
@@ -46,7 +48,7 @@ export default function drawBg(context, width, height, colors, bgColor) {
 
     // let c = chroma.mix('#fff', randomColors[0],1)
     // let c = ['rgba(255,255,255,0)', colors[2], colors[5]][Math.floor(Math.random() * 3)] || colors[0]
-    let c = colorSampler.getNearestColor(point.x, point.y, 10, 0)
+    let c = colorSampler.getNearestColor(point.x, point.y, 1, 0)
     if(!c) return
 
     c = chroma(c)
@@ -59,8 +61,10 @@ export default function drawBg(context, width, height, colors, bgColor) {
     // c[2] += gaussianRand(-0.05, 0.1)
 
     // c = chroma.hsl(...c)
+
     c = c.darken(gaussianRand(0.5,0.5))
     c = c.desaturate(gaussianRand(0,0.2))
+
     // c = c.desaturate()
 
     c = c.css()
@@ -74,8 +78,8 @@ export default function drawBg(context, width, height, colors, bgColor) {
       numPoints: 6,
       subdivisions: 7,
       rVariance: 60,
-      initialrVariance: 250,
-      numLayers: 60,
+      initialrVariance: Math.sqrt(width*width + height*height) / 17,
+      numLayers: 35,
       noiseFunction: () => gaussianRand(0.3,0.2),
       color: c,
     })
@@ -84,6 +88,7 @@ export default function drawBg(context, width, height, colors, bgColor) {
 
     return wc
   }).filter(d => d)
+
   wcs[0].distortedPolygons.forEach((p,i) => {
     wcs.forEach(wc => {
       context.fillStyle = wc.color
@@ -91,7 +96,9 @@ export default function drawBg(context, width, height, colors, bgColor) {
     })
   })
 
-
+  drawCircles(context, width, height, 400, 2)
+  drawCircles(context, width, height, 250, 5)
+  drawCircles(context, width, height, 250, 5)
 
   function drawPolygon(points) {
     // console.log(points.length)
@@ -114,4 +121,14 @@ export default function drawBg(context, width, height, colors, bgColor) {
   }
 
 
+}
+
+function drawCircles(context, width, height, density, radius) {
+  let points = poissonSampler(
+    width,
+    height,
+    Math.sqrt(width*width + height*height) / density
+  )
+
+  points.forEach(p => circle(context, gaussianRand(radius, radius*3/4), p.x, p.y, '#fff'))
 }

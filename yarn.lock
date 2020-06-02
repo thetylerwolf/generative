@@ -2510,6 +2510,11 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
+dictionary-of-colour-combinations@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/dictionary-of-colour-combinations/-/dictionary-of-colour-combinations-1.0.2.tgz#c91be44c2c19349878adf6aeda2f801ce7f3165d"
+  integrity sha512-7IiYWH/oZvfxuXP9pyf+H6WgRRvgavKZ4NsKdHTzmSQJUCITqQj3aNEQFFlBvPc5tnIgAIczGaMvJxZce6Vp4w==
+
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"

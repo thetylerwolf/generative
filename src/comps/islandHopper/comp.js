@@ -1,10 +1,14 @@
 import { color } from '../../element'
 
-import drawBg from './drawBg.js'
-import drawTriangles from './drawTriangles.js'
-import drawBlob from './drawBlob.js'
+import drawBg from './drawBg'
+import drawTriangles from './drawTriangles'
+import drawBlob from './drawBlob'
+import drawBlob2 from './drawBlob2'
 
-const colors = color.bluegold
+// const colors = color.bluegold
+const colorIndex = Math.floor(Math.random() * color.colorDictionary.length)
+// const colors = color.colorDictionary[colorIndex]
+const colors = color.colorDictionary[113]
 
 export default function comp(config) {
 
@@ -28,10 +32,10 @@ export default function comp(config) {
 
   // drawBg(context, colors, '#ccdbff')
   drawBg(context, width, height, colors, '#fff')
-  drawTriangles(context, width, height)
+  // drawTriangles(context, width, height)
 
   context.globalAlpha = 1
 
-  drawBlob(context, colors)
+  drawBlob2(context, colors)
 
 }

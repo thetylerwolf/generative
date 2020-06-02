@@ -5,15 +5,6 @@ import { ColorSampler } from "~/technique";
 
 export default function drawTriangles(context, width, height) {
 
-  const spaceSampler = new ColorSampler({
-    width,
-    height,
-    colors: [0,0,0,1,1,1],
-    density: 10,
-    maxCenterRange: 500,
-    type: 'points'
-  })
-
   const divisions = 16,
     stopSplitChance = 0,
     curveChance = 0.5
@@ -36,16 +27,9 @@ export default function drawTriangles(context, width, height) {
 // return
   triangles.forEach((triangle,i) => {
 
-    let tCenter = {
-      x: (triangle.p1.x + triangle.p2.x + triangle.p3.x ) / 3,
-      y: (triangle.p1.y + triangle.p2.y + triangle.p3.y ) / 3,
-    }
-
-    let o = spaceSampler.getNearestColor(tCenter.x, tCenter.y, 1, 0)
     // if(o) o = 0.5
     // let c = chroma(colors[1]).brighten().alpha(+o)
-    let c = chroma('#fff').alpha(+o * 0.5)
-    if(+o) return
+    let c = chroma('#fff').alpha(0.5)
     // if(!(i%100)) console.log('o', o)
     // console.log(o)
 
@@ -57,7 +41,7 @@ export default function drawTriangles(context, width, height) {
 
     // context.fillStyle = c
     // context.strokeStyle = c
-    context.strokeStyle = c
+    context.strokeStyle = 'rgba(255,255,255,1)'
     // context.fillStyle = "#338"
 
     context.beginPath()

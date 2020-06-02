@@ -10,9 +10,9 @@ const report = {
 // import comp from './comp.js'
 
 // const canvas = new Canvas()
-
+const width = 2048
 const settings = {
-  dimensions: [ 2048, 2048 ],
+  dimensions: [ width, Math.round(width/1.5) ],
   // canvas,
 };
 
