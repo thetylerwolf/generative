@@ -4,14 +4,19 @@ import drawBg from './drawBg'
 import drawTriangles from './drawTriangles'
 import drawBlob from './drawBlob'
 import drawBlob2 from './drawBlob2'
+import { shuffle } from 'd3'
 
 // const colors = color.bluegold
 const colorIndex = Math.floor(Math.random() * color.colorDictionary.length)
 // const colors = color.colorDictionary[colorIndex]
 const colors = color.colorDictionary[76]
+// const colors = shuffle([...color.colorDictionary[130]])
 // const colors = [ 'rgb(18,53,78)', 'rgb(197,97,39)' ]
-// 113!¨¨¨
+// 113!
+// 2 colors
 // [/0, 24x, /50, 76, /84, 106?]
+// 3 colors
+// [121, 130, 153, 163, 178]
 export default function comp(config) {
 
   const {
@@ -33,8 +38,10 @@ export default function comp(config) {
   // colorIndex: 52
 
   // drawBg(context, colors, '#ccdbff')
-  drawBg(context, width, height, colors, '#fff')
+  // drawBg(context, width, height, colors.slice(0,2), colors[2])
+  drawBg(context, width, height, colors, 'rgba(248,237,67,0.05)')
   // drawTriangles(context, width, height)
+  // drawTriangles(context, width, height, '#000')
 
   context.globalAlpha = 1
 

@@ -10,11 +10,12 @@ const report = {
 // import comp from './comp.js'
 
 // const canvas = new Canvas()
-const width = 1024
+const height = 1024
 const settings = {
-  dimensions: [ width, Math.round(width/1.5) ],
+  // dimensions: [ Math.round(height/1.5), height ],
   // canvas,
-  // dimensions: 'a4',
+  dimensions: 'a4',
+  // dimensions: 'b0',
   pixelsPerInch: 300,
 };
 

@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 import { Point, Triangle } from "~/element";
 import { ColorSampler } from "~/technique";
 
-export default function drawTriangles(context, width, height) {
+export default function drawTriangles(context, width, height, color='#fff') {
 
   const spaceSampler = new ColorSampler({
     width,
@@ -44,7 +44,7 @@ export default function drawTriangles(context, width, height) {
     let o = spaceSampler.getNearestColor(tCenter.x, tCenter.y, 1, 0)
     // if(o) o = 0.5
     // let c = chroma(colors[1]).brighten().alpha(+o)
-    let c = chroma('#fff').alpha(+o * 0.5)
+    let c = chroma(color).alpha(+o * 0.5)
     if(+o) return
     // if(!(i%100)) console.log('o', o)
     // console.log(o)

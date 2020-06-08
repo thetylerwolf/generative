@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 import { Point, Triangle } from "~/element";
 import { ColorSampler } from "~/technique";
 
-export default function drawTriangles(context, width, height) {
+export default function drawTriangles(context, width, height, color='#fff') {
 
   const divisions = 16,
     stopSplitChance = 0,
@@ -15,8 +15,8 @@ export default function drawTriangles(context, width, height) {
   }
   // drawShapes()
 
-  context.globalAlpha = 0.5
-  context.lineWidth = 0.5
+  // context.globalAlpha = 0.5
+  // context.lineWidth = 0.5
 
 //   spaceSampler.colorCenters.forEach(c => {
 //     circle(context, 5, c.x, c.y, c.color === 1 ? 'blue' : 'green')
@@ -29,7 +29,7 @@ export default function drawTriangles(context, width, height) {
 
     // if(o) o = 0.5
     // let c = chroma(colors[1]).brighten().alpha(+o)
-    let c = chroma('#fff').alpha(0.5)
+    let c = chroma(color).alpha(0.5)
     // if(!(i%100)) console.log('o', o)
     // console.log(o)
 
