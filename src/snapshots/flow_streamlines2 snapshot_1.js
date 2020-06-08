@@ -1,28 +1,28 @@
-import niceColors from 'nice-color-palettes'
-import chroma from 'chroma-js'
-import { shuffle } from 'd3'
+const niceColors = require('nice-color-palettes')
+const chroma = require('chroma-js')
+const { shuffle } = require('d3')
 
-import {
+const {
   slicedStroke,
   pointBrush,
   noisePolygon,
   circle,
-} from '../brush'
+} = require('../brush')
 
-import {
+const {
   streamlines,
   streamlines2,
   poissonSampler,
   ColorSampler
-} from '../technique'
+} = require('../technique')
 
-import {
+const {
   curl,
   perlin,
   simplex,
   fractal
-} from '../noise'
-import { gaussianRand } from '../utils'
+} = require('../noise')
+const { gaussianRand } = require('../utils')
 
 const width = 960,
   height = 960

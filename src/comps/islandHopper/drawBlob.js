@@ -1,10 +1,7 @@
 const chroma = require('chroma-js')
 const SimplexNoise = require('simplex-noise')
 
-const {
-  // gaussianRand,
-  makeCanvas,
-} = require('../../utils')
+const createCanvas = require('canvas').createCanvas
 const {
   // poissonSampler,
   MarchingSquares,
@@ -16,7 +13,7 @@ const drawPolys = require('./drawPolys')
 
 module.exports = function drawBlob(context, colors) {
 
-  const sCanvas = makeCanvas(),
+  const sCanvas = createCanvas(),
     sCtx = sCanvas.getContext('2d')
 
   const { width, height } = context.canvas

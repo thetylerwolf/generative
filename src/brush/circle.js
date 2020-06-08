@@ -1,4 +1,4 @@
-export default function circle(ctx, radius, x, y, color) {
+module.exports = function circle(ctx, radius, x, y, color) {
 
   ctx.lineJoin = ctx.lineCap = 'round';
 

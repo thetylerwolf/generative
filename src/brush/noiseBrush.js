@@ -1,8 +1,8 @@
-import tooloud from 'tooloud'
+const tooloud = require('../lib/tooloud')
 
 const { noise } = tooloud.Simplex
 
-export default function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1, noiseFunction) {
+module.exports = function noiseBrush(ctx, length, direction, x, y, color, noiseScale=1, noiseFunction) {
   // TODO make this work
   //   let xDir = length * Math.cos( direction ),
   //       yDir = length * Math.sin( direction )

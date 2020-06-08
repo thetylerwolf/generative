@@ -14,7 +14,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(width, height, Math.sqrt(width*width + height*height)/15)
+  let pointData = poissonSampler(width, height, Math.sqrt(width*width + height*height)/2)
 
   // let pointData = []
   // for(let h = 100; h<canvas.height;h+=450) {

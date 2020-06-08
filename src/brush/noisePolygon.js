@@ -28,20 +28,18 @@ module.exports = function noisePolygon(context, baseRadius, centerX, centerY, nu
 
   context.beginPath()
 
-  let polygon = new Path2D()
-
   points.forEach((point,i) => {
     let from = point,
       to = points[i+1]
 
     if(!to) return
 
-    if(!i) polygon.moveTo(from[0], from[1])
-    polygon.lineTo(to[0], to[1])
+    if(!i) context.moveTo(from[0], from[1])
+    context.lineTo(to[0], to[1])
 
   })
 
-  polygon.closePath()
-  context.fill(polygon)
+  context.closePath()
+  context.fill()
 
 }

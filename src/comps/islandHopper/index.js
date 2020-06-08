@@ -1,6 +1,7 @@
 const canvasSketch = require('canvas-sketch')
 const createCanvas = require('canvas').createCanvas
 const comp = require('./comp')
+const fs = require('fs')
 
 // import canvasSketch from 'canvas-sketch'
 // import Canvas from 'canvas'
@@ -8,7 +9,7 @@ const comp = require('./comp')
 
 const report = {}
 
-const dimensions = [ 2048, 2048 ]
+const dimensions = [ 1024, 1024 ]
 const canvas = createCanvas()
 
 const settings = {
