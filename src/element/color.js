@@ -1,3 +1,27 @@
+const dictionary = require('dictionary-of-colour-combinations')
+
+const map = dictionary.reduce((map, color, i) => {
+  color.combinations.forEach(id => {
+    if (map.has(id)) map.get(id).push(i);
+    else map.set(id, [ i ]);
+  });
+  return map;
+}, new Map());
+
+const colorDictionary = [ ...map.entries() ]
+  .sort((a, b) => a[0] - b[0])
+  .map(e => e[0])
+  .map(n => {
+    let palette = []
+    dictionary.forEach(color => {
+      // console.log(color, color.combinations.indexOf(n), n)
+      if(color.combinations.indexOf(n) > -1) {
+        palette.push(color.rgb)
+      }
+    })
+    return palette
+  })
+
 module.exports = {
   bluesteel: [
     'rgba(255, 255, 255, 1)',
@@ -22,5 +46,6 @@ module.exports = {
     // '#ffD700'
     // '#aa6c39'
     '#7a6a29'
-  ]
+  ],
+  colorDictionary,
 }

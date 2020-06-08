@@ -29,8 +29,8 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     // gradientAngle: Math.PI,
   })
 
-  const maxRadius = 250,
-    pointRadius = Math.min(maxRadius, Math.sqrt(width*width + height*height) / 7),
+  const maxRadius = 1000,
+    pointRadius = Math.min(maxRadius, Math.sqrt(width*width + height*height) / 17),
     rVariance = 0.3 * pointRadius,
     wcSettings = {
       baseRadius: 0.2 * pointRadius,
@@ -48,7 +48,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   )
 
   context.globalAlpha = 0.015
-
+console.log(pointData.length, 'points')
   let wcs = pointData.map((point) => {
 
     let c = colorSampler.getNearestColor(point.x, point.y, 1, 0)
@@ -74,7 +74,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
 
     return wc
   }).filter(d => d)
-
+console.log('start wcs')
   wcs[0].distortedPolygons.forEach((p,i) => {
     wcs.forEach(wc => {
       context.fillStyle = wc.color

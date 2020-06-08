@@ -5,9 +5,9 @@
 // import drawBlob from './drawBlob.js'
 
 const { color } = require('../../element')
-const drawBg = require('./drawBg.js')
+const drawBg = require('./drawBg')
 // const drawTriangles = require('./drawTriangles.js')
-const drawBlob2 = require('./drawBlob2.js')
+const drawBlob2 = require('./drawBlob2')
 
 const colors = color.colorDictionary[76]
 // const colors = shuffle([...color.colorDictionary[130]])
@@ -17,7 +17,7 @@ const colors = color.colorDictionary[76]
 // [/0, 24x, /50, 76, /84, 106?]
 // 3 colors
 // [121, 130, 153, 163, 178]
-export default function comp(config) {
+module.exports = function comp(config) {
 
   const {
     width,
@@ -39,12 +39,14 @@ export default function comp(config) {
 
   // drawBg(context, colors, '#ccdbff')
   // drawBg(context, width, height, colors.slice(0,2), colors[2])
+  console.log('start bg')
   drawBg(context, width, height, colors, 'rgba(248,237,67,0.05)')
   // drawTriangles(context, width, height)
   // drawTriangles(context, width, height, '#000')
 
   context.globalAlpha = 1
 
+  console.log('start blob')
   drawBlob2(context, colors)
 
 }

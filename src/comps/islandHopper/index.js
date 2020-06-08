@@ -14,7 +14,9 @@ const canvas = createCanvas()
 
 const settings = {
   dimensions,
+  // dimensions: 'b0',
   canvas,
+  pixelsPerInch: 300,
 };
 
 const sketch = () => {
@@ -23,7 +25,7 @@ const sketch = () => {
     comp(config)
   };
 };
-console.log('hey!')
+
 canvasSketch(sketch, settings)
   .then(() => {
     // console.log('start!')

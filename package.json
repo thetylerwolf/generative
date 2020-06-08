@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --progress",
     "start": "cross-env NODE_ENV=development webpack-dev-server --node=development --inline --open",
-    "art": "nodemon --max-old-space-size=8192 --exec babel-node index.js"
+    "art": "nodemon --max-old-space-size=8192 ./src/comps/islandHopper/index.js",
+    "single": "node --max-old-space-size=8192 ./src/comps/islandHopper/index.js"
   },
   "author": "Tyler Wolf",
   "license": "UNLICENSED",
