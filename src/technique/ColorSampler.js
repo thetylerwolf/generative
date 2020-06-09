@@ -17,6 +17,7 @@ module.exports = class ColorSampler {
 
   constructor(params=defaultParams) {
 
+    const options = { ...defaultParams, ...params }
     const {
       width,
       height,
@@ -26,9 +27,9 @@ module.exports = class ColorSampler {
       type,
       gradientAngle,
       gradientSteps,
-    } = params
+    } = options
 
-    Object.assign(this, params)
+    Object.assign(this, options)
 
     this.colorPaths = []
     // radius so that colors.length # of points will fit and no more
@@ -68,10 +69,11 @@ module.exports = class ColorSampler {
       // TODO: This is a very naive implementation
       // try something that makes sense
       this.colorCenters.push({
-        x: width * (i/steps) * Math.cos(gAngle),
-        y: height * (i/steps) * Math.sin(gAngle),
+        x: width - width * (i/steps) * Math.cos(gAngle),
+        y: height - height * (i/steps) * Math.sin(gAngle),
         color: scale( i/steps ) || 'rgba(255,255,255,0)',
       })
+
     }
 
   }

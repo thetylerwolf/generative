@@ -11,12 +11,15 @@ const {
 // } = require('~/brush')
 const drawTriangles = require('./drawTriangles2')
 
-module.exports = function drawBlob(context, colors) {
+module.exports = function drawBlob(context, colors, bgColor) {
 
   const { width, height } = context.canvas
 
   const sCanvas = createCanvas(width, height),
     sCtx = sCanvas.getContext('2d')
+
+    const tCanvas = createCanvas(width, height),
+      tCtx = tCanvas.getContext('2d')
 
   // document.body.append(sCanvas)
 
@@ -38,7 +41,7 @@ module.exports = function drawBlob(context, colors) {
     width: width,
     height: height,
     padding: 0,
-    cell_dim: 2,
+    cell_dim: Math.floor(width * 2/960),
     context: sCtx,
   }
 
@@ -48,7 +51,7 @@ module.exports = function drawBlob(context, colors) {
   }
 
   let ms = new MarchingSquares(params)
-  let ms2 = new MarchingSquares(params2)
+  // let ms2 = new MarchingSquares(params2)
 
   sCtx.globalAlpha = 1
   let dx = -width / 2 + Math.random() * width,
@@ -59,29 +62,28 @@ module.exports = function drawBlob(context, colors) {
   ms.draw()
   sCtx.restore()
 
-  dx = -width / 2 + Math.random() * width,
-  dy = -height / 2 + Math.random() * height
-  sCtx.save()
-  sCtx.translate(dx, dy)
-  ms2.draw()
-  sCtx.restore()
-
-  dx = -width / 2 + Math.random() * width,
-  dy = -height / 2 + Math.random() * height
-  sCtx.save()
-  sCtx.translate(dx, dy)
-  ms2.draw()
-  sCtx.restore()
+  // dx = -width / 2 + Math.random() * width,
+  // dy = -height / 2 + Math.random() * height
+  // sCtx.save()
+  // sCtx.translate(dx, dy)
+  // ms2.draw()
+  // sCtx.restore()
 
   sCtx.globalCompositeOperation = 'source-atop'
 
   // drawBg2(sCtx, paintColors, '#c0c0c0')
   sCtx.drawImage(context.canvas, 0, 0)
 
-  sCtx.globalAlpha = 0.5
-  sCtx.strokeWidth = width * 1.3 / 960
+  tCtx.lineWidth = height * 1 / 1024
+  tCtx.lineCap = 'round'
+  tCtx.lineJoin = 'round'
+  if(height > 5000) tCtx.lineWidth = height * 0.75 / 960
+  console.log(height, tCtx.lineWidth)
 
-  drawTriangles(sCtx, width, height, '#fff')
+  drawTriangles(tCtx, width, height, bgColor)
+
+  sCtx.globalAlpha = 0.75
+  sCtx.drawImage(tCanvas, 0, 0)
 
   context.globalAlpha = 1
   context.drawImage(sCanvas, 0, 0)

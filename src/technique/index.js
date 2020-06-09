@@ -6,6 +6,7 @@ const poissonSampler = require('./poissonSampler')
 const streamlines2 = require('./streamlines2')
 const chaikin = require('./chaikin')
 const MarchingSquares = require('./MarchingSquares')
+const flowField = require('./flowField')
 
 module.exports = {
   ImageSampler,
@@ -16,4 +17,5 @@ module.exports = {
   ColorSampler,
   chaikin,
   MarchingSquares,
+  flowField,
 }

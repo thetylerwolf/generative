@@ -8,8 +8,11 @@ const { color } = require('../../element')
 const drawBg = require('./drawBg')
 // const drawTriangles = require('./drawTriangles.js')
 const drawBlob2 = require('./drawBlob2')
+const drawGrain = require('./drawGrain')
 
 const colors = color.colorDictionary[76]
+const bgColor = '#FFFEF6'
+// const bgColor = '#fff'
 // const colors = shuffle([...color.colorDictionary[130]])
 // const colors = [ 'rgb(18,53,78)', 'rgb(197,97,39)' ]
 // 113!
@@ -40,13 +43,16 @@ module.exports = function comp(config) {
   // drawBg(context, colors, '#ccdbff')
   // drawBg(context, width, height, colors.slice(0,2), colors[2])
   console.log('start bg')
-  drawBg(context, width, height, colors, 'rgba(248,237,67,0.05)')
+  drawBg(context, width, height, colors, bgColor)
   // drawTriangles(context, width, height)
   // drawTriangles(context, width, height, '#000')
 
   context.globalAlpha = 1
 
   console.log('start blob')
-  drawBlob2(context, colors)
+  // drawBlob2(context, colors, bgColor)
+
+  console.log('start grain')
+  drawGrain(context, width, height)
 
 }

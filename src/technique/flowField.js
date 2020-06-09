@@ -1,5 +1,3 @@
-const d3 = require('d3')
-
 function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
   let params = {
     discontinuationRate: 0.009,

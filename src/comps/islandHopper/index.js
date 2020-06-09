@@ -1,7 +1,7 @@
 const canvasSketch = require('canvas-sketch')
 const createCanvas = require('canvas').createCanvas
 const comp = require('./comp')
-const fs = require('fs')
+// const fs = require('fs')
 
 // import canvasSketch from 'canvas-sketch'
 // import Canvas from 'canvas'
@@ -9,13 +9,14 @@ const fs = require('fs')
 
 const report = {}
 
-const dimensions = [ 1024, 1024 ]
+const height = 1024,
+dimensions = [ height/1.5, height ]
 const canvas = createCanvas()
 
 const settings = {
-  // dimensions,
+  dimensions,
   // dimensions: 'a4',
-  dimensions: 'b0',
+  // dimensions: 'b0',
   canvas,
   pixelsPerInch: 300,
 };
@@ -37,3 +38,10 @@ canvasSketch(sketch, settings)
     // stream.pipe(out);
     // out.on('finish', () => console.log('Done rendering'));
   });
+
+function download() {
+  let link = document.createElement('a');
+  link.download = 'filename.png';
+  link.href = document.getElementById('canvas').toDataURL()
+  link.click();
+}

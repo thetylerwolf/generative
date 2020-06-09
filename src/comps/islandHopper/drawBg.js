@@ -18,19 +18,26 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   context.rect(0, 0, width, height)
   context.fill()
 // return
+
+  let color0 = colors[0],
+    color2 = colors[1],
+    color1 = chroma.mix(color0, color2, 0.95)
+    // color3 = chroma.mix(color2, chroma(color2).brighten(), 0.15).css()
+
   let colorSampler = new ColorSampler({
     width,
     height,
     // colors: [colors[2], colors[5], colors[2], colors[5]],
-    colors: [...colors, ...colors, ...colors, ...colors],
+    // colors: [...colors, ...colors, ...colors, ...colors],
+    colors: [ color0, color1, color2 ],
     density: 20,
     // maxCenterRange: 500,
-    type: 'points',
-    // gradientAngle: Math.PI,
+    type: 'gradient',
   })
 
-  const maxRadius = 1000,
-    pointRadius = Math.min(maxRadius, Math.sqrt(width*width + height*height) / 17),
+  const minRadius = height/15,
+    maxRadius = height/3,
+    pointRadius = Math.max(minRadius, Math.min(maxRadius, Math.sqrt(width*width + height*height) / 17)),
     rVariance = 0.3 * pointRadius,
     wcSettings = {
       baseRadius: 0.2 * pointRadius,
@@ -56,8 +63,8 @@ console.log(pointData.length + ' points')
 
     c = chroma(c)
 
-    // c = c.brighten(gaussianRand(0.5,0.2))
-    c = c.darken(gaussianRand(0.5,0.2))
+    c = c.brighten(gaussianRand(0.5,0.2))
+    // c = c.darken(gaussianRand(0.5,0.2))
     c = c.desaturate(gaussianRand(0,0.2))
 
     c = c.css()
