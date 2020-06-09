@@ -1,6 +1,6 @@
 const chroma = require('chroma-js')
 const { poissonSampler, ColorSampler } = require("../../technique")
-const { WaterColor } = require("../../brush")
+const { WaterColor, circle } = require("../../brush")
 const { gaussianRand } = require('../../utils')
 
 module.exports = function drawBg(context, width, height, colors, bgColor) {
@@ -89,8 +89,8 @@ console.log('start wcs')
     })
   })
 
-  // drawCircles(context, width, height, 400, 2)
-  // drawCircles(context, width, height, 250, 5)
+  drawCircles(context, width, height, 400, 20)
+  drawCircles(context, width, height, 250, 5)
   // drawCircles(context, width, height, 250, 5)
 
   function drawPolygon(points) {
@@ -123,5 +123,12 @@ function drawCircles(context, width, height, density, radius) {
     Math.sqrt(width*width + height*height) / density
   )
 
-  points.forEach(p => circle(context, gaussianRand(radius, radius*3/4), p.x, p.y, '#fff'))
+  points.forEach(p => {
+    const r = gaussianRand(radius, radius/4)
+
+    const gradient = context.createRadialGradient(p.x, p.y, 0, p.x, p.y, r)
+    gradient.addColorStop(0, 'rgba(255,255,255,1)')
+    gradient.addColorStop(1, 'rgba(255,255,255,0.05)')
+    circle(context, r, p.x, p.y, gradient)
+  })
 }

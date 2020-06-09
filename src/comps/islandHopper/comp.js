@@ -50,9 +50,9 @@ module.exports = function comp(config) {
   context.globalAlpha = 1
 
   console.log('start blob')
-  // drawBlob2(context, colors, bgColor)
+  drawBlob2(context, colors, bgColor)
 
-  console.log('start grain')
-  drawGrain(context, width, height)
+  // console.log('start grain')
+  // drawGrain(context, width, height)
 
 }

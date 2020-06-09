@@ -14,8 +14,8 @@ dimensions = [ height/1.5, height ]
 const canvas = createCanvas()
 
 const settings = {
-  dimensions,
-  // dimensions: 'a4',
+  // dimensions,
+  dimensions: 'a4',
   // dimensions: 'b0',
   canvas,
   pixelsPerInch: 300,

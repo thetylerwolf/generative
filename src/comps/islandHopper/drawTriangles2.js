@@ -5,7 +5,7 @@ const { ColorSampler } = require("../../technique")
 
 module.exports = function drawTriangles(context, width, height, color='#fff') {
 
-  const divisions = 15,
+  const divisions = 14,
     stopSplitChance = 0,
     curveChance = 0.5
 

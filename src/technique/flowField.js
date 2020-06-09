@@ -1,4 +1,4 @@
-function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
+function lineTracer (startLocation, fieldFn, incomingParams) {
   let params = {
     discontinuationRate: 0.009,
     maxLineLength: 200,
@@ -42,19 +42,10 @@ function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
 
     lineLength += Math.sqrt(dx * dx + dy * dy)
 
-    // Use quadtree to track where previous lines had been,
-    // so to not have them run into each other
-    const hasCloseNeighbour = quadtree.find(next.x, next.y, params.testDist)
-    if (hasCloseNeighbour) { keepGoing = false; }
-
     l.push(next)
 
     keepGoing = Math.random() > params.discontinuationRate && keepGoing && lineLength < params.maxLineLength
 
-  }
-
-  if (l.length > 1) {
-    quadtree.addAll(l)
   }
 
   return l
@@ -66,24 +57,19 @@ module.exports = function linesGenerator(startingPoints, fieldFn, incomingParams
     ...incomingParams
   }
 
-  let quadtree = d3.quadtree()
-                .x(d => d.x)
-                .y(d => d.y)
-
   let lines = []
 
   startingPoints.forEach((point) => {
-    if (!quadtree.find(point.x, point.y, params.minStartSpace)) {
 
       let { maxLineLength } = params
       if(params.lineLengthFn) maxLineLength = params.lineLengthFn(point.x, point.y)
 
       if(maxLineLength > 0) {
-        let l = lineTracer(point, fieldFn, quadtree, { ...params, maxLineLength })
+        let l = lineTracer(point, fieldFn, { ...params, maxLineLength })
 
         if (l.length > 1) { lines.push(l) }
       }
-    }
+
   })
 
   return lines
