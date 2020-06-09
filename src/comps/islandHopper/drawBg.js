@@ -48,7 +48,7 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   )
 
   context.globalAlpha = 0.015
-console.log(pointData.length, 'points')
+console.log(pointData.length + ' points')
   let wcs = pointData.map((point) => {
 
     let c = colorSampler.getNearestColor(point.x, point.y, 1, 0)
