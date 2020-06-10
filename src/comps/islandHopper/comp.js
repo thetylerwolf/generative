@@ -8,7 +8,8 @@ const { color } = require('../../element')
 const drawBg = require('./drawBg')
 // const drawTriangles = require('./drawTriangles.js')
 const drawBlob2 = require('./drawBlob2')
-const drawGrain = require('./drawGrain')
+const drawBlob3 = require('./drawBlob3')
+// const drawGrain = require('./drawGrain')
 
 const colors = color.colorDictionary[76]
 const bgColor = '#FFFEF6'
@@ -50,7 +51,8 @@ module.exports = function comp(config) {
   context.globalAlpha = 1
 
   console.log('start blob')
-  drawBlob2(context, colors, bgColor)
+  // drawBlob2(context, colors, bgColor)
+  drawBlob3(context, colors, bgColor)
 
   // console.log('start grain')
   // drawGrain(context, width, height)

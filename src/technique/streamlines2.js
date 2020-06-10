@@ -6,6 +6,7 @@ function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
     maxLineLength: 200,
     resolution: 12,
     testDist: 3,
+    inBoundsFunction: () => true,
     ...incomingParams
   }
 
@@ -49,9 +50,11 @@ function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
     const hasCloseNeighbour = quadtree.find(next.x, next.y, params.testDist)
     if (hasCloseNeighbour) { keepGoing = false; }
 
-    l.push(next)
+    let inBounds = params.inBoundsFunction(next.x, next.y)
 
-    keepGoing = Math.random() > params.discontinuationRate && keepGoing && lineLength < params.maxLineLength
+    if(inBounds) l.push(next)
+
+    keepGoing = Math.random() > params.discontinuationRate && inBounds && keepGoing && lineLength < params.maxLineLength
 
   }
 

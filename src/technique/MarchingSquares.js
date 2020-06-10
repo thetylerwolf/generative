@@ -174,6 +174,7 @@ module.exports = class MarchingSquares {
 
     if (gradient === 'fill') return 0;
     if (gradient === 'linear') return y / nx - 0.5;
+    if (gradient === 'linear-reverse') return nx / y - 0.5;
     if (gradient === 'radial') return 0.2 - this.distance_from_center(x, y) / (nx / 2);
     if (gradient === 'ring') return -Math.abs(-1 + this.distance_from_center(x, y) / (nx / 4));
   }

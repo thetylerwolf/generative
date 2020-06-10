@@ -70,24 +70,23 @@ module.exports = function drawBlob(context, colors, bgColor) {
   // ms2.draw()
   // sCtx.restore()
 
-  sCtx.globalCompositeOperation = 'source-atop'
+  // sCtx.globalCompositeOperation = 'source-atop'
 
   // drawBg2(sCtx, paintColors, '#c0c0c0')
-  sCtx.drawImage(context.canvas, 0, 0)
+  // sCtx.drawImage(context.canvas, 0, 0)
 
-  tCtx.lineWidth = height * 1 / 1024
+  // context.lineWidth = height * 1 / 1024
   tCtx.lineCap = 'round'
   tCtx.lineJoin = 'round'
-  if(height > 5000) tCtx.lineWidth = height * 0.75 / 960
-  console.log(height, tCtx.lineWidth)
 
   // drawTriangles(tCtx, width, height, bgColor)
-  drawLines(tCtx, width, height, bgColor)
+  tCtx.globalAlpha = 1
+  drawLines(sCtx, tCtx, width, height, bgColor)
 
-  sCtx.globalAlpha = 0.75
-  sCtx.drawImage(tCanvas, 0, 0)
+  // sCtx.globalAlpha = 0.75
+  // sCtx.drawImage(tCanvas, 0, 0)
 
-  context.globalAlpha = 1
-  context.drawImage(sCanvas, 0, 0)
+  context.globalAlpha = 0.75
+  context.drawImage(tCanvas, 0, 0)
 
 }

@@ -13,20 +13,18 @@
   "author": "Tyler Wolf",
   "license": "UNLICENSED",
   "dependencies": {
+    "canvas": "^2.6.1",
+    "canvas-sketch": "^0.7.3",
     "chroma-js": "^2.0.3",
     "d3": "^5.15.1",
+    "dictionary-of-colour-combinations": "^1.0.2",
     "nice-color-palettes": "^3.0.0",
     "pixi.js": "^5.0.3",
     "simplex-noise": "^2.4.0",
     "three": "^0.105.1",
-    "tooloud": "^2.0.4",
-    "canvas": "^2.6.1",
-    "canvas-sketch": "^0.7.3"
+    "tooloud": "^2.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.1",
-    "@babel/node": "^7.10.1",
-    "@babel/preset-env": "^7.10.1",
     "ajv": "^6.5.3",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
