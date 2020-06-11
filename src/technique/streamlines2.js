@@ -4,6 +4,7 @@ function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
   let params = {
     discontinuationRate: 0.009,
     maxLineLength: 200,
+    minLineLength: 0,
     resolution: 12,
     testDist: 3,
     inBoundsFunction: () => true,
@@ -58,11 +59,11 @@ function lineTracer (startLocation, fieldFn, quadtree, incomingParams) {
 
   }
 
-  if (l.length > 1) {
+  if (l.length > 1 && lineLength > params.minLineLength) {
     quadtree.addAll(l)
   }
 
-  return l
+  return lineLength > params.minLineLength ? l : []
 }
 
 module.exports = function linesGenerator(startingPoints, fieldFn, incomingParams) {

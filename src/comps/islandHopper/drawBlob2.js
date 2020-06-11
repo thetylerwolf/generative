@@ -81,8 +81,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
   if(height > 5000) tCtx.lineWidth = height * 0.75 / 960
   console.log(height, tCtx.lineWidth)
 
-  // drawTriangles(tCtx, width, height, bgColor)
-  drawLines(tCtx, width, height, bgColor)
+  drawTriangles(tCtx, width, height, bgColor)
 
   sCtx.globalAlpha = 0.75
   sCtx.drawImage(tCanvas, 0, 0)

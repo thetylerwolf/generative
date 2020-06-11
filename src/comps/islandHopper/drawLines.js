@@ -18,8 +18,9 @@ module.exports = function drawLines(sourceCtx, context, width, height, color) {
     width,
     height,
     resolution: lineThickness,
-    maxLineLength: height * 60/960,
-    testDist: 1.05 * lineThickness,
+    maxLineLength: height * 200/960,
+    minLineLength: height * 10/960,
+    testDist: 1.3 * lineThickness,
     inBoundsFunction: (x,y) => {
       const data = sourceCtx.getImageData(x, y, 1, 1).data
       const [ r, g, b, a ] = data
@@ -30,19 +31,19 @@ module.exports = function drawLines(sourceCtx, context, width, height, color) {
   let pointData = poissonSampler(
     width,
     height,
-    1.7 * lineThickness
+    1.3 * lineThickness
   )
-  shuffle(pointData)
+  // shuffle(pointData)
 
   let lines = streamlines2(pointData, (x, y) => {
-    let noiseFactor = 0.005,
+    let noiseFactor = 0.003,
       xIn = x * noiseFactor,
       yIn = y * noiseFactor
 
     // let v = perlin.noise(xIn, yIn, 0)
     // let t = (Date.now() % 10)
-    let [x2, y2] = curl(xIn, yIn, 0 )
-    let v = Math.atan(x2, y2)
+    let [dx, dy] = curl(xIn, yIn, 0 )
+    let v = Math.atan(dx, dy)
     // return { x: x1, y: y1 }
     return v
     // return v * 1.9 * Math.PI - Math.PI/2
