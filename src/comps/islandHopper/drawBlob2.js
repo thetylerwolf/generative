@@ -10,9 +10,10 @@ const {
 //   WaterColor,
 // } = require('~/brush')
 const drawTriangles = require('./drawTriangles2')
-const drawLines = require('./drawLines')
 
 module.exports = function drawBlob(context, colors, bgColor) {
+
+  const linesColor = chroma.mix('rgba(248,237,67,1)', '#fff', 0.75) || bgColor
 
   const { width, height } = context.canvas
 
@@ -48,7 +49,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
 
   const params2 = {
     ...params,
-    noiseFunction: (x,y,z) => simplex2.noise3D(x/2,y,z),
+    noiseFunction: (x,y,z) => simplex2.noise3D(x/2,2*y,z),
   }
 
   let ms = new MarchingSquares(params)
@@ -56,7 +57,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
 
   sCtx.globalAlpha = 1
   let dx = -width / 2 + Math.random() * width,
-    dy = -height / 2 + Math.random() * height * 3/4
+    dy = -height / 2 + Math.random() * height * 1/2
   sCtx.save()
   sCtx.translate(dx, dy)
   // ms.trace()
@@ -79,9 +80,9 @@ module.exports = function drawBlob(context, colors, bgColor) {
   tCtx.lineCap = 'round'
   tCtx.lineJoin = 'round'
   if(height > 5000) tCtx.lineWidth = height * 0.75 / 960
-  console.log(height, tCtx.lineWidth)
 
-  drawTriangles(tCtx, width, height, bgColor)
+
+  drawTriangles(tCtx, width, height, linesColor)
 
   sCtx.globalAlpha = 0.75
   sCtx.drawImage(tCanvas, 0, 0)

@@ -29,7 +29,6 @@ module.exports = function drawTriangles(context, width, height, color='#fff') {
 
     // if(o) o = 0.5
     // let c = chroma(colors[1]).brighten().alpha(+o)
-    let c = chroma(color).alpha(0.5)
     // if(!(i%100)) console.log('o', o)
     // console.log(o)
 
@@ -37,11 +36,13 @@ module.exports = function drawTriangles(context, width, height, color='#fff') {
     // c = c.hsl()
     // c[3] += -0.5 + Math.random() * 0.5
     // c = chroma.hsl(...c)
-    c = c.css()
+
+    // let c = chroma(color).alpha(0.5)
+    // c = c.css()
 
     // context.fillStyle = c
     // context.strokeStyle = c
-    context.strokeStyle = 'rgba(255,255,255,1)'
+    context.strokeStyle = color
     // context.fillStyle = "#338"
 
     context.beginPath()

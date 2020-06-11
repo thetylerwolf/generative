@@ -29,22 +29,24 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     height,
     // colors: [colors[2], colors[5], colors[2], colors[5]],
     // colors: [...colors, ...colors, ...colors, ...colors],
-    colors: [ color0, color2 ],
+    colors: [ color0, color1, color2 ],
+    // colors,
     density: 20,
     // maxCenterRange: 500,
     type: 'gradient',
+    // type: 'points',
   })
 
   const minRadius = height/15,
     maxRadius = height/3,
-    pointRadius = Math.max(minRadius, Math.min(maxRadius, Math.sqrt(width*width + height*height) / 17)),
+    pointRadius = Math.max(minRadius, Math.min(maxRadius, Math.sqrt(width*width + height*height) / 15)),
     rVariance = 0.3 * pointRadius,
     wcSettings = {
-      baseRadius: 0.2 * pointRadius,
+      baseRadius: 0.3 * pointRadius,
       numPoints: 6,
       subdivisions: 7,
       initialrVariance: rVariance,
-      numLayers: 30,
+      numLayers: 35,
       noiseFunction: () => Math.random(),
     }
 
@@ -53,9 +55,9 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     height,
     pointRadius
   )
-
-  context.globalAlpha = 0.015
 console.log(pointData.length + ' points')
+  context.globalAlpha = 0.015
+
   let wcs = pointData.map((point) => {
 
     let c = colorSampler.getNearestColor(point.x, point.y, 1, 0)
@@ -63,10 +65,11 @@ console.log(pointData.length + ' points')
 
     c = chroma(c)
 
-    c = c.brighten(gaussianRand(0.5,0.2))
-    // c = c.darken(gaussianRand(0.5,0.2))
-    c = c.desaturate(gaussianRand(0,0.2))
+    // c = c.brighten(gaussianRand(0.5,0.2))
+    c = c.darken(gaussianRand(0.5,0.2))
+    c = c.desaturate(gaussianRand(0.1,0.2))
 
+    // c = chroma.mix(c, '#fff', 0.1)
     c = c.css()
 
     let wc = new WaterColor(context, {
@@ -81,7 +84,7 @@ console.log(pointData.length + ' points')
 
     return wc
   }).filter(d => d)
-console.log('start wcs')
+
   wcs[0].distortedPolygons.forEach((p,i) => {
     wcs.forEach(wc => {
       context.fillStyle = wc.color
@@ -89,9 +92,15 @@ console.log('start wcs')
     })
   })
 
-  drawCircles(context, width, height, 400, 20)
-  drawCircles(context, width, height, 250, 5)
+  drawCircles(context, width, height, 500, 30)
+  drawCircles(context, width, height, 500, 20)
+  drawCircles(context, width, height, 500, 30)
   // drawCircles(context, width, height, 250, 5)
+
+  context.globalAlpha = 0.05
+  context.fillStyle = '#fff'
+  context.rect(0, 0, width, height)
+  context.fill()
 
   function drawPolygon(points) {
     // console.log(points.length)
@@ -120,7 +129,7 @@ function drawCircles(context, width, height, density, radius) {
   let points = poissonSampler(
     width,
     height,
-    Math.sqrt(width*width + height*height) / density
+    Math.max(width, height) / density
   )
 
   points.forEach(p => {

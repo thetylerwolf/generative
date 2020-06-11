@@ -12,7 +12,10 @@ const {
 const drawTriangles = require('./drawTriangles2')
 const drawLines = require('./drawLines')
 
+
 module.exports = function drawBlob(context, colors, bgColor) {
+
+  const linesColor = chroma.mix('rgba(248,237,67,1)', '#fff', 0.75) || bgColor
 
   const { width, height } = context.canvas
 
@@ -56,7 +59,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
 
   sCtx.globalAlpha = 1
   let dx = -width / 2 + Math.random() * width,
-    dy = -height / 2 + Math.random() * height * 3/4
+    dy = -height / 2 + Math.random() * height/3
   sCtx.save()
   sCtx.translate(dx, dy)
   // ms.trace()
@@ -81,7 +84,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
 
   // drawTriangles(tCtx, width, height, bgColor)
   tCtx.globalAlpha = 1
-  drawLines(sCtx, tCtx, width, height, bgColor)
+  drawLines(sCtx, tCtx, width, height, linesColor)
 
   // sCtx.globalAlpha = 0.75
   // sCtx.drawImage(tCanvas, 0, 0)
