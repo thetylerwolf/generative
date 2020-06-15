@@ -26,4 +26,5 @@
 // import './3d/sphereSpline.js'
 
 // import './comps/islandHopper'
-require('./comps/islandHopper')
+// require('./comps/islandHopper')
+require('./comps/islandHopper_wide')

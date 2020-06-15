@@ -28,11 +28,12 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     width,
     height,
     // colors: [colors[2], colors[5], colors[2], colors[5]],
-    // colors: [...colors, ...colors, ...colors, ...colors],
-    colors: [ color0, color1, color2 ],
+    colors: [...colors, ...colors, ...colors, ...colors],
+    // colors: [ color0, color1, color2 ],
     density: 20,
     // maxCenterRange: 500,
-    type: 'gradient',
+    // type: 'gradient',
+    type: 'points',
   })
 
   const minRadius = height/15,
