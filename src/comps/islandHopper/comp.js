@@ -13,6 +13,8 @@ const drawBlob3 = require('./drawBlob3')
 // const drawGrain = require('./drawGrain')
 
 const colors = color.colorDictionary[76]
+// const colors = [ 'rgba(0,57,144,1)', 'rgba(52,69,76,1)' ]
+// const bgColor = '#FFFFFF'
 const bgColor = '#FFFEF6'
 console.log(colors)
 // const bgColor = '#fff'

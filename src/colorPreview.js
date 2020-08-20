@@ -5,11 +5,14 @@ import niceColors from 'nice-color-palettes'
 let colorPicks = d3.range(niceColors.length)
 let picked = []
 
-let container = d3.selectAll('div')
+let body = d3.select('body')
+  .style('display', 'block')
+
+let container = body.selectAll('div')
   .data(colorPicks)
   .join('div')
-  .style('display', 'flex')
-  .style('margin', '30px')
+    .style('display', 'flex')
+    .style('margin', '30px')
 
 container
   .selectAll('div')
@@ -21,7 +24,7 @@ container
 
 container
   .append('text')
-  .text((d) => d)
+  .text((d) => d + ' - ' + niceColors[d])
   .style('margin-left', '10px')
 
 // container.append('br')

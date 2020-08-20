@@ -1,4 +1,5 @@
 // import './colorPreview'
+// import './colorPreview2'
 
 // import './MSTest'
 // import './ColorSamplerTest'
@@ -25,6 +26,6 @@
 // import './3d/cylinderTracks.js'
 // import './3d/sphereSpline.js'
 
-// import './comps/islandHopper'
+import './comps/islandHopper'
 // require('./comps/islandHopper')
-require('./comps/islandHopper_wide')
+// require('./comps/islandHopper_wide')
