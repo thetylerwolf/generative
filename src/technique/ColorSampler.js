@@ -71,7 +71,7 @@ module.exports = class ColorSampler {
       this.colorCenters.push({
         x: width - width * (i/steps) * Math.cos(gAngle),
         y: height - height * (i/steps) * Math.sin(gAngle),
-        color: scale( i/steps ) || 'rgba(255,255,255,0)',
+        color: scale( i/steps )._rgb || 'rgba(255,255,255,0)',
       })
 
     }

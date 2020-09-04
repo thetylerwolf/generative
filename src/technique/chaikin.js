@@ -1,3 +1,5 @@
+// arr = array of points [x,y]
+// num = number of iterations
 module.exports = function chaikin(arr, num) {
   if (num === 0) return arr;
   const l = arr.length;

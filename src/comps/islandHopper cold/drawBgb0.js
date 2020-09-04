@@ -29,11 +29,11 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     height,
     // colors: [colors[2], colors[5], colors[2], colors[5]],
     // colors: [...colors, ...colors, ...colors, ...colors],
-    colors: [ color0, color1, color2 ],
-    // colors,
+    // colors: [ color0, color1, color2 ],
+    colors,
     density: 20,
     // maxCenterRange: 500,
-    type: 'gradient',
+    // type: 'gradient',
     // type: 'points',
   })
 
@@ -93,9 +93,9 @@ console.log('radius ' + pointRadius)
     })
   })
 
-  drawCircles(context, width, height, 500, 30)
-  drawCircles(context, width, height, 500, 20)
-  drawCircles(context, width, height, 500, 30)
+  drawCircles(context, width, height, height * 500 / 16701, height * 30 / 16701)
+  drawCircles(context, width, height, height * 500 / 16701, height * 20 / 16701)
+  drawCircles(context, width, height, height * 500 / 16701, height * 30 / 16701)
   // drawCircles(context, width, height, 250, 5)
 
   context.globalAlpha = 0.05

@@ -1,7 +1,7 @@
-const makeCanvas = require('./makeCanvas')
-const { gaussianRand } = require('./random')
+import makeCanvas from './makeCanvas'
+import { gaussianRand } from './random'
 
-module.exports = {
+export {
   makeCanvas,
   gaussianRand,
 }

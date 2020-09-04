@@ -16,7 +16,7 @@
     "canvas": "^2.6.1",
     "canvas-sketch": "^0.7.3",
     "chroma-js": "^2.0.3",
-    "d3": "^5.15.1",
+    "d3": "^5.16.0",
     "dictionary-of-colour-combinations": "^1.0.2",
     "nice-color-palettes": "^3.0.0",
     "pixi.js": "^5.0.3",

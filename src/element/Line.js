@@ -1,19 +1,24 @@
-const Point = require("./Point")
-const { gaussianRand } = require("../utils")
+import Point from "./Point"
+import { gaussianRand } from "../utils"
 
-module.exports = class Line {
+export default class Line {
 
   constructor(points=[]) {
     this.points = points.map(p => p.copy())
     this.length = Line.lineLength(points)
   }
 
-  shiftPoints(amount=10) {
+  shiftPoints(amount=10, amountY) {
 
     this.points.forEach((p,i) => {
       if(!i || i === p.length-1) return
-      p.x += gaussianRand(amount, amount * 0.2)
-      p.y += gaussianRand(amount, amount * 0.2)
+
+      const x = amount,
+        y = +amountY ? amountY : amount
+
+      p.x += gaussianRand(0, amount * 0.2)
+      p.y += gaussianRand(0, y * 0.2)
+
     })
   }
 

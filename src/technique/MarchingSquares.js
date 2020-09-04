@@ -17,6 +17,8 @@ const defaultParams = {
   height: 300,
   padding: 0,
   cell_dim: 2,
+  // A normalized x,y of width and height
+  center: [ 0.5, 0.5 ],
   noiseFunction: (x,y,z) => simplex.noise3D(x,y,z),
 };
 
@@ -180,9 +182,10 @@ module.exports = class MarchingSquares {
   }
 
   distance_from_center(x, y) {
-    const { ny, nx } = this
+    const { ny, nx } = this,
+      [ centerX, centerY ] = this.center
 
-    return Math.sqrt(Math.pow(nx / 2 - x, 2) + Math.pow(ny / 2 - y, 2));
+    return Math.sqrt(Math.pow(nx * centerX - x, 2) + Math.pow(ny * centerY - y, 2));
   }
 
   sum_octave(num_iterations, x, y) {
