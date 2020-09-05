@@ -3,10 +3,12 @@ import * as d3 from 'd3'
 import * as PIXI from 'pixi.js'
 import chaikin from '../../technique/chaikin'
 import { color, Line, Point } from '../../element'
-import { pointBrush } from '../../brush'
+import { pointBrush, circle } from '../../brush'
 import { gaussianRand } from '../../utils'
 import { ColorSampler } from '../../technique'
 import { perlin } from '../../noise'
+import poissonSampler from '../../technique/poissonSampler'
+
 
 // import drawBg from './drawBg.js'
 // import drawTriangles from './drawTriangles.js'
@@ -30,12 +32,6 @@ export default function comp(config) {
     noiseResolution = 0.0006,
     lineWidth = 80
 
-  context.beginPath();
-  context.fillStyle = bgColor
-  context.fillRect(0, 0, width, height);
-
-  context.fill();
-  context.closePath()
 //   const app = new PIXI.Application({
 //     antialias: true,
 //     width,
@@ -59,6 +55,15 @@ export default function comp(config) {
     type: 'gradient',
   })
 
+  context.beginPath();
+  context.fillStyle = bgColor
+  context.fillRect(0, 0, width, height);
+
+  context.fill();
+  context.closePath()
+
+  // drawCircles(height * 500 / width, height * 30 / width)
+
   makeLine()
   drawSquares()
   drawLine()
@@ -69,7 +74,7 @@ export default function comp(config) {
       end = line.points[1],
       curve = []
 
-    for(let i=1; i<3; i++) {
+    for(let i=1; i<2; i++) {
       let curvePoint = Line.pointOnLine(start,end,0.25 * i)
       curvePoint.shift(0, height/4)
       curve.push(curvePoint)
@@ -181,6 +186,23 @@ export default function comp(config) {
 
   function squareSize() {
     return d3.randomNormal(15, 13)()
+  }
+
+  function drawCircles(density, radius) {
+    let points = poissonSampler(
+      width,
+      height,
+      Math.max(width, height) / density
+    )
+
+    points.forEach(p => {
+      const r = gaussianRand(radius, radius/4)
+
+      const gradient = context.createRadialGradient(p.x, p.y, 0, p.x, p.y, r)
+      gradient.addColorStop(0, 'rgba(240,240,240,1)')
+      gradient.addColorStop(1, 'rgba(240,240,240,0.05)')
+      circle(context, r, p.x, p.y, gradient)
+    })
   }
 
 }
