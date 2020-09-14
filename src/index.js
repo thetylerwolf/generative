@@ -22,6 +22,7 @@
 // import './watercolorTest'
 // import './imagePaintingPixi'
 // import './noiseLinesPixi'
+import './paintBrushTest'
 
 // import './3d/cylinderTracks.js'
 // import './3d/sphereSpline.js'
@@ -30,4 +31,4 @@
 // import './comps/islandHopper cold'
 // require('./comps/islandHopper')
 // require('./comps/islandHopper_wide')
-import './comps/sliced'
+// import './comps/sliced'
