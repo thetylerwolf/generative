@@ -12,11 +12,20 @@ const report = {}
 const height = 1024,
   dimensions = [ height/1.5, height ]
 const canvas = createCanvas()
+// const canvas = document.getElementById('canvas')
+
+
+// const app = new PIXI.Application({
+//   antialias: true,
+//   width,
+//   height,
+//   view: canvas
+// })
 
 const settings = {
   // dimensions,
   orientation: 'landscape',
-  bleed: 300 * 1/8,
+  // bleed: 300 * 1/8,
   dimensions: 'a4',
   // dimensions: 'b0',
   canvas,

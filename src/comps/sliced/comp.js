@@ -32,12 +32,12 @@ export default function comp(config) {
     noiseResolution = 0.0006,
     lineWidth = 80
 
-//   const app = new PIXI.Application({
-//     antialias: true,
-//     width,
-//     height,
-//     view: context.canvas
-//   })
+  // const app = new PIXI.Application({
+  //   antialias: true,
+  //   width,
+  //   height,
+  //   view: context.canvas
+  // })
 // return
   let line = new Line([
       new Point(0, gaussianRand(height/5, height/20) ),
@@ -136,7 +136,7 @@ export default function comp(config) {
 
         let location = Line.pointOnLine(from, to, j)
 
-        if(location.x < 0.1*width || location.x > 0.9*width) {
+        if(location.x < 300 || location.x > width-300) {
           continue
         }
 
@@ -152,9 +152,11 @@ export default function comp(config) {
     d3.shuffle(squares).forEach((square,i) => {
       for(let j=0; j<40; j++) {
 
-        const displacement = squareDist(square.x),
+        const displacement = squareDist(square.x, square.y),
           y = square.y + displacement,
           size = squareSize()
+
+        if(y > height-300) continue
 
         const color = colorSampler.getNearestColor(
           square.x - line.points[0].x,
@@ -178,7 +180,8 @@ export default function comp(config) {
 
   }
 
-  function squareDist(x) {
+  function squareDist(x,y) {
+    // const max = height - y - 600
     const displacement = maxDisplacement - maxDisplacement * perlin.noise(x*noiseResolution, noiseSeed, noiseSeed)
     return Math.abs(d3.randomNormal(0, displacement*0.25 )())
     // return Math.abs(gaussianRand(0, displacement*2))

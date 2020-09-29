@@ -18,11 +18,13 @@ const colors = [
   'rgba(0,91,141,1)',
   'rgba(0,91,141,1)',
   'rgba(0,91,141,1)',
+  'rgba(0,91,141,1)',
   'rgba(2, 7, 18, 1)',
   'rgba(2, 7, 18, 1)',
-  '#ffffff',
-  '#ffffff'
-]
+  'rgba(2, 7, 18, 1)',
+  // '#ffffff',
+  // '#ffffff'
+].reverse()
 const bgColor = '#FFFFFF'
 // const bgColor = '#FFFEF6'
 console.log(colors)

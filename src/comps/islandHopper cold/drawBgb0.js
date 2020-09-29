@@ -31,9 +31,9 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
     // colors: [...colors, ...colors, ...colors, ...colors],
     // colors: [ color0, color1, color2 ],
     colors,
-    density: 20,
+    density: 15,
     // maxCenterRange: 500,
-    // type: 'gradient',
+    type: 'gradient',
     // type: 'points',
   })
 
@@ -98,7 +98,7 @@ console.log('radius ' + pointRadius)
   drawCircles(context, width, height, height * 500 / 16701, height * 30 / 16701)
   // drawCircles(context, width, height, 250, 5)
 
-  context.globalAlpha = 0.05
+  context.globalAlpha = 0.20
   context.fillStyle = '#fff'
   context.rect(0, 0, width, height)
   context.fill()

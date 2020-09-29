@@ -16,7 +16,7 @@ const canvas = createCanvas()
 const settings = {
   // dimensions,
   orientation: 'landscape',
-  bleed: 300 * 1/8,
+  bleed: -600,
   // dimensions: 'a4',
   dimensions: 'b0',
   canvas,

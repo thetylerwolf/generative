@@ -1,7 +1,7 @@
-const Line = require('./Line')
-const Point = require('./Point')
-const { gaussianRand } = require('../utils')
-const { chaikin } = require('../technique')
+import Line from './Line'
+import Point from './Point'
+import { gaussianRand } from '../utils'
+import { chaikin } from '../technique'
 
 
 
@@ -77,7 +77,7 @@ module.exports = class Triangle {
     ca = new Line([c, a])
     bc = new Line([b, c])
 
-    if(Math.random() < curveChance && mc.length > 60) {
+    if(Math.random() < curveChance && mc.length > 120) {
 
       let nc = mc
 
