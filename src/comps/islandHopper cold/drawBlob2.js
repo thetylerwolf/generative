@@ -35,7 +35,7 @@ module.exports = function drawBlob(context, colors, bgColor) {
   console.log('center', center)
 
   const params = {
-    noise_scale: 200,
+    noise_scale: 180,
     noise_persistence: 0.4,
     noiseFunction: (x,y,z) => simplex1.noise3D(x,y,z),
     // noiseFunction: (x,y,z) => simp.noise3D(x,y,z),
