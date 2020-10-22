@@ -12,12 +12,14 @@ const canvas = document.getElementsByTagName("canvas")[0];
 //     height: canvas.height,
 //     view: canvas,
 //   })
-let app, elapsed = 0;
+let app, elapsed = 0, colors = []
 
-const colors =
-  color.colorDictionary[
-    Math.floor(Math.random() * color.colorDictionary.length)
-  ];
+while(colors.length !== 3) {
+  colors =
+    color.colorDictionary[
+      Math.floor(Math.random() * color.colorDictionary.length)
+    ];
+}
 // const bgColor = '#FFFEF6'
 console.log(colors);
 // const bgColor = '#fff'
@@ -35,19 +37,19 @@ const noiseR = new SimplexNoise(Math.random() + ''),
   noiseB = new SimplexNoise(Math.random() + '')
 
 const colorScaleR = chroma
-  .scale(['rgb(255,255,255)', 'rgb(255,0,0)'])
+  .scale(['rgb(255,255,255)', `rgb(${colors[0]})`])
   .domain([-1, 1]),
   colorScaleG = chroma
-  .scale(['rgb(255,255,255)', 'rgb(0,255,0)'])
+  .scale(['rgb(255,255,255)', `rgb(${colors[1]})`])
   .domain([-1, 1]),
   colorScaleB = chroma
-  .scale(['rgb(255,255,255)', 'rgb(0,0,255)'])
+  .scale(['rgb(255,255,255)', `rgb(${colors[2]})`])
   .domain([-1, 1]);
 
 export default function comp(config) {
   const { width, height, context, time } = config;
   // [2, 5, 8, 11, 15, 17, 23, 24, 29, 36, 48, 51, 55, 66, 94, 98]
-  const rectSize = 20,
+  const rectSize = 15,
     xSize = Math.floor(width / rectSize),
     ySize = Math.floor(height / rectSize),
     noiseScale = 0.005,
@@ -66,15 +68,16 @@ export default function comp(config) {
   graphics.forEach(g => g.destroy())
   graphics = []
   console.log("draw color rects");
+
   drawGrid();
 
   function drawRect(x, y) {
     let graphic = new PIXI.Graphics();
 
-    const fill = chroma.average([
-      colorScaleR(noiseR.noise3D(x * noiseScale, y * noiseScale, elapsed * zScale)).hex(),
-      colorScaleG(noiseG(x * noiseScale, y * noiseScale, elapsed * zScale)[0]).hex(),
-      colorScaleB(noiseB.noise3D(x * noiseScale, y * noiseScale, elapsed * zScale)).hex()
+    const fill = chroma.average(colors.map(c=>`rgb(${c})`), 'hcl', [
+      (1 + noiseR.noise3D(x * noiseScale, y * noiseScale, elapsed * zScale))/2,
+      (1 + noiseG(x * noiseScale, y * noiseScale, elapsed * zScale)[0])/2,
+      (1 + noiseB.noise3D(x * noiseScale, y * noiseScale, elapsed * zScale))/2
     ]).hex();
 
     graphic.beginFill("0x" + fill.slice(1));

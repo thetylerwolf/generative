@@ -1,6 +1,6 @@
 import canvasSketch from 'canvas-sketch'
 import { createCanvas } from 'canvas'
-import comp from './comp'
+import comp from './comp2'
 // const fs = require('fs')
 
 // import canvasSketch from 'canvas-sketch'
