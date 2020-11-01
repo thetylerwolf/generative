@@ -21,3 +21,10 @@ body {
   position:absolute;
   display:none;
 }
+
+.nothing {
+  color: rgb(174,82,36);
+  color: rgb(249,157,27);
+  color: rgb(112,147,144);
+  color: rgb(0,91,141);
+}

@@ -12,7 +12,7 @@
 // import './imagePainting2'
 
 // import './flow_streamlines_dark'
-// import './flow_streamlines2'
+import './flow_streamlines2'
 
 // import './imagePainting4'
 
@@ -32,4 +32,4 @@
 // require('./comps/islandHopper')
 // require('./comps/islandHopper_wide')
 // import './comps/sliced'
-import './comps/noiseColorRects'
+// import './comps/noiseColorRects'

@@ -1,6 +1,8 @@
-import niceColors from 'nice-color-palettes'
+// import niceColors from 'nice-color-palettes'
+import { color } from "./element";
 import chroma from 'chroma-js'
 import { shuffle } from 'd3'
+import { createCanvas } from 'canvas'
 
 import {
   slicedStroke,
@@ -24,8 +26,9 @@ import {
 } from './noise'
 import { gaussianRand } from './utils'
 
-const width = 960,
-  height = 960
+// a4 size
+const width = 2480,
+  height = 1748
 
 const { noise } = fractal,
   simplexNoise = simplex.noise
@@ -35,21 +38,28 @@ simplex.setSeed(noiseSeed)
 
 // [2, 5, 8, 11, 15, 17, 23, 24, 29, 36, 48, 51, 55, 66, 94, 98]
 
-let randomI = 17 || Math.floor(Math.random() * niceColors.length),
-  randomColors = niceColors[randomI] || shuffle(niceColors[randomI])
-const colors = [
-  ...randomColors.slice(1)
-]
+let colors = [], bgColor = '#fff', randomI
 
-let canvas = document.getElementById("canvas"),
+const lineWidth = 4 * width/960
+
+while(colors.length !== 3) {
+  // 311, 320
+  randomI = Math.floor(Math.random() * color.colorDictionary.length)
+  randomI = 311
+
+  const chosenColors = color.colorDictionary[ randomI ];
+  
+  console.log(chosenColors.map(c => chroma(c).css()))
+  bgColor = chosenColors[3]
+  colors = chosenColors.slice(0,-1)
+
+}
+
+let canvas = createCanvas(),
     context = canvas.getContext("2d")
 
 canvas.width = width
 canvas.height = height
-
-let dpr = window.devicePixelRatio || 1
-
-context.scale(dpr,dpr)
 
 // colorIndex: 66, 8, 5
 
@@ -65,8 +75,8 @@ const colorSampler = new ColorSampler({
   colors,
   density: 10,
   maxCenterRange: 0,
-  type: 'gradient',
-  gradientAngle,
+  // type: 'gradient',
+  // gradientAngle,
   gradientSteps: 10,
 })
 
@@ -88,11 +98,13 @@ console.log({
 drawBg()
 drawLines()
 
+document.body.append(canvas)
+
 function drawLines() {
 
   // drawShapes()
 
-  context.globalAlpha = 0.3
+  context.globalAlpha = 1
 
   const pointData = poissonSampler(width, height, 0.004 * width)
   shuffle(pointData)
@@ -116,16 +128,17 @@ console.log(pointData.length)
   }, {
     width,
     height,
-    resolution: 3,
-    maxLineLength: 300,
-    testDist: 2,
+    resolution: 6,
+    // maxLineLength: 600 * width/960,
+    minLineLength: 10,
+    testDist: lineWidth + 2,
     lineLengthFn: (x, y) => 100 * spaceSampler.getNearestColor(x, y, 5, 0.1)
   })
 
   lines.forEach(onStreamlineAdded)
 
   function onStreamlineAdded(points) {
-    context.lineWidth = 2
+    context.lineWidth = lineWidth
 
     let start = points[0]
 
@@ -156,15 +169,15 @@ console.log(pointData.length)
 function drawBg() {
 
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
-  const bgColor = '#fff'
-  context.fillStyle = bgColor
+  const clearColor = '#333'
+  context.fillStyle = clearColor
   context.rect(0, 0, width, height)
   context.fill()
 // return
-  let pointData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.0035 * canvas.width)
+  let pointData = poissonSampler(width, height, 0.0035 * width * width/960)
   shuffle(pointData)
 
-  context.globalAlpha = 1
+  context.globalAlpha = 0.4
 
   pointData.forEach((point) => {
     let dx = point.x - width/2,
@@ -172,7 +185,7 @@ function drawBg() {
       centerDist = Math.sqrt(dx*dx + dy*dy),
       dMax = Math.sqrt((width*width+height*height)/4)
     // let c = chroma.mix('#fff', randomColors[0],1)
-    let c = chroma(randomColors[0])
+    let c = chroma(bgColor)
     c = c.hsl()
     // c[1] += -0.05 + Math.random() * 0.1
     c[2] += -0.05 + gaussianRand() * 0.1
@@ -184,7 +197,7 @@ function drawBg() {
     context.fillStyle = c
 
     // context.globalAlpha = 0.01
-    noisePolygon(context, 20, point.x, point.y)
+    noisePolygon(context, 20 * width/960, point.x, point.y)
   })
 
   // let circleData = poissonSampler(canvas.width / dpr, canvas.height / dpr, 0.015 * canvas.width)
