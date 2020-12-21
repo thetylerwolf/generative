@@ -9,8 +9,8 @@ import comp from "./comp";
 
 const report = {};
 
-const height = 1024,
-  dimensions = [height / 1.5, height];
+const height = window.innerHeight,
+  dimensions = [window.innerWidth, height];
 const canvas = document.getElementsByTagName("canvas")[0];
 // const canvas = document.getElementById('canvas')
 
