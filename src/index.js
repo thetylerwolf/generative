@@ -12,7 +12,7 @@
 // import './imagePainting2'
 
 // import './flow_streamlines_dark'
-// import './flow_streamlines2'
+import "./flow_streamlines2";
 
 // import './imagePainting4'
 
@@ -28,9 +28,9 @@
 // import './3d/sphereSpline.js'
 
 // import './comps/islandHopper'
-// import './comps/islandHopper cold'
-// require('./comps/islandHopper')
+// import "./comps/islandHopper cold";
+// require("./comps/islandHopper");
 // require('./comps/islandHopper_wide')
-// import './comps/sliced'
-// import './comps/noiseColorRects'
-import "./comps/dataFields";
+// import "./comps/sliced";
+// import "./comps/noiseColorRects";
+// import "./comps/dataFields";

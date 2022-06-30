@@ -13,8 +13,13 @@ import poissonSampler from "../../technique/poissonSampler";
 // import drawTriangles from './drawTriangles.js'
 // import drawBlob from './drawBlob.js'
 
-const colors = d3.shuffle(color.colorDictionary[270]);
-const bgColor = "#fafafa";
+let colors = d3.shuffle(
+  color.colorDictionary[
+    Math.floor(Math.random() * color.colorDictionary.length)
+  ]
+);
+const bgColor = `#fff`;
+// colors = colors.slice(1);
 
 console.log(colors);
 
@@ -45,8 +50,8 @@ export default function comp(config) {
     width,
     height,
     colors,
-    density: 20,
-    type: "gradient",
+    density: 45,
+    // type: 'gradient',
   });
 
   context.beginPath();
