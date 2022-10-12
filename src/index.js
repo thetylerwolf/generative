@@ -12,7 +12,7 @@
 // import './imagePainting2'
 
 // import './flow_streamlines_dark'
-import "./flow_streamlines2";
+// import "./flow_streamlines2";
 
 // import './imagePainting4'
 
@@ -34,3 +34,5 @@ import "./flow_streamlines2";
 // import "./comps/sliced";
 // import "./comps/noiseColorRects";
 // import "./comps/dataFields";
+
+import "./comps/cards";

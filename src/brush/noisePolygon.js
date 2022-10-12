@@ -1,45 +1,59 @@
-const { perlin } = require('../noise')
+const { perlin } = require("../noise");
 
-module.exports = function noisePolygon(context, baseRadius, centerX, centerY, numPoints=12, subdivisions=0, noiseFunction=perlin.noise) {
-
-  let points = []
+module.exports = function noisePolygon(
+  context,
+  baseRadius,
+  centerX,
+  centerY,
+  numPoints = 12,
+  maxXDistortion = 10,
+  maxYDistortion = 10,
+  subdivisions = 0,
+  noiseFunction = perlin.noise
+) {
+  let points = [];
   let noiseStart = Math.random() * 10,
     noiseStep = 0.01,
-    distortionRadius = 10
+    xDistortionRadius = maxXDistortion,
+    yDistortionRadius = maxYDistortion;
 
-  for(let i=0; i<numPoints; i++) {
-    let angle = i * (2 * Math.PI / numPoints),
+  for (let i = 0; i < numPoints; i++) {
+    let angle = i * ((2 * Math.PI) / numPoints),
       x = centerX + baseRadius * Math.cos(angle),
-      y = centerY + baseRadius * Math.sin(angle)
+      y = centerY + baseRadius * Math.sin(angle);
 
     // blob
     // let noiseX = Math.cos(noiseStart + x * noiseStep),
     //   noiseY = Math.sin(noiseStart + y * noiseStep)
 
     let noiseX = Math.cos(angle * i + noiseStep * i + noiseStart),
-      noiseY = Math.sin(angle * i + noiseStep * i + noiseStart)
+      noiseY = Math.sin(angle * i + noiseStep * i + noiseStart);
 
-    let xOut = x + distortionRadius * Math.cos(2 * Math.PI * noiseFunction(noiseX, noiseY, 0)),
-      yOut = y + distortionRadius * Math.sin(2 * Math.PI * noiseFunction(noiseX, noiseY, 0))
+    let xOut =
+        x +
+        xDistortionRadius *
+          Math.cos(2 * Math.PI * noiseFunction(noiseX, noiseY, 0)),
+      yOut =
+        y +
+        yDistortionRadius *
+          Math.sin(2 * Math.PI * noiseFunction(noiseX, noiseY, 0));
 
-    points.push([ xOut, yOut ])
-
+    points.push([xOut, yOut]);
   }
 
-  context.beginPath()
+  context.beginPath();
 
-  points.forEach((point,i) => {
+  points.forEach((point, i) => {
     let from = point,
-      to = points[i+1]
+      to = points[i + 1];
 
-    if(!to) return
+    if (!to) return;
 
-    if(!i) context.moveTo(from[0], from[1])
-    context.lineTo(to[0], to[1])
+    if (!i) context.moveTo(from[0], from[1]);
+    context.lineTo(to[0], to[1]);
+  });
 
-  })
-
-  context.closePath()
-  context.fill()
-
-}
+  context.closePath();
+  context.fill();
+  return;
+};
