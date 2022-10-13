@@ -26,8 +26,8 @@ const starColors = [
   "rgba(240, 252, 255, 0.8)",
   "rgba(255, 204, 240, 0.8)",
 ];
-const bgColor = "rgba(2, 7, 18, 0.5)";
-// const bgColor = "#FFF";
+// const bgColor = "rgba(2, 7, 18, 0.5)";
+const bgColor = "#FFF";
 console.log(colors);
 // const bgColor = '#fff'
 // const colors = shuffle([...color.colorDictionary[130]])
@@ -56,13 +56,13 @@ module.exports = function comp(config) {
   // drawBg(context, width, height, colors.slice(0,2), colors[2])
   console.log("start bg");
   // drawBg(context, width, height, colors, bgColor)
-  drawBgb0(context, width, height, colors, bgColor);
+  drawBgb0(context, width, height, colors, bgColor, 7 / 10, 3 / 5);
   // drawTriangles(context, width, height)
   // drawTriangles(context, width, height, '#000')
 
   context.globalAlpha = 1;
 
-  drawCircles(context, width, height, starColors, 12, 0.1);
+  drawCircles(context, width, height, starColors, 12, 0.1, 4 / 5, 2 / 3);
 
   // drawBlob3(context, colors, bgColor)
 

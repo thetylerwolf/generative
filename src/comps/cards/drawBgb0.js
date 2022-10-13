@@ -3,7 +3,15 @@ const { poissonSampler, ColorSampler } = require("../../technique");
 const { WaterColor, circle } = require("../../brush");
 const { gaussianRand } = require("../../utils");
 
-module.exports = function drawBg(context, width, height, colors, bgColor) {
+module.exports = function drawBg(
+  context,
+  inputWidth,
+  inputHeight,
+  colors,
+  bgColor,
+  scaleX = 1,
+  scaleY = 1
+) {
   // const bgColor = chroma.mix('#fff', randomColors[0], 0.1)
   // const bgColor = '#ffe6cc' // orange
   // const bgColor = '#ccdbff' // blue
@@ -11,12 +19,20 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
   // const bgColor = '#26375a' // dark blue
   // const bgColor = '#010a18' // dark blue
   context.fillStyle = "#fff";
-  context.rect(0, 0, width, height);
+  context.rect(0, 0, inputWidth, inputHeight);
   context.fill();
   context.fillStyle = bgColor;
-  context.rect(0, 0, width, height);
+  context.rect(0, 0, inputWidth, inputHeight);
   context.fill();
-  // return
+
+  context.save();
+  context.translate(
+    (inputWidth * (1 - scaleX)) / 2,
+    (inputHeight * (1 - scaleY)) / 2
+  );
+
+  const width = inputWidth * scaleX,
+    height = inputHeight * scaleY;
 
   let color0 = colors[0],
     color2 = colors[1],
@@ -52,9 +68,12 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
       noiseFunction: () => Math.random(),
     };
 
-  let pointData = poissonSampler(width, height, pointRadius);
-  console.log(pointData.length + " points");
-  console.log("radius " + pointRadius);
+  let pointData = poissonSampler(
+    width - width / 15,
+    height - height / 15,
+    pointRadius
+  );
+
   context.globalAlpha = 0.015;
 
   let wcs = pointData
@@ -94,30 +113,31 @@ module.exports = function drawBg(context, width, height, colors, bgColor) {
 
   drawCircles(
     context,
-    width,
-    height,
-    (height * 500) / 16701,
-    (height * 30) / 16701
+    inputWidth,
+    inputHeight,
+    (inputHeight * 500) / 16701,
+    (inputHeight * 30) / 16701
   );
   drawCircles(
     context,
-    width,
-    height,
-    (height * 500) / 16701,
-    (height * 20) / 16701
+    inputWidth,
+    inputHeight,
+    (inputHeight * 500) / 16701,
+    (inputHeight * 20) / 16701
   );
   drawCircles(
     context,
-    width,
-    height,
-    (height * 500) / 16701,
-    (height * 30) / 16701
+    inputWidth,
+    inputHeight,
+    (inputHeight * 500) / 16701,
+    (inputHeight * 30) / 16701
   );
   // drawCircles(context, width, height, 250, 5)
 
+  context.restore();
   context.globalAlpha = 0.2;
   context.fillStyle = "#fff";
-  context.rect(0, 0, width, height);
+  context.rect(0, 0, inputWidth, inputHeight);
   context.fill();
 
   function drawPolygon(points) {

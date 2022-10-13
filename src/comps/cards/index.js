@@ -15,7 +15,7 @@ const canvas = createCanvas();
 const settings = {
   // dimensions,
   orientation: "landscape",
-  bleed: -300,
+  // bleed: -300,
   dimensions: dimensions,
   units: "px",
   // dimensions: 'b0',

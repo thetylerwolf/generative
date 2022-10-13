@@ -1,23 +1,28 @@
-import chroma from "chroma-js";
+import chroma, { scale } from "chroma-js";
 import { shuffle } from "d3";
 import noisePolygon from "../../brush/noisePolygon";
 import { perlin } from "../../noise";
 import { ColorSampler, poissonSampler } from "../../technique";
+import { pick } from "../../utils/pick";
 
 export function drawCircles(
   context,
-  width,
-  height,
+  inputWidth,
+  inputHeight,
   colors,
   radius,
-  drawProbability
+  drawProbability,
+  scaleX = 1,
+  scaleY = 1
 ) {
-  const colorSampler = new ColorSampler({
-    width: width,
-    height: height,
-    colors,
-    density: 10,
-  });
+  const width = inputWidth * scaleX,
+    height = inputHeight * scaleY;
+
+  context.save();
+  context.translate(
+    (inputWidth * (1 - scaleX)) / 2,
+    (inputHeight * (1 - scaleY)) / 2
+  );
 
   const pointData = poissonSampler(width, height, 0.005 * width);
 
@@ -25,7 +30,8 @@ export function drawCircles(
 
   pointData.map((p) => {
     if (Math.random() > drawProbability) return;
-    let c = colorSampler.getNearestColor(p.x, p.y, 7);
+    // let c = colorSampler.getNearestColor(p.x, p.y, 7);
+    let c = pick(colors);
     c = chroma(c);
     c = c.hsl();
     c[3] = 0.1 + Math.random() * 0.8;
@@ -51,4 +57,6 @@ export function drawCircles(
     // pointBrush(context, path[0], path[path.length-1])
     // path.forEach((p,i) => i ? pointBrush(context, path[i-1], p) : null)
   });
+
+  constext.restore();
 }
