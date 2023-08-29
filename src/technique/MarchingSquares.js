@@ -62,23 +62,8 @@ module.exports = class MarchingSquares {
 
     context.fillStyle = col
     context.strokeStyle = col
-    // context.strokeStyle = '#fff'
 
     this.process_grid(z_val);
-
-    // points.forEach(square => {
-    //   context.beginPath()
-    //   square.forEach((p,i) => {
-    //     let [x,y] = p
-    //     if(!i) {
-    //       context.moveTo(...p)
-    //     } else {
-    //       context.lineTo(...p)
-    //     }
-    //   })
-    //   context.closePath()
-    //   context.fill()
-    // })
   };
 
   trace() {
@@ -92,7 +77,6 @@ module.exports = class MarchingSquares {
       context,
     } = this
 
-    // const bgColor = '#010a18' // dark blue
     const z_val = bottom_size + (range * tick) / num_shapes;
 
     this.process_path(z_val);
@@ -128,7 +112,6 @@ module.exports = class MarchingSquares {
     for (let y = 0; y < ny; y++) {
       for (let x = 0; x < nx; x++) {
 
-        // if(y < 2) console.log(x, xOffset, xOffset+cell_dim)
         this.process_cell(x, y, z_val, true, xOffset, yOffset);
         xOffset += cell_dim
       }
@@ -301,14 +284,6 @@ module.exports = class MarchingSquares {
   }
 
   link_points() {
-    // TODO: Still not quite there
-    // let found = line.length === 4
-
-    // if(found) {
-    //   this.polygons.push(line)
-    //   console.log('square!')
-    //   return
-    // }
 
     while(this.points.length) {
       let poly = this.points.shift()
@@ -384,14 +359,7 @@ module.exports = class MarchingSquares {
 
         let nearest = null,
           nearestDist = Infinity
-        this.points.forEach((line) => {
 
-          // if(line[0].x === currentPoint[1].x || line[1].x === currentPoint[0].x) console.log(currentPoint, line);
-          // (new Line(currentPoint)).equals(new Line(line))
-
-        })
-
-        // console.log(Line.distance(currentPoint[1], nearest[0]), currentPoint, nearest)
         if(nearestDist < 4) {
           currentPoint = nearest
           let i = this.points.indexOf(currentPoint)
@@ -407,7 +375,6 @@ module.exports = class MarchingSquares {
 
     this.polygons = polygons
     return polygons
-    console.log('polygons', polygons)
 
   }
 
@@ -421,8 +388,6 @@ module.exports = class MarchingSquares {
     const se = [dim, dim];
     const sw = [0, dim];
 
-    // p.noStroke();
-    // p.beginShape();
     let square = []
 
     ctx.beginPath()
